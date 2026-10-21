@@ -27,13 +27,9 @@ const TopOperators = () => {
                             key={operator.id}
                             className="bg-white rounded-2xl border border-slate-200 p-5 flex flex-col items-center text-center hover:border-blue-400 hover:shadow-md transition group"
                         >
-                            {/* Operator Logo */}
-                            <div className="size-16 rounded-2xl overflow-hidden border border-slate-100 mb-3 group-hover:scale-105 transition">
-                                <img
-                                    src={operator.logo}
-                                    alt={operator.name}
-                                    className="w-full h-full object-cover"
-                                />
+                            {/* Operator Logo Badge */}
+                            <div className="size-16 rounded-2xl overflow-hidden border border-slate-100 mb-3 group-hover:scale-105 transition flex items-center justify-center bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-black text-xl shadow-md shadow-blue-500/10">
+                                <span>{operator.name.split(' ').map(n => n[0]).join('').slice(0, 2)}</span>
                             </div>
 
                             {/* Name */}

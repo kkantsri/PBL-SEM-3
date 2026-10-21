@@ -43,16 +43,19 @@ const PopularRoutes = () => {
                             className="group bg-white rounded-2xl border border-slate-200/90 hover:border-blue-500 hover:shadow-xl hover:shadow-blue-500/10 transition-all cursor-pointer overflow-hidden flex flex-col justify-between"
                         >
                             {/* Card Image */}
-                            <div className="h-36 w-full overflow-hidden relative bg-slate-100">
+                            <div className="h-36 w-full overflow-hidden relative bg-gradient-to-tr from-blue-700 via-indigo-700 to-slate-900">
                                 <img
-                                    src={route.image}
+                                    src={route.image || "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&auto=format&fit=crop&q=80"}
                                     alt={`${route.from} to ${route.to}`}
-                                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-90"
                                     loading="lazy"
+                                    onError={(e) => {
+                                        e.currentTarget.style.display = 'none';
+                                    }}
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/30 to-transparent" />
                                 <div className="absolute bottom-3 left-3 flex items-center gap-1.5 text-white font-bold text-sm">
-                                    <Bus size={16} />
+                                    <Bus size={16} className="text-blue-400" />
                                     <span>{route.trips} Buses Daily</span>
                                 </div>
                             </div>

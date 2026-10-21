@@ -3,8 +3,8 @@ import { runCppCommand } from "@/lib/cppBridge";
 
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
-    const src = searchParams.get("src");
-    const dest = searchParams.get("dest");
+    const src = searchParams.get("src") || searchParams.get("source") || searchParams.get("from");
+    const dest = searchParams.get("dest") || searchParams.get("destination") || searchParams.get("to");
 
     if (!src || !dest) {
         return NextResponse.json({ success: false, error: "src and dest query parameters are required" }, { status: 400 });

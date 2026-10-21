@@ -105,8 +105,8 @@ export default function BookingReviewPage() {
                 status: "CONFIRMED",
                 paymentMethod,
                 isPaid: true,
-                boardingPoint: boardingPoint || selectedTrip?.boardingPoints?.[0]?.name,
-                droppingPoint: droppingPoint || selectedTrip?.droppingPoints?.[0]?.name,
+                boardingPoint: formatPoint(boardingPoint || selectedTrip?.boardingPoints?.[0]),
+                droppingPoint: formatPoint(droppingPoint || selectedTrip?.droppingPoints?.[0]),
                 passengers: currentPassengers,
                 createdAt: new Date().toISOString(),
             };

@@ -5,14 +5,8 @@ import { MapPin, Mail, Phone, Bus } from "lucide-react"
 const StoreInfo = ({ store }) => {
     return (
         <div className="flex-1 space-y-2 text-sm">
-            <div className="size-16 rounded-2xl overflow-hidden border border-slate-200 mb-3">
-                {store.logo ? (
-                    <img src={store.logo} alt={store.name} className="w-full h-full object-cover" />
-                ) : (
-                    <div className="w-full h-full bg-blue-50 text-blue-600 flex items-center justify-center">
-                        <Bus size={24} />
-                    </div>
-                )}
+            <div className="size-16 rounded-2xl overflow-hidden border border-slate-200 mb-3 flex items-center justify-center bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-black text-xl shadow-sm">
+                <span>{store.name?.split(' ').map(n => n[0]).join('').slice(0, 2) || "OP"}</span>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-3 items-center">

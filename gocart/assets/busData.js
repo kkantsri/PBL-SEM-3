@@ -1060,16 +1060,16 @@ export const couponDummyData = [
 
 // --- Popular Routes ---
 export const popularRoutes = [
-    { from: "Delhi", to: "Jaipur", trips: 45, startingPrice: 500 },
-    { from: "Mumbai", to: "Pune", trips: 62, startingPrice: 400 },
-    { from: "Delhi", to: "Dehradun", trips: 38, startingPrice: 700 },
-    { from: "Bangalore", to: "Chennai", trips: 55, startingPrice: 850 },
-    { from: "Hyderabad", to: "Bangalore", trips: 40, startingPrice: 900 },
-    { from: "Delhi", to: "Chandigarh", trips: 50, startingPrice: 550 },
-    { from: "Mumbai", to: "Bangalore", trips: 30, startingPrice: 2200 },
-    { from: "Delhi", to: "Lucknow", trips: 35, startingPrice: 750 },
-    { from: "Jaipur", to: "Ahmedabad", trips: 28, startingPrice: 800 },
-    { from: "Pune", to: "Hyderabad", trips: 32, startingPrice: 1050 },
+    { from: "Delhi", to: "Jaipur", trips: 45, startingPrice: 500, image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?w=600&auto=format&fit=crop&q=80" },
+    { from: "Mumbai", to: "Pune", trips: 62, startingPrice: 400, image: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=600&auto=format&fit=crop&q=80" },
+    { from: "Delhi", to: "Dehradun", trips: 38, startingPrice: 700, image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&auto=format&fit=crop&q=80" },
+    { from: "Bangalore", to: "Chennai", trips: 55, startingPrice: 850, image: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=600&auto=format&fit=crop&q=80" },
+    { from: "Hyderabad", to: "Bangalore", trips: 40, startingPrice: 900, image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=600&auto=format&fit=crop&q=80" },
+    { from: "Delhi", to: "Chandigarh", trips: 50, startingPrice: 550, image: "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=600&auto=format&fit=crop&q=80" },
+    { from: "Mumbai", to: "Bangalore", trips: 30, startingPrice: 2200, image: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=600&auto=format&fit=crop&q=80" },
+    { from: "Delhi", to: "Lucknow", trips: 35, startingPrice: 750, image: "https://images.unsplash.com/photo-1600100397608-f010f443b71a?w=600&auto=format&fit=crop&q=80" },
+    { from: "Jaipur", to: "Ahmedabad", trips: 28, startingPrice: 800, image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?w=600&auto=format&fit=crop&q=80" },
+    { from: "Pune", to: "Hyderabad", trips: 32, startingPrice: 1050, image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=600&auto=format&fit=crop&q=80" },
 ];
 
 // --- Bus Types for Filtering ---

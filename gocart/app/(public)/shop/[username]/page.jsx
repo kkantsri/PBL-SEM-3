@@ -27,12 +27,8 @@ export default function OperatorStorefront() {
                 
                 {/* Operator Profile Header Card */}
                 <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm mb-8 flex flex-col md:flex-row items-center md:items-start gap-6">
-                    <div className="size-28 rounded-3xl overflow-hidden border border-slate-200 shrink-0">
-                        <img
-                            src={operator.logo}
-                            alt={operator.name}
-                            className="w-full h-full object-cover"
-                        />
+                    <div className="size-28 rounded-3xl overflow-hidden border border-slate-200 shrink-0 flex items-center justify-center bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-black text-3xl shadow-md shadow-blue-500/10">
+                        <span>{operator.name.split(' ').map(n => n[0]).join('').slice(0, 2)}</span>
                     </div>
 
                     <div className="flex-1 text-center md:text-left">
