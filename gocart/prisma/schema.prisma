@@ -1,0 +1,189 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  name      String
+  email     String    @unique
+  phone     String?
+  password  String?
+  image     String?
+  role      Role      @default(CUSTOMER)
+  operator  BusOperator?
+  bookings  Booking[]
+  reviews   Review[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model City {
+  id    String @id @default(cuid())
+  name  String
+  state String
+  @@unique([name, state])
+}
+
+model BusOperator {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  name        String
+  description String?
+  logo        String?
+  email       String
+  contact     String
+  status      String   @default("pending")
+  isActive    Boolean  @default(false)
+  user        User     @relation(fields: [userId], references: [id])
+  buses       Bus[]
+  trips       BusTrip[]
+  reviews     Review[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Bus {
+  id             String      @id @default(cuid())
+  operatorId     String
+  registrationNo String      @unique
+  busType        BusType
+  totalSeats     Int
+  amenities      String[]
+  operator       BusOperator @relation(fields: [operatorId], references: [id])
+  trips          BusTrip[]
+  seats          Seat[]
+  createdAt      DateTime    @default(now())
+}
+
+model Seat {
+  id       String   @id @default(cuid())
+  busId    String
+  number   String
+  type     SeatType
+  deck     String   @default("lower")
+  bus      Bus      @relation(fields: [busId], references: [id])
+  @@unique([busId, number])
+}
+
+model BusTrip {
+  id             String      @id @default(cuid())
+  operatorId     String
+  busId          String
+  sourceCity     String
+  destCity       String
+  departureTime  DateTime
+  arrivalTime    DateTime
+  duration       Int
+  price          Float
+  availableSeats Int
+  status         TripStatus  @default(SCHEDULED)
+  boardingPoints Json
+  droppingPoints Json
+  operator       BusOperator @relation(fields: [operatorId], references: [id])
+  bus            Bus         @relation(fields: [busId], references: [id])
+  bookings       Booking[]
+  reviews        Review[]
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}
+
+model Booking {
+  id            String        @id @default(cuid())
+  pnr           String        @unique
+  userId        String
+  tripId        String
+  totalAmount   Float
+  status        BookingStatus @default(CONFIRMED)
+  paymentMethod PaymentMethod
+  isPaid        Boolean       @default(false)
+  boardingPoint String
+  droppingPoint String
+  coupon        Json?
+  user          User          @relation(fields: [userId], references: [id])
+  trip          BusTrip       @relation(fields: [tripId], references: [id])
+  passengers    PassengerInfo[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model PassengerInfo {
+  id        String  @id @default(cuid())
+  bookingId String
+  name      String
+  age       Int
+  gender    String
+  seatNo    String
+  booking   Booking @relation(fields: [bookingId], references: [id])
+}
+
+model Coupon {
+  code        String   @id
+  description String
+  discount    Int
+  forNewUser  Boolean  @default(false)
+  isPublic    Boolean  @default(true)
+  expiresAt   DateTime?
+  createdAt   DateTime @default(now())
+}
+
+model Review {
+  id         String       @id @default(cuid())
+  rating     Int
+  review     String?
+  userId     String
+  tripId     String?
+  operatorId String?
+  user       User         @relation(fields: [userId], references: [id])
+  trip       BusTrip?     @relation(fields: [tripId], references: [id])
+  operator   BusOperator? @relation(fields: [operatorId], references: [id])
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  @@unique([userId, tripId])
+}
+
+enum Role {
+  CUSTOMER
+  OPERATOR
+  ADMIN
+}
+
+enum BusType {
+  SEATER
+  SLEEPER
+  SEMI_SLEEPER
+  AC_SEATER
+  AC_SLEEPER
+}
+
+enum SeatType {
+  WINDOW
+  AISLE
+  MIDDLE
+  LOWER_BERTH
+  UPPER_BERTH
+}
+
+enum TripStatus {
+  SCHEDULED
+  BOARDING
+  DEPARTED
+  COMPLETED
+  CANCELLED
+}
+
+enum BookingStatus {
+  CONFIRMED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  COD
+  STRIPE
+  UPI
+}

@@ -1,0 +1,8 @@
+6|FRI|West
+5|Sahastradhara|North-East
+7|Prem Nagar|West
+8|Robber's Cave|North
+4|Rajpur Road|North
+3|Clock Tower|Center
+2|Clement Town|South
+1|ISBT Dehradun|South
