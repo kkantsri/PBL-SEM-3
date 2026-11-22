@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const Hero = () => {
     return (
-        <div className="relative overflow-hidden bg-gradient-to-b from-black via-[#09090b] to-[#0d0d11] text-white pt-16 pb-20 px-4 sm:px-6 border-t border-white/5">
+        <div className="relative overflow-hidden bg-gradient-to-b from-black via-[#09090b] to-[#0d0d11] text-white pt-16 pb-20 px-4 sm:px-6 border-none">
             
             {/* Background Ambient Glows */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-blue-500/10 blur-3xl pointer-events-none rounded-full" />

@@ -30,8 +30,8 @@ const Navbar = () => {
         <nav
             className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
                 scrolled
-                    ? "bg-black/85 backdrop-blur-md border-b border-white/10 shadow-2xl shadow-black/60 py-2.5"
-                    : "bg-gradient-to-b from-black/75 via-black/30 to-transparent border-b border-white/5 py-4"
+                    ? "bg-black/90 backdrop-blur-md border-b border-white/10 shadow-2xl shadow-black/60 py-2.5"
+                    : "bg-gradient-to-b from-black/60 via-black/15 to-transparent border-none py-4"
             } text-white`}
         >
             <div className="mx-4 sm:mx-8">

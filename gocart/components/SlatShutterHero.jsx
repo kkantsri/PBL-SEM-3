@@ -37,9 +37,7 @@ function Slat({ index, count, progress, src }) {
       style={{
         y,
         scaleX,
-        // Overlap by 1px to eliminate fractional subpixel rendering lines between slats
-        width: `calc(100% / ${count} + 1.5px)`,
-        marginRight: "-1.5px",
+        width: `${100 / count}%`,
       }}
     >
       <div
@@ -47,7 +45,7 @@ function Slat({ index, count, progress, src }) {
         style={{
           backgroundImage: `url("${src}")`,
           width: `${count * 100}%`,
-          left: `calc(-${index} * 100%)`,
+          left: `${-index * 100}%`,
           imageRendering: "auto",
           WebkitBackfaceVisibility: "hidden",
           backfaceVisibility: "hidden",
@@ -110,9 +108,9 @@ export function SlatShutterHero({
   const shade = useTransform(progress, [0, 0.5], [0.12, 0.0]);
   const capOpacity = useTransform(progress, [0.7, 0.85], [0, 1]);
 
-  // Seamless single-image overlay: 100% visible at scroll=0, fades out smoothly as scroll starts
-  // This guarantees 0 lines or seams when viewing the photo normally at rest.
-  const seamlessOpacity = useTransform(scrollYProgress, [0, 0.08], [1, 0]);
+  // Seamless cover base behind the slats:
+  // Before scrolling, it fills 100% of the canvas seamlessly, ensuring no black background or seam lines can ever show through!
+  const coverBaseOpacity = useTransform(progress, [0.06, 0.22], [1, 0]);
 
   if (reduce) {
     return (
@@ -142,7 +140,7 @@ export function SlatShutterHero({
       style={{ height: `${length * 100}svh` }}
     >
       <div className="sticky top-0 h-svh w-full overflow-hidden">
-        {/* revealed image - crystal clear with enhanced clarity */}
+        {/* Revealed image behind everything */}
         <motion.img
           src={revealSrc}
           alt=""
@@ -154,23 +152,24 @@ export function SlatShutterHero({
           }}
         />
 
-        {/* slats (active during scroll) */}
+        {/* Seamless cover image layer behind the slats:
+            This guarantees that any subpixel gap between slats is filled with the exact image pixels, 
+            completely preventing any black lines from showing! */}
+        <motion.div
+          aria-hidden
+          className="absolute inset-0 bg-cover bg-center contrast-[1.06] brightness-[1.04]"
+          style={{
+            backgroundImage: `url("${coverSrc}")`,
+            opacity: coverBaseOpacity,
+          }}
+        />
+
+        {/* Slats (animated on scroll) */}
         <div className="absolute inset-0 flex overflow-hidden">
           {Array.from({ length: slats }).map((_, i) => (
             <Slat key={i} index={i} count={slats} progress={progress} src={coverSrc} />
           ))}
         </div>
-
-        {/* Seamless full cover image at rest: 
-            Prevents subpixel browser gaps/lines before user begins scrolling */}
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-cover bg-center contrast-[1.06] brightness-[1.04]"
-          style={{
-            backgroundImage: `url("${coverSrc}")`,
-            opacity: seamlessOpacity,
-          }}
-        />
 
         {/* Subtle shade for crystal clarity */}
         <motion.div className="pointer-events-none absolute inset-0 bg-black" style={{ opacity: shade }} />
