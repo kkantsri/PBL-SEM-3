@@ -79,10 +79,11 @@ function Headline({ lines, tone }) {
 }
 
 const IMG = "https://cdn.jsdelivr.net/gh/rm-sjent/21st-assets@v1/img/";
+const GOLDEN_HOUR_SEASHORE = "/seashore-golden-hour.jpg";
 
 export function SlatShutterHero({
   coverSrc = `${IMG}hero-dark.jpg`,
-  revealSrc = `${IMG}hero-bright.jpg`,
+  revealSrc = GOLDEN_HOUR_SEASHORE,
   coverTitle = ["Leave the black sand", "before the light goes"],
   revealTitle = ["Then follow the sun", "south to clear water"],
   kicker = "Field notes, issue 14",

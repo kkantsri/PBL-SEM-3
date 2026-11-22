@@ -9,7 +9,9 @@ import Newsletter from "@/components/Newsletter";
 export default function Home() {
     return (
         <main className="min-h-screen bg-[#09090b] text-zinc-100 selection:bg-zinc-800 selection:text-white">
-            <SlatShutterHero />
+            <SlatShutterHero
+                revealSrc="/seashore-golden-hour.jpg"
+            />
             <Hero />
             <PopularRoutes />
             <TopOperators />
