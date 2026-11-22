@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import BorderBeamRouteSearch from "@/components/BorderBeamRouteSearch";
 import {
   motion,
   useScroll,
@@ -180,19 +179,7 @@ export function SlatShutterHero({
             )}
             <AnimatePresence mode="wait" initial={false}>
               {revealed ? (
-                <motion.div
-                  key="r"
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -15 }}
-                  transition={{ duration: 0.4 }}
-                  className="flex flex-col gap-6 w-full"
-                >
-                  <Headline lines={revealTitle} tone="reveal" />
-                  <div className="w-full">
-                    <BorderBeamRouteSearch />
-                  </div>
-                </motion.div>
+                <Headline key="r" lines={revealTitle} tone="reveal" />
               ) : (
                 <Headline key="c" lines={coverTitle} tone="cover" />
               )}

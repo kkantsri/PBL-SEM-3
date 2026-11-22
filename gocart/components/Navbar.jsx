@@ -1,16 +1,17 @@
 'use client'
 import { Bus, Ticket, User, MapPin } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { BorderBeam } from "@/components/ui/border-beam-search";
 
 const Navbar = () => {
     const router = useRouter();
+    const pathname = usePathname();
     const [search, setSearch] = useState('');
     const [scrolled, setScrolled] = useState(false);
     const selectedSeats = useSelector((state) => state.booking?.selectedSeats || []);
+    const isShopPage = pathname === "/shop";
 
     useEffect(() => {
         const handleScroll = () => {
@@ -71,21 +72,19 @@ const Navbar = () => {
                             Operator Portal
                         </Link>
 
-                        {/* Search Bar with Glowing BorderBeam */}
-                        <div className="hidden xl:block">
-                            <BorderBeam size="line" colorVariant="colorful" duration={3.1} borderRadius={64} borderWidth={1.2}>
-                                <form onSubmit={handleSearch} className="flex items-center w-64 text-sm gap-2 bg-[#1d1d1d]/90 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-[inset_0_0_0_1px_rgba(44,47,54,0.52)] focus-within:bg-[#1d1d1d] transition">
-                                    <MapPin size={15} className="text-zinc-400 shrink-0" />
-                                    <input
-                                        className="w-full bg-transparent outline-none placeholder-[#71717a] text-xs text-white"
-                                        type="text"
-                                        placeholder="Search stop (e.g. Clement Town)"
-                                        value={search}
-                                        onChange={(e) => setSearch(e.target.value)}
-                                    />
-                                </form>
-                            </BorderBeam>
-                        </div>
+                        {/* Search Bar (Hidden on Search Buses page) */}
+                        {!isShopPage && (
+                            <form onSubmit={handleSearch} className="hidden xl:flex items-center w-64 text-sm gap-2 bg-black/40 backdrop-blur-md px-3.5 py-2 rounded-full border border-white/15 focus-within:border-blue-400 focus-within:bg-black/60 transition shadow-sm">
+                                <MapPin size={16} className="text-zinc-400" />
+                                <input
+                                    className="w-full bg-transparent outline-none placeholder-zinc-400 text-xs text-white"
+                                    type="text"
+                                    placeholder="Search stop (e.g. Clement Town)"
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                />
+                            </form>
+                        )}
 
                         {/* Booking Draft Badge */}
                         {selectedSeats.length > 0 && (

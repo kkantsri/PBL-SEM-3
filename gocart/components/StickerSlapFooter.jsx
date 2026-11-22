@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import BorderBeamRouteSearch from "@/components/BorderBeamRouteSearch";
 
 /**
  * Sticker Slap Footer — customized for BusGo:
@@ -876,18 +875,6 @@ export default function StickerSlapFooter({
       </div>
 
       <div className="ssf-panel">
-        {showSearch && (
-          <div className="relative z-10 w-full px-4 pt-6 sm:pt-8 pb-1 flex flex-col items-center">
-            <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-3.5 py-1 rounded-full text-[11px] font-bold text-blue-400 mb-3 uppercase tracking-wider shadow-sm">
-              <span className="size-1.5 rounded-full bg-blue-400 animate-pulse" />
-              <span>Campus & City Bus Search</span>
-            </div>
-            <div className="w-full max-w-2xl">
-              <BorderBeamRouteSearch />
-            </div>
-          </div>
-        )}
-
         {cols.length > 0 && (
           <div className="ssf-cols" style={{ "--ssf-n": cols.length }}>
             {cols.map((c, k) => (
