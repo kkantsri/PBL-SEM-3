@@ -12,6 +12,7 @@ import {
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import SearchWidget from "@/components/SearchWidget";
+import { Globe3DDemo } from "@/components/Globe3DDemo";
 import { Sparkles, Tag, ShieldCheck, Clock } from "lucide-react";
 
 function cn(...inputs) {
@@ -55,11 +56,9 @@ function Slat({ index, count, progress, src }) {
 }
 
 const BUS_IMAGE = "/mountain-bus.jpg";
-const SECOND_IMAGE = "/half-dome.jpg";
 
 export function SlatShutterHero({
   coverSrc = BUS_IMAGE,
-  revealSrc = SECOND_IMAGE,
   kicker = "Verified & Safe Mountain Transit",
   coverTitle = ["Safe Journeys Through Every Mile,", "Travel with Complete Trust"],
   caption = "24/7 passenger emergency support, sanitized coaches, vetted professional drivers, and live GPS route monitoring across all corridors.",
@@ -80,7 +79,7 @@ export function SlatShutterHero({
 
   if (reduce) {
     return (
-      <section className={cn("relative min-h-screen w-full overflow-hidden bg-black", className)}>
+      <section className={cn("relative min-h-screen w-full overflow-hidden bg-[#050508]", className)}>
         <img
           src={coverSrc}
           alt="BusGo Hero"
@@ -105,24 +104,27 @@ export function SlatShutterHero({
   return (
     <section
       ref={ref}
-      className={cn("relative w-full bg-black", className)}
+      className={cn("relative w-full bg-[#050508]", className)}
       style={{ height: `${length * 100}svh` }}
     >
       <div className="sticky top-0 h-svh w-full overflow-hidden">
         
-        {/* 2nd Slide Background Image (Half Dome) */}
-        <motion.img
-          src={revealSrc}
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover contrast-[1.06] brightness-[1.04]"
-          style={{
-            scale: revealScale,
-            WebkitBackfaceVisibility: "hidden",
-            backfaceVisibility: "hidden",
-          }}
-        />
+        {/* 2nd Slide: Pure Black Background with 3D Globe Covering Whole Page */}
+        <div className="absolute inset-0 bg-[#050508] overflow-hidden flex items-center justify-center">
+          {/* Subtle Ambient Glows spanning across screen */}
+          <div className="absolute w-[1000px] h-[1000px] bg-blue-500/15 rounded-full blur-[180px] pointer-events-none" />
+          <div className="absolute -bottom-20 w-[1200px] h-[600px] bg-indigo-600/15 rounded-full blur-[200px] pointer-events-none" />
+          
+          {/* 3D Rotating Interactive Globe Covering Whole Page */}
+          <motion.div
+            className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-auto"
+            style={{ scale: revealScale }}
+          >
+            <Globe3DDemo className="w-full h-full absolute inset-0" />
+          </motion.div>
+        </div>
 
-        {/* 1st Slide: Seamless Cover Image (Seashore Golden Hour) behind the slats */}
+        {/* 1st Slide: Seamless Cover Image (Mountain Bus) behind the slats */}
         <motion.div
           aria-hidden
           className="absolute inset-0 bg-cover bg-center contrast-[1.06] brightness-[1.04]"
@@ -166,18 +168,18 @@ export function SlatShutterHero({
           )}
         </motion.div>
 
-        {/* 2nd Slide Content (Components of 3rd moved to 2nd: SearchWidget, Headings, Promo Badges) */}
+        {/* 2nd Slide Content (SearchWidget, Headings, Promo Badges over Black & 3D Globe) */}
         <motion.div
-          className="absolute inset-0 z-30 flex flex-col justify-center items-center px-4 sm:px-6 pt-14 pb-8 overflow-y-auto"
+          className="absolute inset-0 z-30 flex flex-col justify-center items-center px-4 sm:px-6 pt-14 pb-8 overflow-y-auto pointer-events-none"
           style={{
             opacity: revealContentOpacity,
             y: revealContentY,
           }}
         >
-          <div className="w-full max-w-5xl mx-auto flex flex-col items-center">
+          <div className="w-full max-w-5xl mx-auto flex flex-col items-center pointer-events-auto">
             
             {/* Dijkstra Badge */}
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-zinc-200 px-4 py-1.5 rounded-full text-xs font-semibold border border-white/15 shadow-inner mb-4">
+            <div className="inline-flex items-center gap-2 bg-blue-950/60 backdrop-blur-md text-blue-200 px-4 py-1.5 rounded-full text-xs font-semibold border border-blue-400/30 shadow-inner mb-4">
               <Sparkles size={14} className="text-blue-400" />
               <span>Dijkstra-Powered Campus & City Bus Booking</span>
             </div>
@@ -196,13 +198,13 @@ export function SlatShutterHero({
             </div>
 
             {/* Core Search Widget with To/From Options */}
-            <div className="w-full mb-6 pointer-events-auto">
+            <div className="w-full mb-6">
               <SearchWidget />
             </div>
 
             {/* Promo Strip Badges */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full max-w-4xl mx-auto">
-              <div className="flex items-center gap-3 bg-black/40 backdrop-blur-md p-3 rounded-xl border border-white/15 shadow-md">
+              <div className="flex items-center gap-3 bg-black/60 backdrop-blur-md p-3 rounded-xl border border-white/15 shadow-md">
                 <div className="size-8 rounded-lg bg-black/40 border border-white/10 text-blue-400 flex items-center justify-center shrink-0">
                   <Tag size={15} />
                 </div>
@@ -212,7 +214,7 @@ export function SlatShutterHero({
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 bg-black/40 backdrop-blur-md p-3 rounded-xl border border-white/15 shadow-md">
+              <div className="flex items-center gap-3 bg-black/60 backdrop-blur-md p-3 rounded-xl border border-white/15 shadow-md">
                 <div className="size-8 rounded-lg bg-black/40 border border-white/10 text-emerald-400 flex items-center justify-center shrink-0">
                   <ShieldCheck size={15} />
                 </div>
@@ -222,7 +224,7 @@ export function SlatShutterHero({
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 bg-black/40 backdrop-blur-md p-3 rounded-xl border border-white/15 shadow-md">
+              <div className="flex items-center gap-3 bg-black/60 backdrop-blur-md p-3 rounded-xl border border-white/15 shadow-md">
                 <div className="size-8 rounded-lg bg-black/40 border border-white/10 text-amber-400 flex items-center justify-center shrink-0">
                   <Clock size={15} />
                 </div>
