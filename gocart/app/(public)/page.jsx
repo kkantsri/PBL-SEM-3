@@ -1,6 +1,5 @@
 'use client'
 import SlatShutterHero from "@/components/SlatShutterHero";
-import PopularRoutes from "@/components/PopularRoutes";
 import FocusCardsDemo from "@/components/FocusCardsDemo";
 import TopOperators from "@/components/TopOperators";
 import WhyBusGo from "@/components/WhyBusGo";
@@ -27,10 +26,7 @@ export default function Home() {
                     backgroundImage: "url('/half-dome.jpg')",
                 }}
             >
-                {/* 3rd Page: Popular Routes (since 3rd component Hero was moved to 2nd slide) */}
-                <PopularRoutes />
-
-                {/* 4th Page: Focus Cards */}
+                {/* 3rd Section: Merged Local Routes & Outer Getaways in Focus Cards */}
                 <FocusCardsDemo />
 
                 {/* Subsequent Sections */}
