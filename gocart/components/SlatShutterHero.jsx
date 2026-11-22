@@ -82,11 +82,11 @@ function Headline({ lines, tone }) {
   );
 }
 
-const GOLDEN_HOUR_SEASHORE = "/seashore-golden-hour.jpg";
+const MOUNTAIN_BUS = "/mountain-bus.jpg";
 const CLEAR_WATER_REVEAL = "https://cdn.jsdelivr.net/gh/rm-sjent/21st-assets@v1/img/hero-bright.jpg";
 
 export function SlatShutterHero({
-  coverSrc = GOLDEN_HOUR_SEASHORE,
+  coverSrc = MOUNTAIN_BUS,
   revealSrc = CLEAR_WATER_REVEAL,
   coverTitle = ["Leave the black sand", "before the light goes"],
   revealTitle = ["Then follow the sun", "south to clear water"],

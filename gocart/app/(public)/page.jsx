@@ -10,7 +10,7 @@ export default function Home() {
     return (
         <main className="min-h-screen bg-[#09090b] text-zinc-100 selection:bg-zinc-800 selection:text-white">
             <SlatShutterHero
-                coverSrc="/seashore-golden-hour.jpg"
+                coverSrc="/mountain-bus.jpg"
                 revealSrc="https://cdn.jsdelivr.net/gh/rm-sjent/21st-assets@v1/img/hero-bright.jpg"
             />
             <Hero />
