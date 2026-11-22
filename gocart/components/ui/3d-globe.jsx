@@ -10,10 +10,8 @@ import { cn } from "@/lib/utils";
 // Constants - Earth Texture URLs (NASA Blue Marble)
 // ============================================================================
 
-const DEFAULT_EARTH_TEXTURE =
-  "https://unpkg.com/three-globe@2.31.0/example/img/earth-blue-marble.jpg";
-const DEFAULT_BUMP_TEXTURE =
-  "https://unpkg.com/three-globe@2.31.0/example/img/earth-topology.png";
+const DEFAULT_EARTH_TEXTURE = "/earth-blue-marble.jpg";
+const DEFAULT_BUMP_TEXTURE = "/earth-topology.png";
 
 // ============================================================================
 // Utility Functions
@@ -318,8 +316,8 @@ function Scene({ markers, config, onMarkerClick, onMarkerHover }) {
       />
       <directionalLight
         position={[-config.radius * 3, config.radius, -config.radius * 2]}
-        intensity={config.pointLightIntensity * 0.3}
-        color="#88ccff"
+        intensity={config.pointLightIntensity * 0.4}
+        color="#ffffff"
       />
 
       {/* Rotating Globe with Markers */}
@@ -382,7 +380,7 @@ const defaultConfig = {
   globeColor: "#1a1a2e",
   textureUrl: DEFAULT_EARTH_TEXTURE,
   bumpMapUrl: DEFAULT_BUMP_TEXTURE,
-  showAtmosphere: true,
+  showAtmosphere: false,
   atmosphereColor: "#4da6ff",
   atmosphereIntensity: 0.8,
   atmosphereBlur: 2,

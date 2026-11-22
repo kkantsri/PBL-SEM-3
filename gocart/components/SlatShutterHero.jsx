@@ -109,13 +109,9 @@ export function SlatShutterHero({
     >
       <div className="sticky top-0 h-svh w-full overflow-hidden">
         
-        {/* 2nd Slide: Pure Black Background with 3D Globe Covering Whole Page */}
+        {/* 2nd Slide: Pure Deep Black Space with Exact 3D Earth */}
         <div className="absolute inset-0 bg-[#050508] overflow-hidden flex items-center justify-center">
-          {/* Subtle Ambient Glows spanning across screen */}
-          <div className="absolute w-[1000px] h-[1000px] bg-blue-500/15 rounded-full blur-[180px] pointer-events-none" />
-          <div className="absolute -bottom-20 w-[1200px] h-[600px] bg-indigo-600/15 rounded-full blur-[200px] pointer-events-none" />
-          
-          {/* 3D Rotating Interactive Globe Covering Whole Page */}
+          {/* 3D Rotating Interactive Earth */}
           <motion.div
             className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-auto"
             style={{ scale: revealScale }}

@@ -89,8 +89,7 @@ export function Globe3DDemo({ className = "" }) {
       className={className}
       markers={sampleMarkers}
       config={{
-        atmosphereColor: "#4da6ff",
-        atmosphereIntensity: 20,
+        showAtmosphere: false,
         bumpScale: 5,
         autoRotateSpeed: 0.3,
       }}
