@@ -16,7 +16,7 @@ const PopularRoutes = () => {
     };
 
     return (
-        <section className="py-16 bg-[#09090b] text-white">
+        <section className="py-16 bg-transparent text-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
                 
                 {/* Section Header */}
@@ -40,7 +40,7 @@ const PopularRoutes = () => {
                         <div
                             key={`route_${idx}`}
                             onClick={() => handleSelectRoute(route.from, route.to)}
-                            className="group bg-zinc-900/90 rounded-2xl border border-zinc-800 hover:border-zinc-600 hover:shadow-2xl hover:shadow-black/60 transition-all cursor-pointer overflow-hidden flex flex-col justify-between"
+                            className="group bg-black/40 backdrop-blur-md rounded-2xl border border-white/15 hover:border-white/30 hover:shadow-2xl transition-all cursor-pointer overflow-hidden flex flex-col justify-between"
                         >
                             {/* Card Image */}
                             <div className="h-36 w-full overflow-hidden relative bg-zinc-950">
@@ -73,7 +73,7 @@ const PopularRoutes = () => {
                                     </p>
                                 </div>
 
-                                <div className="mt-4 pt-3 border-t border-zinc-800 flex items-center justify-between">
+                                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
                                     <div>
                                         <p className="text-[10px] uppercase font-bold text-zinc-500">Starts from</p>
                                         <p className="text-base font-extrabold text-white">

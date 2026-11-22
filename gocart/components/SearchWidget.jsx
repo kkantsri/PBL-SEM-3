@@ -29,14 +29,14 @@ const SearchWidget = () => {
     };
 
     return (
-        <div className="w-full max-w-5xl mx-auto bg-zinc-900/90 backdrop-blur-xl rounded-3xl shadow-2xl shadow-black/80 p-4 sm:p-6 border border-zinc-800">
+        <div className="w-full max-w-5xl mx-auto bg-black/40 backdrop-blur-md rounded-3xl shadow-2xl p-4 sm:p-6 border border-white/20">
             <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4 items-center">
                 
                 {/* Source Stop */}
-                <div className="md:col-span-4 relative flex items-center bg-zinc-950/80 border border-zinc-800 rounded-2xl px-4 py-3 hover:border-zinc-700 focus-within:border-blue-400 focus-within:bg-zinc-950 transition">
+                <div className="md:col-span-4 relative flex items-center bg-black/35 border border-white/15 rounded-2xl px-4 py-3 hover:border-white/30 focus-within:border-blue-400 focus-within:bg-black/55 transition">
                     <MapPin className="text-blue-400 mr-3 shrink-0" size={22} />
                     <div className="w-full">
-                        <label className="block text-[10px] font-bold text-zinc-400 uppercase tracking-wider">From Stop</label>
+                        <label className="block text-[10px] font-bold text-zinc-300 uppercase tracking-wider">From Stop</label>
                         <select
                             value={from}
                             onChange={(e) => setFrom(e.target.value)}
@@ -56,7 +56,7 @@ const SearchWidget = () => {
                     <button
                         type="button"
                         onClick={handleSwap}
-                        className="size-10 bg-zinc-800 border border-zinc-700 rounded-full flex items-center justify-center text-zinc-300 hover:text-white hover:bg-zinc-700 hover:border-zinc-500 transition shadow-sm active:scale-95"
+                        className="size-10 bg-black/50 border border-white/20 rounded-full flex items-center justify-center text-zinc-300 hover:text-white hover:bg-black/70 hover:border-white/40 transition shadow-sm active:scale-95"
                         title="Swap stops"
                     >
                         <ArrowLeftRight size={18} />
@@ -64,10 +64,10 @@ const SearchWidget = () => {
                 </div>
 
                 {/* Destination Stop */}
-                <div className="md:col-span-4 relative flex items-center bg-zinc-950/80 border border-zinc-800 rounded-2xl px-4 py-3 hover:border-zinc-700 focus-within:border-blue-400 focus-within:bg-zinc-950 transition">
+                <div className="md:col-span-4 relative flex items-center bg-black/35 border border-white/15 rounded-2xl px-4 py-3 hover:border-white/30 focus-within:border-blue-400 focus-within:bg-black/55 transition">
                     <MapPin className="text-emerald-400 mr-3 shrink-0" size={22} />
                     <div className="w-full">
-                        <label className="block text-[10px] font-bold text-zinc-400 uppercase tracking-wider">To Stop</label>
+                        <label className="block text-[10px] font-bold text-zinc-300 uppercase tracking-wider">To Stop</label>
                         <select
                             value={to}
                             onChange={(e) => setTo(e.target.value)}
@@ -83,10 +83,10 @@ const SearchWidget = () => {
                 </div>
 
                 {/* Date Picker */}
-                <div className="md:col-span-3 relative flex items-center bg-zinc-950/80 border border-zinc-800 rounded-2xl px-4 py-3 hover:border-zinc-700 focus-within:border-blue-400 focus-within:bg-zinc-950 transition">
+                <div className="md:col-span-3 relative flex items-center bg-black/35 border border-white/15 rounded-2xl px-4 py-3 hover:border-white/30 focus-within:border-blue-400 focus-within:bg-black/55 transition">
                     <Calendar className="text-indigo-400 mr-3 shrink-0" size={22} />
                     <div className="w-full">
-                        <label className="block text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Date of Journey</label>
+                        <label className="block text-[10px] font-bold text-zinc-300 uppercase tracking-wider">Date of Journey</label>
                         <input
                             type="date"
                             value={date}

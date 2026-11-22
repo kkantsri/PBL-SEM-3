@@ -4,7 +4,7 @@ import { Star, ShieldCheck, Bus, MapPin } from "lucide-react";
 
 const TopOperators = () => {
     return (
-        <section className="py-16 bg-zinc-950 border-y border-zinc-800 text-white">
+        <section className="py-16 bg-black/40 backdrop-blur-sm border-y border-white/10 text-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
                 
                 {/* Header */}
@@ -25,7 +25,7 @@ const TopOperators = () => {
                     {busOperators.map((operator) => (
                         <div
                             key={operator.id}
-                            className="bg-zinc-900/90 rounded-2xl border border-zinc-800 p-5 flex flex-col items-center text-center hover:border-zinc-600 hover:shadow-xl hover:shadow-black/60 transition group"
+                            className="bg-black/40 backdrop-blur-md rounded-2xl border border-white/15 p-5 flex flex-col items-center text-center hover:border-white/30 hover:shadow-xl transition group"
                         >
                             {/* Operator Logo Badge */}
                             <div className="size-16 rounded-2xl overflow-hidden border border-white/10 mb-3 group-hover:scale-105 transition flex items-center justify-center bg-gradient-to-tr from-zinc-800 to-zinc-950 text-white font-black text-xl shadow-md border-zinc-700">
@@ -44,7 +44,7 @@ const TopOperators = () => {
                             </div>
 
                             {/* Fleet Stats */}
-                            <div className="w-full pt-3 border-t border-zinc-800 flex items-center justify-between text-[11px] font-semibold text-zinc-400 mt-2">
+                            <div className="w-full pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-semibold text-zinc-300 mt-2">
                                 <span className="flex items-center gap-1">
                                     <Bus size={12} className="text-blue-400" /> {operator.totalBuses} Buses
                                 </span>

@@ -166,8 +166,8 @@ export function SlatShutterHero({
           ))}
         </div>
 
-        {/* Soft vignette strictly at the bottom for headline text legibility, leaving top 100% clear */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+        {/* Transparent bottom area - no heavy black gradient */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-black/25 to-transparent" />
 
         {/* Copy at bottom */}
         <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-8 p-6 md:px-12 md:pb-12 z-20">

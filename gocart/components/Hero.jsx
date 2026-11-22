@@ -5,13 +5,7 @@ import Link from "next/link";
 
 const Hero = () => {
     return (
-        <div
-            className="relative overflow-hidden bg-cover bg-top text-white pt-16 pb-20 px-4 sm:px-6 border-none"
-            style={{
-                backgroundImage:
-                    "linear-gradient(to bottom, rgba(0,0,0,0.88) 0%, rgba(9,9,11,0.94) 55%, rgba(9,9,11,1) 100%), url('/half-dome.jpg')",
-            }}
-        >
+        <div className="relative overflow-hidden bg-transparent text-white pt-16 pb-20 px-4 sm:px-6 border-none">
             {/* Background Ambient Glows */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-blue-500/10 blur-3xl pointer-events-none rounded-full" />
 
@@ -45,33 +39,33 @@ const Hero = () => {
 
                 {/* Promo Strip */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mt-8">
-                    <div className="flex items-center gap-3 bg-zinc-900/90 p-4 rounded-2xl border border-zinc-800 shadow-md">
-                        <div className="size-10 rounded-xl bg-zinc-800 border border-white/10 text-blue-400 flex items-center justify-center shrink-0">
+                    <div className="flex items-center gap-3 bg-black/40 backdrop-blur-md p-4 rounded-2xl border border-white/15 shadow-md">
+                        <div className="size-10 rounded-xl bg-black/40 border border-white/10 text-blue-400 flex items-center justify-center shrink-0">
                             <Tag size={18} />
                         </div>
                         <div>
                             <p className="text-xs font-bold text-white">Use Code FIRSTBUS</p>
-                            <p className="text-[11px] text-zinc-400">Get 20% instant discount on 1st trip</p>
+                            <p className="text-[11px] text-zinc-300">Get 20% instant discount on 1st trip</p>
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3 bg-zinc-900/90 p-4 rounded-2xl border border-zinc-800 shadow-md">
-                        <div className="size-10 rounded-xl bg-zinc-800 border border-white/10 text-emerald-400 flex items-center justify-center shrink-0">
+                    <div className="flex items-center gap-3 bg-black/40 backdrop-blur-md p-4 rounded-2xl border border-white/15 shadow-md">
+                        <div className="size-10 rounded-xl bg-black/40 border border-white/10 text-emerald-400 flex items-center justify-center shrink-0">
                             <ShieldCheck size={18} />
                         </div>
                         <div>
                             <p className="text-xs font-bold text-white">100% Refund Guarantee</p>
-                            <p className="text-[11px] text-zinc-400">Instant cancellations with no questions</p>
+                            <p className="text-[11px] text-zinc-300">Instant cancellations with no questions</p>
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3 bg-zinc-900/90 p-4 rounded-2xl border border-zinc-800 shadow-md">
-                        <div className="size-10 rounded-xl bg-zinc-800 border border-white/10 text-purple-400 flex items-center justify-center shrink-0">
+                    <div className="flex items-center gap-3 bg-black/40 backdrop-blur-md p-4 rounded-2xl border border-white/15 shadow-md">
+                        <div className="size-10 rounded-xl bg-black/40 border border-white/10 text-purple-400 flex items-center justify-center shrink-0">
                             <Sparkles size={18} />
                         </div>
                         <div>
                             <p className="text-xs font-bold text-white">Live Dijkstra Router</p>
-                            <p className="text-[11px] text-zinc-400">Calculates shortest transit route live</p>
+                            <p className="text-[11px] text-zinc-300">Calculates shortest transit route live</p>
                         </div>
                     </div>
                 </div>

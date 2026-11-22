@@ -18,12 +18,20 @@ export default function Home() {
                 revealTitle={["Live GPS Tracking & Certified Fleets,", "Arrive Safely, Every Single Time"]}
                 caption="24/7 passenger emergency support, sanitized coaches, vetted professional drivers, and live GPS route monitoring across all corridors."
             />
-            <Hero />
-            <PopularRoutes />
-            <TopOperators />
-            <WhyBusGo />
-            <Newsletter />
-            <StickerSlapFooter />
+            {/* From 2nd Slide Onwards: All subsequent slides have the 2nd image (Half Dome) - Transparent & Crystal Clear */}
+            <div
+                className="relative bg-fixed bg-cover bg-center"
+                style={{
+                    backgroundImage: "url('/half-dome.jpg')",
+                }}
+            >
+                <Hero />
+                <PopularRoutes />
+                <TopOperators />
+                <WhyBusGo />
+                <Newsletter />
+                <StickerSlapFooter paper="transparent" panel="rgba(18, 18, 26, 0.65)" />
+            </div>
         </main>
     );
 }

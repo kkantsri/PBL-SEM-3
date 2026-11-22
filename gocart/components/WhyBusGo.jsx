@@ -29,7 +29,7 @@ const features = [
 
 const WhyBusGo = () => {
     return (
-        <section className="py-20 bg-[#09090b] text-white">
+        <section className="py-20 bg-transparent text-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
                 
                 {/* Header */}
@@ -52,7 +52,7 @@ const WhyBusGo = () => {
                         return (
                             <div
                                 key={idx}
-                                className="bg-zinc-900/90 rounded-2xl border border-zinc-800 p-6 hover:border-zinc-700 hover:shadow-2xl hover:shadow-black/60 transition group flex flex-col justify-between"
+                                className="bg-black/40 backdrop-blur-md rounded-2xl border border-white/15 p-6 hover:border-white/30 hover:shadow-2xl transition group flex flex-col justify-between"
                             >
                                 <div>
                                     <div className={`size-12 rounded-xl border flex items-center justify-center mb-5 ${item.color}`}>
