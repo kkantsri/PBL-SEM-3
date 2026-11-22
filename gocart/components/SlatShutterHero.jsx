@@ -34,14 +34,20 @@ function Slat({ index, count, progress, src }) {
     <motion.div
       aria-hidden
       className="relative h-full overflow-hidden will-change-transform"
-      style={{ y, scaleX, width: `${100 / count}%` }}
+      style={{
+        y,
+        scaleX,
+        // Overlap by 1px to eliminate fractional subpixel rendering lines between slats
+        width: `calc(100% / ${count} + 1.5px)`,
+        marginRight: "-1.5px",
+      }}
     >
       <div
         className="absolute inset-y-0 bg-cover bg-center contrast-[1.06] brightness-[1.04]"
         style={{
           backgroundImage: `url("${src}")`,
           width: `${count * 100}%`,
-          left: `${-index * 100}%`,
+          left: `calc(-${index} * 100%)`,
           imageRendering: "auto",
           WebkitBackfaceVisibility: "hidden",
           backfaceVisibility: "hidden",
@@ -101,9 +107,12 @@ export function SlatShutterHero({
   useMotionValueEvent(scrollYProgress, "change", (v) => setRevealed(v > 0.42));
 
   const revealScale = useTransform(progress, [0.1, 0.85], [1.18, 1], { ease });
-  // Reduced shade from [0.45, 0.2] down to [0.12, 0.0] so the background image details remain crystal-clear
   const shade = useTransform(progress, [0, 0.5], [0.12, 0.0]);
   const capOpacity = useTransform(progress, [0.7, 0.85], [0, 1]);
+
+  // Seamless single-image overlay: 100% visible at scroll=0, fades out smoothly as scroll starts
+  // This guarantees 0 lines or seams when viewing the photo normally at rest.
+  const seamlessOpacity = useTransform(scrollYProgress, [0, 0.08], [1, 0]);
 
   if (reduce) {
     return (
@@ -145,15 +154,27 @@ export function SlatShutterHero({
           }}
         />
 
-        {/* slats */}
-        <div className="absolute inset-0 flex">
+        {/* slats (active during scroll) */}
+        <div className="absolute inset-0 flex overflow-hidden">
           {Array.from({ length: slats }).map((_, i) => (
             <Slat key={i} index={i} count={slats} progress={progress} src={coverSrc} />
           ))}
         </div>
 
-        {/* Subtle shade (not muddy dark) for crystal clarity */}
+        {/* Seamless full cover image at rest: 
+            Prevents subpixel browser gaps/lines before user begins scrolling */}
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-cover bg-center contrast-[1.06] brightness-[1.04]"
+          style={{
+            backgroundImage: `url("${coverSrc}")`,
+            opacity: seamlessOpacity,
+          }}
+        />
+
+        {/* Subtle shade for crystal clarity */}
         <motion.div className="pointer-events-none absolute inset-0 bg-black" style={{ opacity: shade }} />
+        
         {/* Soft vignette at bottom just for headline legibility */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
 
