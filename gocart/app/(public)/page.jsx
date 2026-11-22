@@ -1,6 +1,6 @@
 'use client'
 import SlatShutterHero from "@/components/SlatShutterHero";
-import Hero from "@/components/Hero";
+import StickerSlapFooter from "@/components/StickerSlapFooter";
 import PopularRoutes from "@/components/PopularRoutes";
 import TopOperators from "@/components/TopOperators";
 import WhyBusGo from "@/components/WhyBusGo";
@@ -17,7 +17,10 @@ export default function Home() {
                 revealTitle={["Live GPS Tracking & Certified Fleets,", "Arrive Safely, Every Single Time"]}
                 caption="24/7 passenger emergency support, sanitized coaches, vetted professional drivers, and live GPS route monitoring across all corridors."
             />
-            <Hero />
+            {/* Second Page As You Scroll */}
+            <section className="relative z-10 w-full">
+                <StickerSlapFooter showSearch={true} />
+            </section>
             <PopularRoutes />
             <TopOperators />
             <WhyBusGo />
