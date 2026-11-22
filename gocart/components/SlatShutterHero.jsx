@@ -52,7 +52,7 @@ function Headline({ lines, tone }) {
   return (
     <motion.h1
       key={tone}
-      className="text-[clamp(32px,5.2vw,76px)] font-bold leading-[1.05] tracking-[-0.035em] text-white"
+      className="text-[clamp(40px,5.6vw,84px)] font-normal leading-[1.02] tracking-[-0.035em] text-white"
       initial="hidden"
       animate="show"
       exit="exit"
@@ -75,13 +75,15 @@ function Headline({ lines, tone }) {
   );
 }
 
+const IMG = "https://cdn.jsdelivr.net/gh/rm-sjent/21st-assets@v1/img/";
+
 export function SlatShutterHero({
-  coverSrc = "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=2000&q=80",
-  revealSrc = "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=2000&q=80",
-  coverTitle = ["Travel Across Dehradun", "Smart, Fast & Seamless"],
-  revealTitle = ["Shortest Dijkstra Routes", "Book Your Seats in Seconds"],
-  kicker = "C++ Algorithmic Transit Engine",
-  caption = "Connecting Clement Town, ISBT, Clock Tower, Rajpur Road, and campus hubs with real-time route optimization.",
+  coverSrc = `${IMG}hero-dark.jpg`,
+  revealSrc = `${IMG}hero-bright.jpg`,
+  coverTitle = ["Leave the black sand", "before the light goes"],
+  revealTitle = ["Then follow the sun", "south to clear water"],
+  kicker = "Field notes, issue 14",
+  caption = "Reynisfjara to the Calanques in eleven days, by ferry, train and one very small boat.",
   slats = 8,
   length = 2.5,
   className = "",
@@ -104,8 +106,8 @@ export function SlatShutterHero({
         <img src={revealSrc} alt="" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-black/25" />
         <div className="absolute inset-x-0 bottom-0 p-6 md:p-12">
-          {kicker && <p className="mb-4 text-[15px] font-medium text-white/80">{kicker}</p>}
-          <h1 className="text-[clamp(32px,5.2vw,76px)] font-bold leading-[1.05] tracking-[-0.035em] text-white">
+          {kicker && <p className="mb-4 text-[15px] text-white/80">{kicker}</p>}
+          <h1 className="text-[clamp(40px,5.6vw,84px)] font-normal leading-[1.02] tracking-[-0.035em] text-white">
             {revealTitle[0]}
             <br />
             {revealTitle[1]}
@@ -138,12 +140,12 @@ export function SlatShutterHero({
         </div>
 
         <motion.div className="pointer-events-none absolute inset-0 bg-black" style={{ opacity: shade }} />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/80 via-black/35 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/65 via-black/25 to-transparent" />
 
         {/* copy */}
         <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-8 p-6 md:px-12 md:pb-12 z-20">
           <div className="min-w-0">
-            {kicker && <p className="mb-3 text-sm font-semibold tracking-wide uppercase text-blue-400">{kicker}</p>}
+            {kicker && <p className="mb-4 text-[15px] text-white/80 font-medium">{kicker}</p>}
             <AnimatePresence mode="wait" initial={false}>
               {revealed ? (
                 <Headline key="r" lines={revealTitle} tone="reveal" />
@@ -154,7 +156,7 @@ export function SlatShutterHero({
           </div>
           {caption && (
             <motion.p
-              className="hidden max-w-[32ch] text-right text-[15px] leading-relaxed text-white/85 md:block font-normal"
+              className="hidden max-w-[28ch] text-right text-[15px] leading-snug text-white/85 md:block font-normal"
               style={{ opacity: capOpacity }}
             >
               {caption}
