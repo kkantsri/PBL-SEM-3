@@ -21,42 +21,47 @@ const CPP_DIR = resolveCppDir();
 const BINARY_PATH = path.join(CPP_DIR, "bus_api");
 const DATA_PATH = path.join(CPP_DIR, "data");
 
-// Fallback in-memory data for serverless environments (Vercel) where C++ binary cannot execute
+// Fallback in-memory data for serverless environments (Vercel) matching C++ data/
 const DEFAULT_STOPS = [
-    { stopId: "1", stopName: "ISBT Dehradun", location: "Dehradun" },
-    { stopId: "2", stopName: "Rispana Pul", location: "Dehradun" },
-    { stopId: "3", stopName: "Clock Tower", location: "Dehradun" },
-    { stopId: "4", stopName: "Rajpur Road", location: "Dehradun" },
-    { stopId: "5", stopName: "Sahastradhara", location: "Dehradun" },
+    { stopId: "1", stopName: "ISBT Dehradun", location: "South" },
+    { stopId: "2", stopName: "Clement Town", location: "South" },
+    { stopId: "3", stopName: "Clock Tower", location: "Center" },
+    { stopId: "4", stopName: "Rajpur Road", location: "North" },
+    { stopId: "5", stopName: "Sahastradhara", location: "North-East" },
+    { stopId: "6", stopName: "FRI", location: "West" },
+    { stopId: "7", stopName: "Prem Nagar", location: "West" },
+    { stopId: "8", stopName: "Robber's Cave", location: "North" },
 ];
 
 const DEFAULT_BUSES = [
-    { busNumber: "201", busName: "Doon Express", capacity: 40, seats: 40, routeId: "1", farePerKm: 4 },
-    { busNumber: "203", busName: "City Link", capacity: 50, seats: 50, routeId: "3", farePerKm: 3 },
+    { busNumber: "201", busName: "Doon Express", capacity: 40, seats: 39, routeId: "1", farePerKm: 4 },
     { busNumber: "202", busName: "Valley Tour", capacity: 30, seats: 30, routeId: "2", farePerKm: 5.5 },
+    { busNumber: "203", busName: "City Link", capacity: 50, seats: 50, routeId: "3", farePerKm: 3 },
     { busNumber: "204", busName: "Hill View", capacity: 35, seats: 31, routeId: "4", farePerKm: 6 },
 ];
 
 const DEFAULT_ROUTES = [
-    { routeId: "1", routeName: "ISBT - Clock Tower", stops: ["1", "2", "3"] },
-    { routeId: "2", routeName: "Clock Tower - Rajpur", stops: ["3", "4"] },
-    { routeId: "3", routeName: "Rispana - Sahastradhara", stops: ["2", "5"] },
-    { routeId: "4", routeName: "Rajpur - Sahastradhara", stops: ["4", "5"] },
+    { routeId: "1", routeName: "Dehradun Central", stops: ["1", "3", "4", "8"] },
+    { routeId: "2", routeName: "Tourist Special", stops: ["3", "6", "7"] },
+    { routeId: "3", routeName: "East-West Connect", stops: ["2", "1", "3", "6", "7"] },
+    { routeId: "4", routeName: "Sahastradhara Express", stops: ["1", "3", "4", "5"] },
 ];
 
 const IN_MEMORY_BOOKINGS = [
-    { bookingId: "B101", passengerId: "P101", busNumber: "201", source: "1", sourceName: "ISBT Dehradun", destination: "3", destinationName: "Clock Tower", fare: 24 },
+    { bookingId: "B101", passengerId: "P101", busNumber: "201", source: "2", sourceName: "Clement Town", destination: "3", destinationName: "Clock Tower", fare: 36 },
     { bookingId: "B102", passengerId: "P102", busNumber: "204", source: "1", sourceName: "ISBT Dehradun", destination: "5", destinationName: "Sahastradhara", fare: 66 },
 ];
 
 function runJsDijkstra(src, dest) {
     const edges = [
         { u: "1", v: "2", w: 5 },
-        { u: "2", v: "3", w: 4 },
-        { u: "3", v: "4", w: 7 },
-        { u: "4", v: "5", w: 6 },
-        { u: "2", v: "5", w: 9 },
-        { u: "1", v: "3", w: 4 },
+        { u: "1", v: "3", w: 7 },
+        { u: "2", v: "3", w: 9 },
+        { u: "3", v: "4", w: 4 },
+        { u: "3", v: "6", w: 6 },
+        { u: "4", v: "5", w: 12 },
+        { u: "4", v: "8", w: 6 },
+        { u: "6", v: "7", w: 5 },
     ];
 
     const adj = {};

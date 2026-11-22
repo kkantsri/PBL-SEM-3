@@ -1,1107 +1,7047 @@
 // =============================================
-// BusGo — Mock Data for Bus Booking Platform
+// BusGo — Local Bus Route & Stop Data
+// Connected to C++ Dijkstra Routing Engine
 // =============================================
 
-// --- Cities & Dehradun Network Stops (C++ Backend Connected) ---
+// --- Bus Network Stops (C++ Graph Engine Nodes) ---
 export const cities = [
-    { id: "1", name: "ISBT Dehradun", state: "Uttarakhand" },
-    { id: "2", name: "Clement Town", state: "Uttarakhand" },
-    { id: "3", name: "Clock Tower", state: "Uttarakhand" },
-    { id: "4", name: "Rajpur Road", state: "Uttarakhand" },
-    { id: "5", name: "Sahastradhara", state: "Uttarakhand" },
-    { id: "6", name: "FRI", state: "Uttarakhand" },
-    { id: "7", name: "Prem Nagar", state: "Uttarakhand" },
-    { id: "8", name: "Robber's Cave", state: "Uttarakhand" },
-    { id: "city_1", name: "Delhi", state: "Delhi" },
-    { id: "city_2", name: "Mumbai", state: "Maharashtra" },
-    { id: "city_3", name: "Bangalore", state: "Karnataka" },
-    { id: "city_4", name: "Chennai", state: "Tamil Nadu" },
-    { id: "city_5", name: "Dehradun", state: "Uttarakhand" },
-    { id: "city_6", name: "Jaipur", state: "Rajasthan" },
-    { id: "city_7", name: "Pune", state: "Maharashtra" },
-    { id: "city_8", name: "Hyderabad", state: "Telangana" },
-    { id: "city_9", name: "Kolkata", state: "West Bengal" },
-    { id: "city_10", name: "Lucknow", state: "Uttar Pradesh" },
-    { id: "city_11", name: "Ahmedabad", state: "Gujarat" },
-    { id: "city_12", name: "Chandigarh", state: "Chandigarh" },
+    {
+        "id": "2",
+        "name": "Clement Town",
+        "zone": "South Zone (GEU Campus)",
+        "location": "South"
+    },
+    {
+        "id": "1",
+        "name": "ISBT Dehradun",
+        "zone": "South Zone (Inter-State Terminus)",
+        "location": "South"
+    },
+    {
+        "id": "3",
+        "name": "Clock Tower",
+        "zone": "Center Zone (Ghanta Ghar)",
+        "location": "Center"
+    },
+    {
+        "id": "4",
+        "name": "Rajpur Road",
+        "zone": "North Zone (Pacific Mall)",
+        "location": "North"
+    },
+    {
+        "id": "5",
+        "name": "Sahastradhara",
+        "zone": "North-East Zone (Sulphur Springs)",
+        "location": "North-East"
+    },
+    {
+        "id": "6",
+        "name": "FRI",
+        "zone": "West Zone (Forest Research Institute)",
+        "location": "West"
+    },
+    {
+        "id": "7",
+        "name": "Prem Nagar",
+        "zone": "West Zone (UPES Campus)",
+        "location": "West"
+    },
+    {
+        "id": "8",
+        "name": "Robber's Cave",
+        "zone": "North Zone (Guchhupani)",
+        "location": "North"
+    }
 ];
 
-// --- Bus Operators ---
+export const stops = cities;
+
+// --- Verified Local Bus Operators ---
 export const busOperators = [
     {
-        id: "operator_1",
-        userId: "user_op_1",
-        name: "Royal Travels",
-        description: "Premium bus travel with comfort and safety. Over 20 years of trusted service across India.",
-        logo: "/operator1.png",
-        email: "info@royaltravels.com",
-        contact: "+91 98100 11111",
-        status: "approved",
-        isActive: true,
-        rating: 4.5,
+        "id": "operator_1",
+        "userId": "user_op_1",
+        "name": "Doon City Express",
+        "description": "High-frequency local transit across Dehradun and university corridors.",
+        "email": "care@dooncityexpress.in",
+        "contact": "+91 98100 11111",
+        "status": "approved",
+        "isActive": true,
+        "rating": 4.8,
+        "totalBuses": 24,
+        "routesCount": 8
     },
     {
-        id: "operator_2",
-        userId: "user_op_2",
-        name: "Neeta Travels",
-        description: "Connecting cities with reliable and affordable bus services since 1992.",
-        logo: "/operator2.png",
-        email: "support@neetatravels.com",
-        contact: "+91 98100 22222",
-        status: "approved",
-        isActive: true,
-        rating: 4.2,
+        "id": "operator_2",
+        "userId": "user_op_2",
+        "name": "Graphic Era Shuttle",
+        "description": "Student & commuter rapid transit connecting Clement Town with all zones.",
+        "email": "shuttle@geu.ac.in",
+        "contact": "+91 98100 22222",
+        "status": "approved",
+        "isActive": true,
+        "rating": 4.9,
+        "totalBuses": 16,
+        "routesCount": 6
     },
     {
-        id: "operator_3",
-        userId: "user_op_3",
-        name: "SRS Travels",
-        description: "South India's most trusted bus operator. Sleeper and AC coaches on all major routes.",
-        logo: "/operator3.png",
-        email: "bookings@srstravels.com",
-        contact: "+91 98100 33333",
-        status: "approved",
-        isActive: true,
-        rating: 4.0,
+        "id": "operator_3",
+        "userId": "user_op_3",
+        "name": "Valley Rapid Link",
+        "description": "Clean, eco-friendly EV low-floor buses serving Dehradun's main routes.",
+        "email": "support@valleyrapid.com",
+        "contact": "+91 98100 33333",
+        "status": "approved",
+        "isActive": true,
+        "rating": 4.6,
+        "totalBuses": 20,
+        "routesCount": 7
     },
     {
-        id: "operator_4",
-        userId: "user_op_4",
-        name: "VRL Travels",
-        description: "India's largest fleet operator. Safe, timely, and comfortable journeys guaranteed.",
-        logo: "/operator4.png",
-        email: "care@vrltravels.com",
-        contact: "+91 98100 44444",
-        status: "approved",
-        isActive: true,
-        rating: 4.8,
+        "id": "operator_4",
+        "userId": "user_op_4",
+        "name": "Hill View Transit",
+        "description": "Comfortable AC tourist and express city link buses.",
+        "email": "info@hillviewtransit.com",
+        "contact": "+91 98100 44444",
+        "status": "approved",
+        "isActive": true,
+        "rating": 4.7,
+        "totalBuses": 18,
+        "routesCount": 5
     },
     {
-        id: "operator_5",
-        userId: "user_op_5",
-        name: "Shrinath Travels",
-        description: "Trusted travel partner for western India routes. Modern fleet with top amenities.",
-        logo: "/operator5.png",
-        email: "hello@shrinathtravels.com",
-        contact: "+91 98100 55555",
-        status: "approved",
-        isActive: true,
-        rating: 4.3,
-    },
-];
-
-// --- Buses ---
-export const buses = [
-    { id: "bus_1", operatorId: "operator_1", registrationNo: "DL-01-AB-1234", busType: "AC_SEATER", totalSeats: 40, amenities: ["WiFi", "Charging Point", "Water Bottle", "Reading Light", "Track My Bus"] },
-    { id: "bus_2", operatorId: "operator_1", registrationNo: "DL-01-CD-5678", busType: "AC_SLEEPER", totalSeats: 30, amenities: ["WiFi", "Charging Point", "Water Bottle", "Blanket", "Reading Light", "Track My Bus"] },
-    { id: "bus_3", operatorId: "operator_2", registrationNo: "MH-12-AB-1234", busType: "SEMI_SLEEPER", totalSeats: 36, amenities: ["Charging Point", "Water Bottle", "Blanket", "Track My Bus"] },
-    { id: "bus_4", operatorId: "operator_2", registrationNo: "MH-12-EF-9012", busType: "SEATER", totalSeats: 45, amenities: ["Water Bottle", "Track My Bus"] },
-    { id: "bus_5", operatorId: "operator_3", registrationNo: "KA-01-GH-3456", busType: "AC_SLEEPER", totalSeats: 30, amenities: ["WiFi", "Charging Point", "Water Bottle", "Blanket", "Reading Light", "Track My Bus"] },
-    { id: "bus_6", operatorId: "operator_3", registrationNo: "KA-01-IJ-7890", busType: "SLEEPER", totalSeats: 36, amenities: ["Charging Point", "Blanket", "Water Bottle"] },
-    { id: "bus_7", operatorId: "operator_4", registrationNo: "TN-01-KL-2345", busType: "AC_SEATER", totalSeats: 40, amenities: ["WiFi", "Charging Point", "Water Bottle", "Reading Light", "Track My Bus"] },
-    { id: "bus_8", operatorId: "operator_4", registrationNo: "AP-09-MN-6789", busType: "SEMI_SLEEPER", totalSeats: 36, amenities: ["Charging Point", "Water Bottle", "Blanket"] },
-    { id: "bus_9", operatorId: "operator_5", registrationNo: "RJ-14-OP-1122", busType: "SEATER", totalSeats: 45, amenities: ["Water Bottle", "Charging Point"] },
-    { id: "bus_10", operatorId: "operator_5", registrationNo: "GJ-01-QR-3344", busType: "AC_SLEEPER", totalSeats: 30, amenities: ["WiFi", "Charging Point", "Water Bottle", "Blanket", "Reading Light", "Track My Bus"] },
-];
-
-// --- Bus Trips ---
-export const busTrips = [
-    // --- Connected to C++ Backend (BusRouteManagement) ---
-    {
-        id: "trip_204",
-        operatorId: "op_1",
-        busId: "204",
-        sourceStopId: "1",
-        destStopId: "5",
-        sourceCity: "ISBT Dehradun",
-        destCity: "Sahastradhara",
-        departureDate: "2026-10-23",
-        departureTime: "07:00 AM",
-        arrivalTime: "08:15 AM",
-        duration: "1h 15m",
-        price: 138,
-        mrp: 180,
-        availableSeats: 31,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "ISBT Dehradun", address: "Haridwar Bypass, Dehradun", time: "07:00 AM" },
-            { name: "Clock Tower", address: "City Center, Dehradun", time: "07:25 AM" },
-        ],
-        droppingPoints: [
-            { name: "Rajpur Road", address: "Near Diversion, Dehradun", time: "07:45 AM" },
-            { name: "Sahastradhara", address: "Sulphur Springs Terminus", time: "08:15 AM" },
-        ],
-        busType: "Hill View Express (204)",
-        operatorName: "Doon Transport Corp",
-        rating: 4.8,
-        reviewCount: 140,
-        backendType: "CPP_SYSTEM",
-    },
-    {
-        id: "trip_201",
-        operatorId: "op_1",
-        busId: "201",
-        sourceStopId: "1",
-        destStopId: "8",
-        sourceCity: "ISBT Dehradun",
-        destCity: "Robber's Cave",
-        departureDate: "2026-10-23",
-        departureTime: "08:30 AM",
-        arrivalTime: "09:45 AM",
-        duration: "1h 15m",
-        price: 68,
-        mrp: 90,
-        availableSeats: 40,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "ISBT Dehradun", address: "Haridwar Bypass, Dehradun", time: "08:30 AM" },
-            { name: "Clock Tower", address: "City Center, Dehradun", time: "08:50 AM" },
-        ],
-        droppingPoints: [
-            { name: "Rajpur Road", address: "Near Pacific Mall", time: "09:15 AM" },
-            { name: "Robber's Cave", address: "Guchhupani Gate", time: "09:45 AM" },
-        ],
-        busType: "Doon Express (201)",
-        operatorName: "Doon Transport Corp",
-        rating: 4.9,
-        reviewCount: 210,
-        backendType: "CPP_SYSTEM",
-    },
-    {
-        id: "trip_202",
-        operatorId: "op_2",
-        busId: "202",
-        sourceStopId: "3",
-        destStopId: "7",
-        sourceCity: "Clock Tower",
-        destCity: "Prem Nagar",
-        departureDate: "2026-10-23",
-        departureTime: "09:15 AM",
-        arrivalTime: "10:15 AM",
-        duration: "1h 00m",
-        price: 60,
-        mrp: 80,
-        availableSeats: 30,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Clock Tower", address: "Paltan Bazaar, Dehradun", time: "09:15 AM" },
-            { name: "FRI Main Gate", address: "Chakrata Road, Dehradun", time: "09:40 AM" },
-        ],
-        droppingPoints: [
-            { name: "Prem Nagar", address: "UPES Bus Stand, Prem Nagar", time: "10:15 AM" },
-        ],
-        busType: "Valley Tour (202)",
-        operatorName: "Valley Transport",
-        rating: 4.7,
-        reviewCount: 95,
-        backendType: "CPP_SYSTEM",
-    },
-    {
-        id: "trip_203",
-        operatorId: "op_3",
-        busId: "203",
-        sourceStopId: "2",
-        destStopId: "7",
-        sourceCity: "Clement Town",
-        destCity: "Prem Nagar",
-        departureDate: "2026-10-23",
-        departureTime: "10:00 AM",
-        arrivalTime: "11:30 AM",
-        duration: "1h 30m",
-        price: 96,
-        mrp: 120,
-        availableSeats: 50,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Clement Town", address: "Subhash Nagar, Dehradun", time: "10:00 AM" },
-            { name: "ISBT Dehradun", address: "Haridwar Bypass, Dehradun", time: "10:20 AM" },
-        ],
-        droppingPoints: [
-            { name: "Clock Tower", address: "Center, Dehradun", time: "10:50 AM" },
-            { name: "Prem Nagar", address: "Main Bazaar, Prem Nagar", time: "11:30 AM" },
-        ],
-        busType: "City Link (203)",
-        operatorName: "City Link Services",
-        rating: 4.6,
-        reviewCount: 165,
-        backendType: "CPP_SYSTEM",
-    },
-    // Delhi → Jaipur (≈5.5 hrs)
-    {
-        id: "trip_1",
-        operatorId: "operator_1",
-        busId: "bus_1",
-        sourceCity: "Delhi",
-        destCity: "Jaipur",
-        departureTime: "2026-10-23T06:00:00.000Z",
-        arrivalTime: "2026-10-23T11:30:00.000Z",
-        duration: 330,
-        price: 650,
-        availableSeats: 28,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Kashmere Gate ISBT", address: "Kashmere Gate, Delhi", time: "06:00" },
-            { name: "Dhaula Kuan", address: "Dhaula Kuan Flyover, Delhi", time: "06:30" },
-        ],
-        droppingPoints: [
-            { name: "Sindhi Camp Bus Stand", address: "Station Road, Jaipur", time: "11:15" },
-            { name: "Durgapura", address: "Tonk Road, Jaipur", time: "11:30" },
-        ],
-        busType: "AC_SEATER",
-        operatorName: "Royal Travels",
-        rating: 4.5,
-        reviewCount: 320,
-    },
-    {
-        id: "trip_2",
-        operatorId: "operator_5",
-        busId: "bus_9",
-        sourceCity: "Delhi",
-        destCity: "Jaipur",
-        departureTime: "2026-10-23T14:00:00.000Z",
-        arrivalTime: "2026-10-23T19:30:00.000Z",
-        duration: 330,
-        price: 500,
-        availableSeats: 35,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Majnu Ka Tilla", address: "GT Road, Delhi", time: "14:00" },
-            { name: "Dhaula Kuan", address: "Dhaula Kuan Flyover, Delhi", time: "14:30" },
-        ],
-        droppingPoints: [
-            { name: "Sindhi Camp Bus Stand", address: "Station Road, Jaipur", time: "19:15" },
-            { name: "Narayan Singh Circle", address: "MI Road, Jaipur", time: "19:30" },
-        ],
-        busType: "SEATER",
-        operatorName: "Shrinath Travels",
-        rating: 4.1,
-        reviewCount: 180,
-    },
-    {
-        id: "trip_3",
-        operatorId: "operator_1",
-        busId: "bus_2",
-        sourceCity: "Delhi",
-        destCity: "Jaipur",
-        departureTime: "2026-10-24T21:30:00.000Z",
-        arrivalTime: "2026-10-25T03:00:00.000Z",
-        duration: 330,
-        price: 1200,
-        availableSeats: 18,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Kashmere Gate ISBT", address: "Kashmere Gate, Delhi", time: "21:30" },
-            { name: "Gurugram Bus Stand", address: "Old Delhi-Gurgaon Rd, Gurugram", time: "22:15" },
-        ],
-        droppingPoints: [
-            { name: "Sindhi Camp Bus Stand", address: "Station Road, Jaipur", time: "02:45" },
-            { name: "Durgapura", address: "Tonk Road, Jaipur", time: "03:00" },
-        ],
-        busType: "AC_SLEEPER",
-        operatorName: "Royal Travels",
-        rating: 4.6,
-        reviewCount: 410,
-    },
-
-    // Mumbai → Pune (≈3.5 hrs)
-    {
-        id: "trip_4",
-        operatorId: "operator_2",
-        busId: "bus_3",
-        sourceCity: "Mumbai",
-        destCity: "Pune",
-        departureTime: "2026-10-23T06:00:00.000Z",
-        arrivalTime: "2026-10-23T09:30:00.000Z",
-        duration: 210,
-        price: 550,
-        availableSeats: 22,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Dadar TT", address: "Dadar East, Mumbai", time: "06:00" },
-            { name: "Vashi Bus Depot", address: "Sector 12, Vashi, Navi Mumbai", time: "06:45" },
-        ],
-        droppingPoints: [
-            { name: "Shivajinagar Bus Stand", address: "JM Road, Pune", time: "09:15" },
-            { name: "Swargate Bus Stand", address: "Swargate, Pune", time: "09:30" },
-        ],
-        busType: "SEMI_SLEEPER",
-        operatorName: "Neeta Travels",
-        rating: 4.2,
-        reviewCount: 275,
-    },
-    {
-        id: "trip_5",
-        operatorId: "operator_2",
-        busId: "bus_4",
-        sourceCity: "Mumbai",
-        destCity: "Pune",
-        departureTime: "2026-10-24T10:30:00.000Z",
-        arrivalTime: "2026-10-24T14:00:00.000Z",
-        duration: 210,
-        price: 450,
-        availableSeats: 38,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Borivali East", address: "S.V. Road, Borivali, Mumbai", time: "10:30" },
-            { name: "Dadar TT", address: "Dadar East, Mumbai", time: "11:15" },
-        ],
-        droppingPoints: [
-            { name: "Wakad", address: "Hinjewadi Road, Pune", time: "13:30" },
-            { name: "Shivajinagar Bus Stand", address: "JM Road, Pune", time: "14:00" },
-        ],
-        busType: "SEATER",
-        operatorName: "Neeta Travels",
-        rating: 3.9,
-        reviewCount: 150,
-    },
-
-    // Delhi → Dehradun (≈6 hrs)
-    {
-        id: "trip_6",
-        operatorId: "operator_1",
-        busId: "bus_1",
-        sourceCity: "Delhi",
-        destCity: "Dehradun",
-        departureTime: "2026-10-25T23:00:00.000Z",
-        arrivalTime: "2026-10-26T05:00:00.000Z",
-        duration: 360,
-        price: 800,
-        availableSeats: 30,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Kashmere Gate ISBT", address: "Kashmere Gate, Delhi", time: "23:00" },
-            { name: "ISBT Anand Vihar", address: "Anand Vihar, Delhi", time: "23:30" },
-        ],
-        droppingPoints: [
-            { name: "ISBT Dehradun", address: "Parade Ground, Dehradun", time: "04:45" },
-            { name: "Clock Tower", address: "Rajpur Road, Dehradun", time: "05:00" },
-        ],
-        busType: "AC_SEATER",
-        operatorName: "Royal Travels",
-        rating: 4.4,
-        reviewCount: 210,
-    },
-    {
-        id: "trip_7",
-        operatorId: "operator_4",
-        busId: "bus_8",
-        sourceCity: "Delhi",
-        destCity: "Dehradun",
-        departureTime: "2026-10-26T21:30:00.000Z",
-        arrivalTime: "2026-10-27T03:30:00.000Z",
-        duration: 360,
-        price: 700,
-        availableSeats: 24,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Kashmere Gate ISBT", address: "Kashmere Gate, Delhi", time: "21:30" },
-            { name: "Meerut Bypass", address: "NH-58, Delhi", time: "22:15" },
-        ],
-        droppingPoints: [
-            { name: "ISBT Dehradun", address: "Parade Ground, Dehradun", time: "03:15" },
-            { name: "Rispana Bridge", address: "Dehradun", time: "03:30" },
-        ],
-        busType: "SEMI_SLEEPER",
-        operatorName: "VRL Travels",
-        rating: 4.7,
-        reviewCount: 390,
-    },
-
-    // Bangalore → Chennai (≈6 hrs)
-    {
-        id: "trip_8",
-        operatorId: "operator_3",
-        busId: "bus_5",
-        sourceCity: "Bangalore",
-        destCity: "Chennai",
-        departureTime: "2026-10-23T22:00:00.000Z",
-        arrivalTime: "2026-10-24T04:00:00.000Z",
-        duration: 360,
-        price: 1100,
-        availableSeats: 20,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Majestic Bus Stand", address: "Kempegowda Bus Station, Bangalore", time: "22:00" },
-            { name: "Electronic City", address: "Hosur Road, Bangalore", time: "22:45" },
-        ],
-        droppingPoints: [
-            { name: "Koyambedu Bus Stand", address: "Koyambedu, Chennai", time: "03:45" },
-            { name: "CMBT", address: "Chennai Mofussil Bus Terminus, Chennai", time: "04:00" },
-        ],
-        busType: "AC_SLEEPER",
-        operatorName: "SRS Travels",
-        rating: 4.3,
-        reviewCount: 265,
-    },
-    {
-        id: "trip_9",
-        operatorId: "operator_4",
-        busId: "bus_7",
-        sourceCity: "Bangalore",
-        destCity: "Chennai",
-        departureTime: "2026-10-24T06:00:00.000Z",
-        arrivalTime: "2026-10-24T12:00:00.000Z",
-        duration: 360,
-        price: 850,
-        availableSeats: 32,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Majestic Bus Stand", address: "Kempegowda Bus Station, Bangalore", time: "06:00" },
-            { name: "Silk Board Junction", address: "Hosur Road, Bangalore", time: "06:30" },
-        ],
-        droppingPoints: [
-            { name: "Koyambedu Bus Stand", address: "Koyambedu, Chennai", time: "11:45" },
-            { name: "T. Nagar", address: "T. Nagar Bus Stop, Chennai", time: "12:00" },
-        ],
-        busType: "AC_SEATER",
-        operatorName: "VRL Travels",
-        rating: 4.8,
-        reviewCount: 480,
-    },
-
-    // Hyderabad → Bangalore (≈10 hrs)
-    {
-        id: "trip_10",
-        operatorId: "operator_3",
-        busId: "bus_6",
-        sourceCity: "Hyderabad",
-        destCity: "Bangalore",
-        departureTime: "2026-10-25T18:00:00.000Z",
-        arrivalTime: "2026-10-26T04:00:00.000Z",
-        duration: 600,
-        price: 900,
-        availableSeats: 26,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Mahatma Gandhi Bus Station", address: "Gowliguda, Hyderabad", time: "18:00" },
-            { name: "Miyapur Metro", address: "Miyapur, Hyderabad", time: "18:45" },
-            { name: "LB Nagar", address: "LB Nagar Circle, Hyderabad", time: "19:15" },
-        ],
-        droppingPoints: [
-            { name: "Electronic City", address: "Hosur Road, Bangalore", time: "03:30" },
-            { name: "Majestic Bus Stand", address: "Kempegowda Bus Station, Bangalore", time: "04:00" },
-        ],
-        busType: "SLEEPER",
-        operatorName: "SRS Travels",
-        rating: 4.0,
-        reviewCount: 195,
-    },
-    {
-        id: "trip_11",
-        operatorId: "operator_4",
-        busId: "bus_7",
-        sourceCity: "Hyderabad",
-        destCity: "Bangalore",
-        departureTime: "2026-10-26T21:30:00.000Z",
-        arrivalTime: "2026-10-27T07:30:00.000Z",
-        duration: 600,
-        price: 1500,
-        availableSeats: 15,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Mahatma Gandhi Bus Station", address: "Gowliguda, Hyderabad", time: "21:30" },
-            { name: "Shamshabad Airport", address: "RGIA, Hyderabad", time: "22:15" },
-        ],
-        droppingPoints: [
-            { name: "Whitefield", address: "ITPL Road, Bangalore", time: "07:00" },
-            { name: "Majestic Bus Stand", address: "Kempegowda Bus Station, Bangalore", time: "07:30" },
-        ],
-        busType: "AC_SEATER",
-        operatorName: "VRL Travels",
-        rating: 4.7,
-        reviewCount: 350,
-    },
-
-    // Delhi → Chandigarh (≈5 hrs)
-    {
-        id: "trip_12",
-        operatorId: "operator_1",
-        busId: "bus_2",
-        sourceCity: "Delhi",
-        destCity: "Chandigarh",
-        departureTime: "2026-10-24T06:00:00.000Z",
-        arrivalTime: "2026-10-24T11:00:00.000Z",
-        duration: 300,
-        price: 1000,
-        availableSeats: 22,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Kashmere Gate ISBT", address: "Kashmere Gate, Delhi", time: "06:00" },
-            { name: "Karnal Bypass", address: "NH-44, Karnal", time: "08:00" },
-        ],
-        droppingPoints: [
-            { name: "Sector 43 ISBT", address: "Sector 43, Chandigarh", time: "10:45" },
-            { name: "Sector 17", address: "Sector 17 Bus Stand, Chandigarh", time: "11:00" },
-        ],
-        busType: "AC_SLEEPER",
-        operatorName: "Royal Travels",
-        rating: 4.6,
-        reviewCount: 300,
-    },
-    {
-        id: "trip_13",
-        operatorId: "operator_5",
-        busId: "bus_9",
-        sourceCity: "Delhi",
-        destCity: "Chandigarh",
-        departureTime: "2026-10-25T14:00:00.000Z",
-        arrivalTime: "2026-10-25T19:00:00.000Z",
-        duration: 300,
-        price: 550,
-        availableSeats: 40,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "ISBT Anand Vihar", address: "Anand Vihar, Delhi", time: "14:00" },
-            { name: "Murthal", address: "GT Road, Murthal", time: "15:00" },
-        ],
-        droppingPoints: [
-            { name: "Sector 43 ISBT", address: "Sector 43, Chandigarh", time: "18:45" },
-            { name: "Panchkula", address: "Sector 5, Panchkula", time: "19:00" },
-        ],
-        busType: "SEATER",
-        operatorName: "Shrinath Travels",
-        rating: 4.0,
-        reviewCount: 120,
-    },
-
-    // Mumbai → Bangalore (≈16 hrs)
-    {
-        id: "trip_14",
-        operatorId: "operator_4",
-        busId: "bus_8",
-        sourceCity: "Mumbai",
-        destCity: "Bangalore",
-        departureTime: "2026-10-23T18:00:00.000Z",
-        arrivalTime: "2026-10-24T10:00:00.000Z",
-        duration: 960,
-        price: 2200,
-        availableSeats: 18,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Dadar TT", address: "Dadar East, Mumbai", time: "18:00" },
-            { name: "Pune Bypass", address: "Mumbai-Pune Expressway", time: "20:30" },
-        ],
-        droppingPoints: [
-            { name: "Electronic City", address: "Hosur Road, Bangalore", time: "09:30" },
-            { name: "Majestic Bus Stand", address: "Kempegowda Bus Station, Bangalore", time: "10:00" },
-        ],
-        busType: "SEMI_SLEEPER",
-        operatorName: "VRL Travels",
-        rating: 4.5,
-        reviewCount: 420,
-    },
-    {
-        id: "trip_15",
-        operatorId: "operator_3",
-        busId: "bus_5",
-        sourceCity: "Mumbai",
-        destCity: "Bangalore",
-        departureTime: "2026-10-25T21:30:00.000Z",
-        arrivalTime: "2026-10-26T13:30:00.000Z",
-        duration: 960,
-        price: 2800,
-        availableSeats: 12,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Borivali East", address: "S.V. Road, Borivali, Mumbai", time: "21:30" },
-            { name: "Dadar TT", address: "Dadar East, Mumbai", time: "22:15" },
-            { name: "Vashi Bus Depot", address: "Sector 12, Vashi, Navi Mumbai", time: "23:00" },
-        ],
-        droppingPoints: [
-            { name: "Whitefield", address: "ITPL Road, Bangalore", time: "13:00" },
-            { name: "Majestic Bus Stand", address: "Kempegowda Bus Station, Bangalore", time: "13:30" },
-        ],
-        busType: "AC_SLEEPER",
-        operatorName: "SRS Travels",
-        rating: 4.3,
-        reviewCount: 230,
-    },
-
-    // Delhi → Lucknow (≈8 hrs)
-    {
-        id: "trip_16",
-        operatorId: "operator_1",
-        busId: "bus_1",
-        sourceCity: "Delhi",
-        destCity: "Lucknow",
-        departureTime: "2026-10-27T22:00:00.000Z",
-        arrivalTime: "2026-10-28T06:00:00.000Z",
-        duration: 480,
-        price: 950,
-        availableSeats: 25,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "ISBT Anand Vihar", address: "Anand Vihar, Delhi", time: "22:00" },
-            { name: "Ghaziabad", address: "NH-24, Ghaziabad", time: "22:45" },
-        ],
-        droppingPoints: [
-            { name: "Alambagh Bus Stand", address: "Alambagh, Lucknow", time: "05:30" },
-            { name: "Charbagh", address: "Charbagh Railway Station, Lucknow", time: "06:00" },
-        ],
-        busType: "AC_SEATER",
-        operatorName: "Royal Travels",
-        rating: 4.4,
-        reviewCount: 290,
-    },
-    {
-        id: "trip_17",
-        operatorId: "operator_2",
-        busId: "bus_3",
-        sourceCity: "Delhi",
-        destCity: "Lucknow",
-        departureTime: "2026-10-28T23:00:00.000Z",
-        arrivalTime: "2026-10-29T07:00:00.000Z",
-        duration: 480,
-        price: 750,
-        availableSeats: 30,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Kashmere Gate ISBT", address: "Kashmere Gate, Delhi", time: "23:00" },
-            { name: "Noida Sector 62", address: "Sector 62, Noida", time: "23:45" },
-        ],
-        droppingPoints: [
-            { name: "Alambagh Bus Stand", address: "Alambagh, Lucknow", time: "06:30" },
-            { name: "Hazratganj", address: "Hazratganj, Lucknow", time: "07:00" },
-        ],
-        busType: "SEMI_SLEEPER",
-        operatorName: "Neeta Travels",
-        rating: 4.1,
-        reviewCount: 165,
-    },
-
-    // Jaipur → Ahmedabad (≈10 hrs)
-    {
-        id: "trip_18",
-        operatorId: "operator_5",
-        busId: "bus_10",
-        sourceCity: "Jaipur",
-        destCity: "Ahmedabad",
-        departureTime: "2026-10-26T20:00:00.000Z",
-        arrivalTime: "2026-10-27T06:00:00.000Z",
-        duration: 600,
-        price: 1300,
-        availableSeats: 16,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Sindhi Camp Bus Stand", address: "Station Road, Jaipur", time: "20:00" },
-            { name: "Durgapura", address: "Tonk Road, Jaipur", time: "20:30" },
-        ],
-        droppingPoints: [
-            { name: "Paldi Bus Stand", address: "Paldi, Ahmedabad", time: "05:30" },
-            { name: "Geeta Mandir", address: "Geeta Mandir Road, Ahmedabad", time: "06:00" },
-        ],
-        busType: "AC_SLEEPER",
-        operatorName: "Shrinath Travels",
-        rating: 4.5,
-        reviewCount: 220,
-    },
-    {
-        id: "trip_19",
-        operatorId: "operator_5",
-        busId: "bus_9",
-        sourceCity: "Jaipur",
-        destCity: "Ahmedabad",
-        departureTime: "2026-10-27T10:30:00.000Z",
-        arrivalTime: "2026-10-27T20:30:00.000Z",
-        duration: 600,
-        price: 800,
-        availableSeats: 34,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Sindhi Camp Bus Stand", address: "Station Road, Jaipur", time: "10:30" },
-            { name: "Ajmer Bus Stand", address: "Ajmer Road, Jaipur", time: "11:15" },
-        ],
-        droppingPoints: [
-            { name: "Geeta Mandir", address: "Geeta Mandir Road, Ahmedabad", time: "20:00" },
-            { name: "SG Highway", address: "SG Highway, Ahmedabad", time: "20:30" },
-        ],
-        busType: "SEATER",
-        operatorName: "Shrinath Travels",
-        rating: 3.8,
-        reviewCount: 95,
-    },
-
-    // Pune → Hyderabad (≈10 hrs)
-    {
-        id: "trip_20",
-        operatorId: "operator_3",
-        busId: "bus_6",
-        sourceCity: "Pune",
-        destCity: "Hyderabad",
-        departureTime: "2026-10-24T19:00:00.000Z",
-        arrivalTime: "2026-10-25T05:00:00.000Z",
-        duration: 600,
-        price: 1050,
-        availableSeats: 20,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Swargate Bus Stand", address: "Swargate, Pune", time: "19:00" },
-            { name: "Shivajinagar Bus Stand", address: "JM Road, Pune", time: "19:30" },
-            { name: "Hadapsar", address: "Solapur Road, Pune", time: "20:00" },
-        ],
-        droppingPoints: [
-            { name: "LB Nagar", address: "LB Nagar Circle, Hyderabad", time: "04:30" },
-            { name: "Mahatma Gandhi Bus Station", address: "Gowliguda, Hyderabad", time: "05:00" },
-        ],
-        busType: "SLEEPER",
-        operatorName: "SRS Travels",
-        rating: 4.1,
-        reviewCount: 175,
-    },
-    {
-        id: "trip_21",
-        operatorId: "operator_4",
-        busId: "bus_8",
-        sourceCity: "Pune",
-        destCity: "Hyderabad",
-        departureTime: "2026-10-29T21:30:00.000Z",
-        arrivalTime: "2026-10-30T07:30:00.000Z",
-        duration: 600,
-        price: 1200,
-        availableSeats: 22,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Swargate Bus Stand", address: "Swargate, Pune", time: "21:30" },
-            { name: "Wakad", address: "Hinjewadi Road, Pune", time: "22:00" },
-        ],
-        droppingPoints: [
-            { name: "Miyapur Metro", address: "Miyapur, Hyderabad", time: "07:00" },
-            { name: "Mahatma Gandhi Bus Station", address: "Gowliguda, Hyderabad", time: "07:30" },
-        ],
-        busType: "SEMI_SLEEPER",
-        operatorName: "VRL Travels",
-        rating: 4.6,
-        reviewCount: 310,
-    },
-
-    // Extra trips for more variety
-    {
-        id: "trip_22",
-        operatorId: "operator_2",
-        busId: "bus_4",
-        sourceCity: "Mumbai",
-        destCity: "Pune",
-        departureTime: "2026-10-26T18:00:00.000Z",
-        arrivalTime: "2026-10-26T21:30:00.000Z",
-        duration: 210,
-        price: 400,
-        availableSeats: 40,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Borivali East", address: "S.V. Road, Borivali, Mumbai", time: "18:00" },
-            { name: "Dadar TT", address: "Dadar East, Mumbai", time: "18:45" },
-        ],
-        droppingPoints: [
-            { name: "Hinjewadi", address: "Hinjewadi Phase 1, Pune", time: "21:00" },
-            { name: "Swargate Bus Stand", address: "Swargate, Pune", time: "21:30" },
-        ],
-        busType: "SEATER",
-        operatorName: "Neeta Travels",
-        rating: 3.7,
-        reviewCount: 88,
-    },
-    {
-        id: "trip_23",
-        operatorId: "operator_1",
-        busId: "bus_2",
-        sourceCity: "Delhi",
-        destCity: "Dehradun",
-        departureTime: "2026-10-28T06:00:00.000Z",
-        arrivalTime: "2026-10-28T12:00:00.000Z",
-        duration: 360,
-        price: 1100,
-        availableSeats: 14,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Kashmere Gate ISBT", address: "Kashmere Gate, Delhi", time: "06:00" },
-            { name: "ISBT Anand Vihar", address: "Anand Vihar, Delhi", time: "06:30" },
-        ],
-        droppingPoints: [
-            { name: "ISBT Dehradun", address: "Parade Ground, Dehradun", time: "11:45" },
-            { name: "Mussoorie Road", address: "Rajpur Road, Dehradun", time: "12:00" },
-        ],
-        busType: "AC_SLEEPER",
-        operatorName: "Royal Travels",
-        rating: 4.5,
-        reviewCount: 340,
-    },
-    {
-        id: "trip_24",
-        operatorId: "operator_3",
-        busId: "bus_5",
-        sourceCity: "Bangalore",
-        destCity: "Chennai",
-        departureTime: "2026-10-27T14:00:00.000Z",
-        arrivalTime: "2026-10-27T20:00:00.000Z",
-        duration: 360,
-        price: 1000,
-        availableSeats: 24,
-        status: "SCHEDULED",
-        boardingPoints: [
-            { name: "Majestic Bus Stand", address: "Kempegowda Bus Station, Bangalore", time: "14:00" },
-            { name: "Electronic City", address: "Hosur Road, Bangalore", time: "14:45" },
-            { name: "Hosur Bus Stand", address: "Hosur, Tamil Nadu", time: "15:30" },
-        ],
-        droppingPoints: [
-            { name: "Koyambedu Bus Stand", address: "Koyambedu, Chennai", time: "19:30" },
-            { name: "Egmore", address: "Egmore, Chennai", time: "20:00" },
-        ],
-        busType: "AC_SLEEPER",
-        operatorName: "SRS Travels",
-        rating: 4.2,
-        reviewCount: 200,
-    },
-];
-
-// --- Seat Layouts ---
-const generateSeats = (config) => {
-    const seats = [];
-    const { rows, cols, deck = "lower", startId = 1 } = config;
-    const colLabels = ["A", "B", "C", "D"].slice(0, cols);
-
-    for (let r = 1; r <= rows; r++) {
-        for (let c = 0; c < cols; c++) {
-            const seatNumber = `${r}${colLabels[c]}`;
-            let type = "MIDDLE";
-            if (c === 0 || c === cols - 1) type = "WINDOW";
-            if (cols === 4 && (c === 1 || c === 2)) type = "AISLE";
-            if (cols === 3 && c === 1) type = "AISLE";
-
-            seats.push({
-                id: `seat_${startId + (r - 1) * cols + c}`,
-                number: seatNumber,
-                type,
-                deck,
-                row: r,
-                col: c,
-                isBooked: false,
-            });
-        }
+        "id": "operator_5",
+        "userId": "user_op_5",
+        "name": "Uttarakhand Parivahan Local",
+        "description": "State transport corporation providing dependable city bus coverage.",
+        "email": "utc@uttarakhand.gov.in",
+        "contact": "+91 98100 55555",
+        "status": "approved",
+        "isActive": true,
+        "rating": 4.5,
+        "totalBuses": 35,
+        "routesCount": 10
     }
-    return seats;
-};
+];
 
+// --- Scheduled Local Trips (Every Stop Pair Connected) ---
+export const busTrips = [
+    {
+        "id": "trip_1",
+        "operatorId": "operator_2",
+        "busId": "BUS-202",
+        "sourceStopId": "2",
+        "destStopId": "3",
+        "sourceCity": "Clement Town",
+        "destCity": "Clock Tower",
+        "departureDate": "2026-10-23",
+        "departureTime": "07:00 AM",
+        "arrivalTime": "07:35 AM",
+        "duration": "35 mins",
+        "price": 40,
+        "mrp": 60,
+        "availableSeats": 21,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "07:00 AM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "07:00 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "07:35 AM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "07:35 AM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.3,
+        "reviewCount": 97,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_2",
+        "operatorId": "operator_3",
+        "busId": "BUS-203",
+        "sourceStopId": "2",
+        "destStopId": "3",
+        "sourceCity": "Clement Town",
+        "destCity": "Clock Tower",
+        "departureDate": "2026-10-23",
+        "departureTime": "09:30 AM",
+        "arrivalTime": "10:10 AM",
+        "duration": "40 mins",
+        "price": 45,
+        "mrp": 65,
+        "availableSeats": 22,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "09:30 AM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "09:30 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "10:10 AM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "10:10 AM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.4,
+        "reviewCount": 109,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_3",
+        "operatorId": "operator_4",
+        "busId": "BUS-204",
+        "sourceStopId": "2",
+        "destStopId": "3",
+        "sourceCity": "Clement Town",
+        "destCity": "Clock Tower",
+        "departureDate": "2026-10-23",
+        "departureTime": "02:15 PM",
+        "arrivalTime": "02:55 PM",
+        "duration": "40 mins",
+        "price": 35,
+        "mrp": 55,
+        "availableSeats": 23,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "02:15 PM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "02:15 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "02:55 PM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "02:55 PM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.5,
+        "reviewCount": 121,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_4",
+        "operatorId": "operator_5",
+        "busId": "BUS-205",
+        "sourceStopId": "2",
+        "destStopId": "3",
+        "sourceCity": "Clement Town",
+        "destCity": "Clock Tower",
+        "departureDate": "2026-10-23",
+        "departureTime": "05:30 PM",
+        "arrivalTime": "06:10 PM",
+        "duration": "40 mins",
+        "price": 40,
+        "mrp": 60,
+        "availableSeats": 24,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "05:30 PM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "05:30 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "06:10 PM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "06:10 PM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.6,
+        "reviewCount": 133,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_5",
+        "operatorId": "operator_1",
+        "busId": "BUS-206",
+        "sourceStopId": "3",
+        "destStopId": "2",
+        "sourceCity": "Clock Tower",
+        "destCity": "Clement Town",
+        "departureDate": "2026-10-23",
+        "departureTime": "07:00 AM",
+        "arrivalTime": "07:35 AM",
+        "duration": "35 mins",
+        "price": 45,
+        "mrp": 65,
+        "availableSeats": 25,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "07:00 AM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "07:00 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "07:35 AM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "07:35 AM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.7,
+        "reviewCount": 145,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_6",
+        "operatorId": "operator_2",
+        "busId": "BUS-207",
+        "sourceStopId": "3",
+        "destStopId": "2",
+        "sourceCity": "Clock Tower",
+        "destCity": "Clement Town",
+        "departureDate": "2026-10-23",
+        "departureTime": "09:30 AM",
+        "arrivalTime": "10:10 AM",
+        "duration": "40 mins",
+        "price": 35,
+        "mrp": 55,
+        "availableSeats": 26,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "09:30 AM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "09:30 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "10:10 AM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "10:10 AM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.8,
+        "reviewCount": 157,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_7",
+        "operatorId": "operator_3",
+        "busId": "BUS-208",
+        "sourceStopId": "3",
+        "destStopId": "2",
+        "sourceCity": "Clock Tower",
+        "destCity": "Clement Town",
+        "departureDate": "2026-10-23",
+        "departureTime": "02:15 PM",
+        "arrivalTime": "02:55 PM",
+        "duration": "40 mins",
+        "price": 40,
+        "mrp": 60,
+        "availableSeats": 27,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "02:15 PM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "02:15 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "02:55 PM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "02:55 PM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.9,
+        "reviewCount": 169,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_8",
+        "operatorId": "operator_4",
+        "busId": "BUS-201",
+        "sourceStopId": "3",
+        "destStopId": "2",
+        "sourceCity": "Clock Tower",
+        "destCity": "Clement Town",
+        "departureDate": "2026-10-23",
+        "departureTime": "05:30 PM",
+        "arrivalTime": "06:10 PM",
+        "duration": "40 mins",
+        "price": 45,
+        "mrp": 65,
+        "availableSeats": 28,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "05:30 PM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "05:30 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "06:10 PM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "06:10 PM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.2,
+        "reviewCount": 181,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_9",
+        "operatorId": "operator_5",
+        "busId": "BUS-202",
+        "sourceStopId": "2",
+        "destStopId": "7",
+        "sourceCity": "Clement Town",
+        "destCity": "Prem Nagar",
+        "departureDate": "2026-10-23",
+        "departureTime": "07:00 AM",
+        "arrivalTime": "07:35 AM",
+        "duration": "35 mins",
+        "price": 45,
+        "mrp": 65,
+        "availableSeats": 29,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "07:00 AM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "07:00 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "07:35 AM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "07:35 AM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.3,
+        "reviewCount": 193,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_10",
+        "operatorId": "operator_1",
+        "busId": "BUS-203",
+        "sourceStopId": "2",
+        "destStopId": "7",
+        "sourceCity": "Clement Town",
+        "destCity": "Prem Nagar",
+        "departureDate": "2026-10-23",
+        "departureTime": "09:30 AM",
+        "arrivalTime": "10:10 AM",
+        "duration": "40 mins",
+        "price": 50,
+        "mrp": 70,
+        "availableSeats": 30,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "09:30 AM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "09:30 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "10:10 AM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "10:10 AM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.4,
+        "reviewCount": 205,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_11",
+        "operatorId": "operator_2",
+        "busId": "BUS-204",
+        "sourceStopId": "2",
+        "destStopId": "7",
+        "sourceCity": "Clement Town",
+        "destCity": "Prem Nagar",
+        "departureDate": "2026-10-23",
+        "departureTime": "02:15 PM",
+        "arrivalTime": "02:55 PM",
+        "duration": "40 mins",
+        "price": 55,
+        "mrp": 75,
+        "availableSeats": 31,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "02:15 PM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "02:15 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "02:55 PM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "02:55 PM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.5,
+        "reviewCount": 217,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_12",
+        "operatorId": "operator_3",
+        "busId": "BUS-205",
+        "sourceStopId": "2",
+        "destStopId": "7",
+        "sourceCity": "Clement Town",
+        "destCity": "Prem Nagar",
+        "departureDate": "2026-10-23",
+        "departureTime": "05:30 PM",
+        "arrivalTime": "06:10 PM",
+        "duration": "40 mins",
+        "price": 45,
+        "mrp": 65,
+        "availableSeats": 32,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "05:30 PM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "05:30 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "06:10 PM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "06:10 PM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.6,
+        "reviewCount": 229,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_13",
+        "operatorId": "operator_4",
+        "busId": "BUS-206",
+        "sourceStopId": "7",
+        "destStopId": "2",
+        "sourceCity": "Prem Nagar",
+        "destCity": "Clement Town",
+        "departureDate": "2026-10-23",
+        "departureTime": "07:00 AM",
+        "arrivalTime": "07:35 AM",
+        "duration": "35 mins",
+        "price": 50,
+        "mrp": 70,
+        "availableSeats": 33,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "07:00 AM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "07:00 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "07:35 AM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "07:35 AM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.7,
+        "reviewCount": 241,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_14",
+        "operatorId": "operator_5",
+        "busId": "BUS-207",
+        "sourceStopId": "7",
+        "destStopId": "2",
+        "sourceCity": "Prem Nagar",
+        "destCity": "Clement Town",
+        "departureDate": "2026-10-23",
+        "departureTime": "09:30 AM",
+        "arrivalTime": "10:10 AM",
+        "duration": "40 mins",
+        "price": 55,
+        "mrp": 75,
+        "availableSeats": 34,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "09:30 AM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "09:30 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "10:10 AM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "10:10 AM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.8,
+        "reviewCount": 253,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_15",
+        "operatorId": "operator_1",
+        "busId": "BUS-208",
+        "sourceStopId": "7",
+        "destStopId": "2",
+        "sourceCity": "Prem Nagar",
+        "destCity": "Clement Town",
+        "departureDate": "2026-10-23",
+        "departureTime": "02:15 PM",
+        "arrivalTime": "02:55 PM",
+        "duration": "40 mins",
+        "price": 45,
+        "mrp": 65,
+        "availableSeats": 20,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "02:15 PM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "02:15 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "02:55 PM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "02:55 PM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.9,
+        "reviewCount": 265,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_16",
+        "operatorId": "operator_2",
+        "busId": "BUS-201",
+        "sourceStopId": "7",
+        "destStopId": "2",
+        "sourceCity": "Prem Nagar",
+        "destCity": "Clement Town",
+        "departureDate": "2026-10-23",
+        "departureTime": "05:30 PM",
+        "arrivalTime": "06:10 PM",
+        "duration": "40 mins",
+        "price": 50,
+        "mrp": 70,
+        "availableSeats": 21,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "05:30 PM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "05:30 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "06:10 PM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "06:10 PM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.2,
+        "reviewCount": 277,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_17",
+        "operatorId": "operator_3",
+        "busId": "BUS-202",
+        "sourceStopId": "1",
+        "destStopId": "5",
+        "sourceCity": "ISBT Dehradun",
+        "destCity": "Sahastradhara",
+        "departureDate": "2026-10-23",
+        "departureTime": "07:00 AM",
+        "arrivalTime": "07:35 AM",
+        "duration": "35 mins",
+        "price": 60,
+        "mrp": 80,
+        "availableSeats": 22,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "07:00 AM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "07:00 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "07:35 AM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "07:35 AM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.3,
+        "reviewCount": 289,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_18",
+        "operatorId": "operator_4",
+        "busId": "BUS-203",
+        "sourceStopId": "1",
+        "destStopId": "5",
+        "sourceCity": "ISBT Dehradun",
+        "destCity": "Sahastradhara",
+        "departureDate": "2026-10-23",
+        "departureTime": "09:30 AM",
+        "arrivalTime": "10:10 AM",
+        "duration": "40 mins",
+        "price": 50,
+        "mrp": 70,
+        "availableSeats": 23,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "09:30 AM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "09:30 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "10:10 AM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "10:10 AM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.4,
+        "reviewCount": 301,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_19",
+        "operatorId": "operator_5",
+        "busId": "BUS-204",
+        "sourceStopId": "1",
+        "destStopId": "5",
+        "sourceCity": "ISBT Dehradun",
+        "destCity": "Sahastradhara",
+        "departureDate": "2026-10-23",
+        "departureTime": "02:15 PM",
+        "arrivalTime": "02:55 PM",
+        "duration": "40 mins",
+        "price": 55,
+        "mrp": 75,
+        "availableSeats": 24,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "02:15 PM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "02:15 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "02:55 PM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "02:55 PM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.5,
+        "reviewCount": 313,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_20",
+        "operatorId": "operator_1",
+        "busId": "BUS-205",
+        "sourceStopId": "1",
+        "destStopId": "5",
+        "sourceCity": "ISBT Dehradun",
+        "destCity": "Sahastradhara",
+        "departureDate": "2026-10-23",
+        "departureTime": "05:30 PM",
+        "arrivalTime": "06:10 PM",
+        "duration": "40 mins",
+        "price": 60,
+        "mrp": 80,
+        "availableSeats": 25,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "05:30 PM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "05:30 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "06:10 PM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "06:10 PM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.6,
+        "reviewCount": 325,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_21",
+        "operatorId": "operator_2",
+        "busId": "BUS-206",
+        "sourceStopId": "5",
+        "destStopId": "1",
+        "sourceCity": "Sahastradhara",
+        "destCity": "ISBT Dehradun",
+        "departureDate": "2026-10-23",
+        "departureTime": "07:00 AM",
+        "arrivalTime": "07:35 AM",
+        "duration": "35 mins",
+        "price": 50,
+        "mrp": 70,
+        "availableSeats": 26,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "07:00 AM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "07:00 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "07:35 AM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "07:35 AM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.7,
+        "reviewCount": 337,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_22",
+        "operatorId": "operator_3",
+        "busId": "BUS-207",
+        "sourceStopId": "5",
+        "destStopId": "1",
+        "sourceCity": "Sahastradhara",
+        "destCity": "ISBT Dehradun",
+        "departureDate": "2026-10-23",
+        "departureTime": "09:30 AM",
+        "arrivalTime": "10:10 AM",
+        "duration": "40 mins",
+        "price": 55,
+        "mrp": 75,
+        "availableSeats": 27,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "09:30 AM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "09:30 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "10:10 AM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "10:10 AM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.8,
+        "reviewCount": 349,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_23",
+        "operatorId": "operator_4",
+        "busId": "BUS-208",
+        "sourceStopId": "5",
+        "destStopId": "1",
+        "sourceCity": "Sahastradhara",
+        "destCity": "ISBT Dehradun",
+        "departureDate": "2026-10-23",
+        "departureTime": "02:15 PM",
+        "arrivalTime": "02:55 PM",
+        "duration": "40 mins",
+        "price": 60,
+        "mrp": 80,
+        "availableSeats": 28,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "02:15 PM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "02:15 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "02:55 PM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "02:55 PM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.9,
+        "reviewCount": 361,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_24",
+        "operatorId": "operator_5",
+        "busId": "BUS-201",
+        "sourceStopId": "5",
+        "destStopId": "1",
+        "sourceCity": "Sahastradhara",
+        "destCity": "ISBT Dehradun",
+        "departureDate": "2026-10-23",
+        "departureTime": "05:30 PM",
+        "arrivalTime": "06:10 PM",
+        "duration": "40 mins",
+        "price": 50,
+        "mrp": 70,
+        "availableSeats": 29,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "05:30 PM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "05:30 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "06:10 PM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "06:10 PM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.2,
+        "reviewCount": 373,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_25",
+        "operatorId": "operator_1",
+        "busId": "BUS-202",
+        "sourceStopId": "3",
+        "destStopId": "4",
+        "sourceCity": "Clock Tower",
+        "destCity": "Rajpur Road",
+        "departureDate": "2026-10-23",
+        "departureTime": "07:00 AM",
+        "arrivalTime": "07:35 AM",
+        "duration": "35 mins",
+        "price": 30,
+        "mrp": 50,
+        "availableSeats": 30,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "07:00 AM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "07:00 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "07:35 AM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "07:35 AM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.3,
+        "reviewCount": 85,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_26",
+        "operatorId": "operator_2",
+        "busId": "BUS-203",
+        "sourceStopId": "3",
+        "destStopId": "4",
+        "sourceCity": "Clock Tower",
+        "destCity": "Rajpur Road",
+        "departureDate": "2026-10-23",
+        "departureTime": "09:30 AM",
+        "arrivalTime": "10:10 AM",
+        "duration": "40 mins",
+        "price": 35,
+        "mrp": 55,
+        "availableSeats": 31,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "09:30 AM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "09:30 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "10:10 AM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "10:10 AM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.4,
+        "reviewCount": 97,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_27",
+        "operatorId": "operator_3",
+        "busId": "BUS-204",
+        "sourceStopId": "3",
+        "destStopId": "4",
+        "sourceCity": "Clock Tower",
+        "destCity": "Rajpur Road",
+        "departureDate": "2026-10-23",
+        "departureTime": "02:15 PM",
+        "arrivalTime": "02:55 PM",
+        "duration": "40 mins",
+        "price": 25,
+        "mrp": 45,
+        "availableSeats": 32,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "02:15 PM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "02:15 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "02:55 PM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "02:55 PM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.5,
+        "reviewCount": 109,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_28",
+        "operatorId": "operator_4",
+        "busId": "BUS-205",
+        "sourceStopId": "3",
+        "destStopId": "4",
+        "sourceCity": "Clock Tower",
+        "destCity": "Rajpur Road",
+        "departureDate": "2026-10-23",
+        "departureTime": "05:30 PM",
+        "arrivalTime": "06:10 PM",
+        "duration": "40 mins",
+        "price": 30,
+        "mrp": 50,
+        "availableSeats": 33,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "05:30 PM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "05:30 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "06:10 PM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "06:10 PM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.6,
+        "reviewCount": 121,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_29",
+        "operatorId": "operator_5",
+        "busId": "BUS-206",
+        "sourceStopId": "4",
+        "destStopId": "3",
+        "sourceCity": "Rajpur Road",
+        "destCity": "Clock Tower",
+        "departureDate": "2026-10-23",
+        "departureTime": "07:00 AM",
+        "arrivalTime": "07:35 AM",
+        "duration": "35 mins",
+        "price": 35,
+        "mrp": 55,
+        "availableSeats": 34,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "07:00 AM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "07:00 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "07:35 AM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "07:35 AM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.7,
+        "reviewCount": 133,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_30",
+        "operatorId": "operator_1",
+        "busId": "BUS-207",
+        "sourceStopId": "4",
+        "destStopId": "3",
+        "sourceCity": "Rajpur Road",
+        "destCity": "Clock Tower",
+        "departureDate": "2026-10-23",
+        "departureTime": "09:30 AM",
+        "arrivalTime": "10:10 AM",
+        "duration": "40 mins",
+        "price": 25,
+        "mrp": 45,
+        "availableSeats": 20,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "09:30 AM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "09:30 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "10:10 AM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "10:10 AM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.8,
+        "reviewCount": 145,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_31",
+        "operatorId": "operator_2",
+        "busId": "BUS-208",
+        "sourceStopId": "4",
+        "destStopId": "3",
+        "sourceCity": "Rajpur Road",
+        "destCity": "Clock Tower",
+        "departureDate": "2026-10-23",
+        "departureTime": "02:15 PM",
+        "arrivalTime": "02:55 PM",
+        "duration": "40 mins",
+        "price": 30,
+        "mrp": 50,
+        "availableSeats": 21,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "02:15 PM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "02:15 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "02:55 PM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "02:55 PM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.9,
+        "reviewCount": 157,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_32",
+        "operatorId": "operator_3",
+        "busId": "BUS-201",
+        "sourceStopId": "4",
+        "destStopId": "3",
+        "sourceCity": "Rajpur Road",
+        "destCity": "Clock Tower",
+        "departureDate": "2026-10-23",
+        "departureTime": "05:30 PM",
+        "arrivalTime": "06:10 PM",
+        "duration": "40 mins",
+        "price": 35,
+        "mrp": 55,
+        "availableSeats": 22,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "05:30 PM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "05:30 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "06:10 PM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "06:10 PM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.2,
+        "reviewCount": 169,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_33",
+        "operatorId": "operator_4",
+        "busId": "BUS-202",
+        "sourceStopId": "3",
+        "destStopId": "8",
+        "sourceCity": "Clock Tower",
+        "destCity": "Robber's Cave",
+        "departureDate": "2026-10-23",
+        "departureTime": "07:00 AM",
+        "arrivalTime": "07:35 AM",
+        "duration": "35 mins",
+        "price": 40,
+        "mrp": 60,
+        "availableSeats": 23,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "07:00 AM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "07:00 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "07:35 AM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "07:35 AM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.3,
+        "reviewCount": 181,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_34",
+        "operatorId": "operator_5",
+        "busId": "BUS-203",
+        "sourceStopId": "3",
+        "destStopId": "8",
+        "sourceCity": "Clock Tower",
+        "destCity": "Robber's Cave",
+        "departureDate": "2026-10-23",
+        "departureTime": "09:30 AM",
+        "arrivalTime": "10:10 AM",
+        "duration": "40 mins",
+        "price": 45,
+        "mrp": 65,
+        "availableSeats": 24,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "09:30 AM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "09:30 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "10:10 AM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "10:10 AM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.4,
+        "reviewCount": 193,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_35",
+        "operatorId": "operator_1",
+        "busId": "BUS-204",
+        "sourceStopId": "3",
+        "destStopId": "8",
+        "sourceCity": "Clock Tower",
+        "destCity": "Robber's Cave",
+        "departureDate": "2026-10-23",
+        "departureTime": "02:15 PM",
+        "arrivalTime": "02:55 PM",
+        "duration": "40 mins",
+        "price": 50,
+        "mrp": 70,
+        "availableSeats": 25,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "02:15 PM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "02:15 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "02:55 PM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "02:55 PM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.5,
+        "reviewCount": 205,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_36",
+        "operatorId": "operator_2",
+        "busId": "BUS-205",
+        "sourceStopId": "3",
+        "destStopId": "8",
+        "sourceCity": "Clock Tower",
+        "destCity": "Robber's Cave",
+        "departureDate": "2026-10-23",
+        "departureTime": "05:30 PM",
+        "arrivalTime": "06:10 PM",
+        "duration": "40 mins",
+        "price": 40,
+        "mrp": 60,
+        "availableSeats": 26,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "05:30 PM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "05:30 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "06:10 PM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "06:10 PM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.6,
+        "reviewCount": 217,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_37",
+        "operatorId": "operator_3",
+        "busId": "BUS-206",
+        "sourceStopId": "8",
+        "destStopId": "3",
+        "sourceCity": "Robber's Cave",
+        "destCity": "Clock Tower",
+        "departureDate": "2026-10-23",
+        "departureTime": "07:00 AM",
+        "arrivalTime": "07:35 AM",
+        "duration": "35 mins",
+        "price": 45,
+        "mrp": 65,
+        "availableSeats": 27,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "07:00 AM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "07:00 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "07:35 AM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "07:35 AM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.7,
+        "reviewCount": 229,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_38",
+        "operatorId": "operator_4",
+        "busId": "BUS-207",
+        "sourceStopId": "8",
+        "destStopId": "3",
+        "sourceCity": "Robber's Cave",
+        "destCity": "Clock Tower",
+        "departureDate": "2026-10-23",
+        "departureTime": "09:30 AM",
+        "arrivalTime": "10:10 AM",
+        "duration": "40 mins",
+        "price": 50,
+        "mrp": 70,
+        "availableSeats": 28,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "09:30 AM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "09:30 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "10:10 AM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "10:10 AM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.8,
+        "reviewCount": 241,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_39",
+        "operatorId": "operator_5",
+        "busId": "BUS-208",
+        "sourceStopId": "8",
+        "destStopId": "3",
+        "sourceCity": "Robber's Cave",
+        "destCity": "Clock Tower",
+        "departureDate": "2026-10-23",
+        "departureTime": "02:15 PM",
+        "arrivalTime": "02:55 PM",
+        "duration": "40 mins",
+        "price": 40,
+        "mrp": 60,
+        "availableSeats": 29,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "02:15 PM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "02:15 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "02:55 PM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "02:55 PM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.9,
+        "reviewCount": 253,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_40",
+        "operatorId": "operator_1",
+        "busId": "BUS-201",
+        "sourceStopId": "8",
+        "destStopId": "3",
+        "sourceCity": "Robber's Cave",
+        "destCity": "Clock Tower",
+        "departureDate": "2026-10-23",
+        "departureTime": "05:30 PM",
+        "arrivalTime": "06:10 PM",
+        "duration": "40 mins",
+        "price": 45,
+        "mrp": 65,
+        "availableSeats": 30,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "05:30 PM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "05:30 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "06:10 PM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "06:10 PM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.2,
+        "reviewCount": 265,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_41",
+        "operatorId": "operator_2",
+        "busId": "BUS-202",
+        "sourceStopId": "1",
+        "destStopId": "6",
+        "sourceCity": "ISBT Dehradun",
+        "destCity": "FRI",
+        "departureDate": "2026-10-23",
+        "departureTime": "07:00 AM",
+        "arrivalTime": "07:35 AM",
+        "duration": "35 mins",
+        "price": 45,
+        "mrp": 65,
+        "availableSeats": 31,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "07:00 AM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "07:00 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "07:35 AM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "07:35 AM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.3,
+        "reviewCount": 277,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_42",
+        "operatorId": "operator_3",
+        "busId": "BUS-203",
+        "sourceStopId": "1",
+        "destStopId": "6",
+        "sourceCity": "ISBT Dehradun",
+        "destCity": "FRI",
+        "departureDate": "2026-10-23",
+        "departureTime": "09:30 AM",
+        "arrivalTime": "10:10 AM",
+        "duration": "40 mins",
+        "price": 35,
+        "mrp": 55,
+        "availableSeats": 32,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "09:30 AM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "09:30 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "10:10 AM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "10:10 AM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.4,
+        "reviewCount": 289,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_43",
+        "operatorId": "operator_4",
+        "busId": "BUS-204",
+        "sourceStopId": "1",
+        "destStopId": "6",
+        "sourceCity": "ISBT Dehradun",
+        "destCity": "FRI",
+        "departureDate": "2026-10-23",
+        "departureTime": "02:15 PM",
+        "arrivalTime": "02:55 PM",
+        "duration": "40 mins",
+        "price": 40,
+        "mrp": 60,
+        "availableSeats": 33,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "02:15 PM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "02:15 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "02:55 PM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "02:55 PM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.5,
+        "reviewCount": 301,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_44",
+        "operatorId": "operator_5",
+        "busId": "BUS-205",
+        "sourceStopId": "1",
+        "destStopId": "6",
+        "sourceCity": "ISBT Dehradun",
+        "destCity": "FRI",
+        "departureDate": "2026-10-23",
+        "departureTime": "05:30 PM",
+        "arrivalTime": "06:10 PM",
+        "duration": "40 mins",
+        "price": 45,
+        "mrp": 65,
+        "availableSeats": 34,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "05:30 PM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "05:30 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "06:10 PM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "06:10 PM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.6,
+        "reviewCount": 313,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_45",
+        "operatorId": "operator_1",
+        "busId": "BUS-206",
+        "sourceStopId": "6",
+        "destStopId": "1",
+        "sourceCity": "FRI",
+        "destCity": "ISBT Dehradun",
+        "departureDate": "2026-10-23",
+        "departureTime": "07:00 AM",
+        "arrivalTime": "07:35 AM",
+        "duration": "35 mins",
+        "price": 35,
+        "mrp": 55,
+        "availableSeats": 20,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "07:00 AM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "07:00 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "07:35 AM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "07:35 AM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.7,
+        "reviewCount": 325,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_46",
+        "operatorId": "operator_2",
+        "busId": "BUS-207",
+        "sourceStopId": "6",
+        "destStopId": "1",
+        "sourceCity": "FRI",
+        "destCity": "ISBT Dehradun",
+        "departureDate": "2026-10-23",
+        "departureTime": "09:30 AM",
+        "arrivalTime": "10:10 AM",
+        "duration": "40 mins",
+        "price": 40,
+        "mrp": 60,
+        "availableSeats": 21,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "09:30 AM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "09:30 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "10:10 AM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "10:10 AM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.8,
+        "reviewCount": 337,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_47",
+        "operatorId": "operator_3",
+        "busId": "BUS-208",
+        "sourceStopId": "6",
+        "destStopId": "1",
+        "sourceCity": "FRI",
+        "destCity": "ISBT Dehradun",
+        "departureDate": "2026-10-23",
+        "departureTime": "02:15 PM",
+        "arrivalTime": "02:55 PM",
+        "duration": "40 mins",
+        "price": 45,
+        "mrp": 65,
+        "availableSeats": 22,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "02:15 PM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "02:15 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "02:55 PM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "02:55 PM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.9,
+        "reviewCount": 349,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_48",
+        "operatorId": "operator_4",
+        "busId": "BUS-201",
+        "sourceStopId": "6",
+        "destStopId": "1",
+        "sourceCity": "FRI",
+        "destCity": "ISBT Dehradun",
+        "departureDate": "2026-10-23",
+        "departureTime": "05:30 PM",
+        "arrivalTime": "06:10 PM",
+        "duration": "40 mins",
+        "price": 35,
+        "mrp": 55,
+        "availableSeats": 23,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "05:30 PM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "05:30 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "06:10 PM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "06:10 PM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.2,
+        "reviewCount": 361,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_49",
+        "operatorId": "operator_5",
+        "busId": "BUS-202",
+        "sourceStopId": "2",
+        "destStopId": "1",
+        "sourceCity": "Clement Town",
+        "destCity": "ISBT Dehradun",
+        "departureDate": "2026-10-23",
+        "departureTime": "07:00 AM",
+        "arrivalTime": "07:35 AM",
+        "duration": "35 mins",
+        "price": 25,
+        "mrp": 45,
+        "availableSeats": 24,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "07:00 AM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "07:00 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "07:35 AM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "07:35 AM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.3,
+        "reviewCount": 373,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_50",
+        "operatorId": "operator_1",
+        "busId": "BUS-203",
+        "sourceStopId": "2",
+        "destStopId": "1",
+        "sourceCity": "Clement Town",
+        "destCity": "ISBT Dehradun",
+        "departureDate": "2026-10-23",
+        "departureTime": "09:30 AM",
+        "arrivalTime": "10:10 AM",
+        "duration": "40 mins",
+        "price": 30,
+        "mrp": 50,
+        "availableSeats": 25,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "09:30 AM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "09:30 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "10:10 AM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "10:10 AM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.4,
+        "reviewCount": 85,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_51",
+        "operatorId": "operator_2",
+        "busId": "BUS-204",
+        "sourceStopId": "2",
+        "destStopId": "1",
+        "sourceCity": "Clement Town",
+        "destCity": "ISBT Dehradun",
+        "departureDate": "2026-10-23",
+        "departureTime": "02:15 PM",
+        "arrivalTime": "02:55 PM",
+        "duration": "40 mins",
+        "price": 20,
+        "mrp": 40,
+        "availableSeats": 26,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "02:15 PM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "02:15 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "02:55 PM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "02:55 PM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.5,
+        "reviewCount": 97,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_52",
+        "operatorId": "operator_3",
+        "busId": "BUS-205",
+        "sourceStopId": "2",
+        "destStopId": "1",
+        "sourceCity": "Clement Town",
+        "destCity": "ISBT Dehradun",
+        "departureDate": "2026-10-23",
+        "departureTime": "05:30 PM",
+        "arrivalTime": "06:10 PM",
+        "duration": "40 mins",
+        "price": 25,
+        "mrp": 45,
+        "availableSeats": 27,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "05:30 PM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "05:30 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "06:10 PM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "06:10 PM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.6,
+        "reviewCount": 109,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_53",
+        "operatorId": "operator_4",
+        "busId": "BUS-206",
+        "sourceStopId": "1",
+        "destStopId": "2",
+        "sourceCity": "ISBT Dehradun",
+        "destCity": "Clement Town",
+        "departureDate": "2026-10-23",
+        "departureTime": "07:00 AM",
+        "arrivalTime": "07:35 AM",
+        "duration": "35 mins",
+        "price": 30,
+        "mrp": 50,
+        "availableSeats": 28,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "07:00 AM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "07:00 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "07:35 AM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "07:35 AM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.7,
+        "reviewCount": 121,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_54",
+        "operatorId": "operator_5",
+        "busId": "BUS-207",
+        "sourceStopId": "1",
+        "destStopId": "2",
+        "sourceCity": "ISBT Dehradun",
+        "destCity": "Clement Town",
+        "departureDate": "2026-10-23",
+        "departureTime": "09:30 AM",
+        "arrivalTime": "10:10 AM",
+        "duration": "40 mins",
+        "price": 20,
+        "mrp": 40,
+        "availableSeats": 29,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "09:30 AM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "09:30 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "10:10 AM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "10:10 AM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.8,
+        "reviewCount": 133,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_55",
+        "operatorId": "operator_1",
+        "busId": "BUS-208",
+        "sourceStopId": "1",
+        "destStopId": "2",
+        "sourceCity": "ISBT Dehradun",
+        "destCity": "Clement Town",
+        "departureDate": "2026-10-23",
+        "departureTime": "02:15 PM",
+        "arrivalTime": "02:55 PM",
+        "duration": "40 mins",
+        "price": 25,
+        "mrp": 45,
+        "availableSeats": 30,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "02:15 PM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "02:15 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "02:55 PM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "02:55 PM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.9,
+        "reviewCount": 145,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_56",
+        "operatorId": "operator_2",
+        "busId": "BUS-201",
+        "sourceStopId": "1",
+        "destStopId": "2",
+        "sourceCity": "ISBT Dehradun",
+        "destCity": "Clement Town",
+        "departureDate": "2026-10-23",
+        "departureTime": "05:30 PM",
+        "arrivalTime": "06:10 PM",
+        "duration": "40 mins",
+        "price": 30,
+        "mrp": 50,
+        "availableSeats": 31,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "05:30 PM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "05:30 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "06:10 PM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "06:10 PM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.2,
+        "reviewCount": 157,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_57",
+        "operatorId": "operator_3",
+        "busId": "BUS-202",
+        "sourceStopId": "4",
+        "destStopId": "5",
+        "sourceCity": "Rajpur Road",
+        "destCity": "Sahastradhara",
+        "departureDate": "2026-10-23",
+        "departureTime": "07:00 AM",
+        "arrivalTime": "07:35 AM",
+        "duration": "35 mins",
+        "price": 45,
+        "mrp": 65,
+        "availableSeats": 32,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "07:00 AM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "07:00 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "07:35 AM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "07:35 AM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.3,
+        "reviewCount": 169,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_58",
+        "operatorId": "operator_4",
+        "busId": "BUS-203",
+        "sourceStopId": "4",
+        "destStopId": "5",
+        "sourceCity": "Rajpur Road",
+        "destCity": "Sahastradhara",
+        "departureDate": "2026-10-23",
+        "departureTime": "09:30 AM",
+        "arrivalTime": "10:10 AM",
+        "duration": "40 mins",
+        "price": 50,
+        "mrp": 70,
+        "availableSeats": 33,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "09:30 AM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "09:30 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "10:10 AM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "10:10 AM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.4,
+        "reviewCount": 181,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_59",
+        "operatorId": "operator_5",
+        "busId": "BUS-204",
+        "sourceStopId": "4",
+        "destStopId": "5",
+        "sourceCity": "Rajpur Road",
+        "destCity": "Sahastradhara",
+        "departureDate": "2026-10-23",
+        "departureTime": "02:15 PM",
+        "arrivalTime": "02:55 PM",
+        "duration": "40 mins",
+        "price": 55,
+        "mrp": 75,
+        "availableSeats": 34,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "02:15 PM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "02:15 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "02:55 PM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "02:55 PM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.5,
+        "reviewCount": 193,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_60",
+        "operatorId": "operator_1",
+        "busId": "BUS-205",
+        "sourceStopId": "4",
+        "destStopId": "5",
+        "sourceCity": "Rajpur Road",
+        "destCity": "Sahastradhara",
+        "departureDate": "2026-10-23",
+        "departureTime": "05:30 PM",
+        "arrivalTime": "06:10 PM",
+        "duration": "40 mins",
+        "price": 45,
+        "mrp": 65,
+        "availableSeats": 20,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "05:30 PM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "05:30 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "06:10 PM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "06:10 PM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.6,
+        "reviewCount": 205,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_61",
+        "operatorId": "operator_2",
+        "busId": "BUS-206",
+        "sourceStopId": "5",
+        "destStopId": "4",
+        "sourceCity": "Sahastradhara",
+        "destCity": "Rajpur Road",
+        "departureDate": "2026-10-23",
+        "departureTime": "07:00 AM",
+        "arrivalTime": "07:35 AM",
+        "duration": "35 mins",
+        "price": 50,
+        "mrp": 70,
+        "availableSeats": 21,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "07:00 AM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "07:00 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "07:35 AM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "07:35 AM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.7,
+        "reviewCount": 217,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_62",
+        "operatorId": "operator_3",
+        "busId": "BUS-207",
+        "sourceStopId": "5",
+        "destStopId": "4",
+        "sourceCity": "Sahastradhara",
+        "destCity": "Rajpur Road",
+        "departureDate": "2026-10-23",
+        "departureTime": "09:30 AM",
+        "arrivalTime": "10:10 AM",
+        "duration": "40 mins",
+        "price": 55,
+        "mrp": 75,
+        "availableSeats": 22,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "09:30 AM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "09:30 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "10:10 AM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "10:10 AM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.8,
+        "reviewCount": 229,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_63",
+        "operatorId": "operator_4",
+        "busId": "BUS-208",
+        "sourceStopId": "5",
+        "destStopId": "4",
+        "sourceCity": "Sahastradhara",
+        "destCity": "Rajpur Road",
+        "departureDate": "2026-10-23",
+        "departureTime": "02:15 PM",
+        "arrivalTime": "02:55 PM",
+        "duration": "40 mins",
+        "price": 45,
+        "mrp": 65,
+        "availableSeats": 23,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "02:15 PM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "02:15 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "02:55 PM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "02:55 PM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.9,
+        "reviewCount": 241,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_64",
+        "operatorId": "operator_5",
+        "busId": "BUS-201",
+        "sourceStopId": "5",
+        "destStopId": "4",
+        "sourceCity": "Sahastradhara",
+        "destCity": "Rajpur Road",
+        "departureDate": "2026-10-23",
+        "departureTime": "05:30 PM",
+        "arrivalTime": "06:10 PM",
+        "duration": "40 mins",
+        "price": 50,
+        "mrp": 70,
+        "availableSeats": 24,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "05:30 PM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "05:30 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "06:10 PM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "06:10 PM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.2,
+        "reviewCount": 253,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_65",
+        "operatorId": "operator_1",
+        "busId": "BUS-202",
+        "sourceStopId": "2",
+        "destStopId": "4",
+        "sourceCity": "Clement Town",
+        "destCity": "Rajpur Road",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 43,
+        "mrp": 58,
+        "availableSeats": 19,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.5,
+        "reviewCount": 145,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_66",
+        "operatorId": "operator_2",
+        "busId": "BUS-203",
+        "sourceStopId": "2",
+        "destStopId": "4",
+        "sourceCity": "Clement Town",
+        "destCity": "Rajpur Road",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 43,
+        "mrp": 58,
+        "availableSeats": 20,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.6,
+        "reviewCount": 154,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_67",
+        "operatorId": "operator_3",
+        "busId": "BUS-204",
+        "sourceStopId": "2",
+        "destStopId": "5",
+        "sourceCity": "Clement Town",
+        "destCity": "Sahastradhara",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 50,
+        "mrp": 65,
+        "availableSeats": 21,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.7,
+        "reviewCount": 163,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_68",
+        "operatorId": "operator_4",
+        "busId": "BUS-205",
+        "sourceStopId": "2",
+        "destStopId": "5",
+        "sourceCity": "Clement Town",
+        "destCity": "Sahastradhara",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 50,
+        "mrp": 65,
+        "availableSeats": 22,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.8,
+        "reviewCount": 172,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_69",
+        "operatorId": "operator_5",
+        "busId": "BUS-206",
+        "sourceStopId": "2",
+        "destStopId": "6",
+        "sourceCity": "Clement Town",
+        "destCity": "FRI",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 57,
+        "mrp": 72,
+        "availableSeats": 23,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.9,
+        "reviewCount": 181,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_70",
+        "operatorId": "operator_1",
+        "busId": "BUS-207",
+        "sourceStopId": "2",
+        "destStopId": "6",
+        "sourceCity": "Clement Town",
+        "destCity": "FRI",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 57,
+        "mrp": 72,
+        "availableSeats": 24,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.3,
+        "reviewCount": 190,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_71",
+        "operatorId": "operator_2",
+        "busId": "BUS-208",
+        "sourceStopId": "2",
+        "destStopId": "8",
+        "sourceCity": "Clement Town",
+        "destCity": "Robber's Cave",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 41,
+        "mrp": 56,
+        "availableSeats": 25,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.4,
+        "reviewCount": 199,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_72",
+        "operatorId": "operator_3",
+        "busId": "BUS-201",
+        "sourceStopId": "2",
+        "destStopId": "8",
+        "sourceCity": "Clement Town",
+        "destCity": "Robber's Cave",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 41,
+        "mrp": 56,
+        "availableSeats": 26,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.5,
+        "reviewCount": 208,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_73",
+        "operatorId": "operator_4",
+        "busId": "BUS-202",
+        "sourceStopId": "1",
+        "destStopId": "3",
+        "sourceCity": "ISBT Dehradun",
+        "destCity": "Clock Tower",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 61,
+        "mrp": 76,
+        "availableSeats": 27,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.6,
+        "reviewCount": 217,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_74",
+        "operatorId": "operator_5",
+        "busId": "BUS-203",
+        "sourceStopId": "1",
+        "destStopId": "3",
+        "sourceCity": "ISBT Dehradun",
+        "destCity": "Clock Tower",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 61,
+        "mrp": 76,
+        "availableSeats": 28,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.7,
+        "reviewCount": 226,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_75",
+        "operatorId": "operator_1",
+        "busId": "BUS-204",
+        "sourceStopId": "1",
+        "destStopId": "4",
+        "sourceCity": "ISBT Dehradun",
+        "destCity": "Rajpur Road",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 38,
+        "mrp": 53,
+        "availableSeats": 29,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.8,
+        "reviewCount": 235,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_76",
+        "operatorId": "operator_2",
+        "busId": "BUS-205",
+        "sourceStopId": "1",
+        "destStopId": "4",
+        "sourceCity": "ISBT Dehradun",
+        "destCity": "Rajpur Road",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 38,
+        "mrp": 53,
+        "availableSeats": 30,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.9,
+        "reviewCount": 244,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_77",
+        "operatorId": "operator_3",
+        "busId": "BUS-206",
+        "sourceStopId": "1",
+        "destStopId": "7",
+        "sourceCity": "ISBT Dehradun",
+        "destCity": "Prem Nagar",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 59,
+        "mrp": 74,
+        "availableSeats": 31,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.3,
+        "reviewCount": 253,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_78",
+        "operatorId": "operator_4",
+        "busId": "BUS-207",
+        "sourceStopId": "1",
+        "destStopId": "7",
+        "sourceCity": "ISBT Dehradun",
+        "destCity": "Prem Nagar",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 59,
+        "mrp": 74,
+        "availableSeats": 32,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.4,
+        "reviewCount": 262,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_79",
+        "operatorId": "operator_5",
+        "busId": "BUS-208",
+        "sourceStopId": "1",
+        "destStopId": "8",
+        "sourceCity": "ISBT Dehradun",
+        "destCity": "Robber's Cave",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 36,
+        "mrp": 51,
+        "availableSeats": 33,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.5,
+        "reviewCount": 271,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_80",
+        "operatorId": "operator_1",
+        "busId": "BUS-201",
+        "sourceStopId": "1",
+        "destStopId": "8",
+        "sourceCity": "ISBT Dehradun",
+        "destCity": "Robber's Cave",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 36,
+        "mrp": 51,
+        "availableSeats": 18,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.6,
+        "reviewCount": 280,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_81",
+        "operatorId": "operator_2",
+        "busId": "BUS-202",
+        "sourceStopId": "3",
+        "destStopId": "1",
+        "sourceCity": "Clock Tower",
+        "destCity": "ISBT Dehradun",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 57,
+        "mrp": 72,
+        "availableSeats": 19,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.7,
+        "reviewCount": 289,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_82",
+        "operatorId": "operator_3",
+        "busId": "BUS-203",
+        "sourceStopId": "3",
+        "destStopId": "1",
+        "sourceCity": "Clock Tower",
+        "destCity": "ISBT Dehradun",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 57,
+        "mrp": 72,
+        "availableSeats": 20,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.8,
+        "reviewCount": 298,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_83",
+        "operatorId": "operator_4",
+        "busId": "BUS-204",
+        "sourceStopId": "3",
+        "destStopId": "5",
+        "sourceCity": "Clock Tower",
+        "destCity": "Sahastradhara",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 55,
+        "mrp": 70,
+        "availableSeats": 21,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.9,
+        "reviewCount": 307,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_84",
+        "operatorId": "operator_5",
+        "busId": "BUS-205",
+        "sourceStopId": "3",
+        "destStopId": "5",
+        "sourceCity": "Clock Tower",
+        "destCity": "Sahastradhara",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 55,
+        "mrp": 70,
+        "availableSeats": 22,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.3,
+        "reviewCount": 66,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_85",
+        "operatorId": "operator_1",
+        "busId": "BUS-206",
+        "sourceStopId": "3",
+        "destStopId": "6",
+        "sourceCity": "Clock Tower",
+        "destCity": "FRI",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 62,
+        "mrp": 77,
+        "availableSeats": 23,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.4,
+        "reviewCount": 75,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_86",
+        "operatorId": "operator_2",
+        "busId": "BUS-207",
+        "sourceStopId": "3",
+        "destStopId": "6",
+        "sourceCity": "Clock Tower",
+        "destCity": "FRI",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 62,
+        "mrp": 77,
+        "availableSeats": 24,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.5,
+        "reviewCount": 84,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_87",
+        "operatorId": "operator_3",
+        "busId": "BUS-208",
+        "sourceStopId": "3",
+        "destStopId": "7",
+        "sourceCity": "Clock Tower",
+        "destCity": "Prem Nagar",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 39,
+        "mrp": 54,
+        "availableSeats": 25,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.6,
+        "reviewCount": 93,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_88",
+        "operatorId": "operator_4",
+        "busId": "BUS-201",
+        "sourceStopId": "3",
+        "destStopId": "7",
+        "sourceCity": "Clock Tower",
+        "destCity": "Prem Nagar",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 39,
+        "mrp": 54,
+        "availableSeats": 26,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.7,
+        "reviewCount": 102,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_89",
+        "operatorId": "operator_5",
+        "busId": "BUS-202",
+        "sourceStopId": "4",
+        "destStopId": "2",
+        "sourceCity": "Rajpur Road",
+        "destCity": "Clement Town",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 39,
+        "mrp": 54,
+        "availableSeats": 27,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.8,
+        "reviewCount": 111,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_90",
+        "operatorId": "operator_1",
+        "busId": "BUS-203",
+        "sourceStopId": "4",
+        "destStopId": "2",
+        "sourceCity": "Rajpur Road",
+        "destCity": "Clement Town",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 39,
+        "mrp": 54,
+        "availableSeats": 28,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.9,
+        "reviewCount": 120,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_91",
+        "operatorId": "operator_2",
+        "busId": "BUS-204",
+        "sourceStopId": "4",
+        "destStopId": "1",
+        "sourceCity": "Rajpur Road",
+        "destCity": "ISBT Dehradun",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 62,
+        "mrp": 77,
+        "availableSeats": 29,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.3,
+        "reviewCount": 129,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_92",
+        "operatorId": "operator_3",
+        "busId": "BUS-205",
+        "sourceStopId": "4",
+        "destStopId": "1",
+        "sourceCity": "Rajpur Road",
+        "destCity": "ISBT Dehradun",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 62,
+        "mrp": 77,
+        "availableSeats": 30,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.4,
+        "reviewCount": 138,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_93",
+        "operatorId": "operator_4",
+        "busId": "BUS-206",
+        "sourceStopId": "4",
+        "destStopId": "6",
+        "sourceCity": "Rajpur Road",
+        "destCity": "FRI",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 37,
+        "mrp": 52,
+        "availableSeats": 31,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.5,
+        "reviewCount": 147,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_94",
+        "operatorId": "operator_5",
+        "busId": "BUS-207",
+        "sourceStopId": "4",
+        "destStopId": "6",
+        "sourceCity": "Rajpur Road",
+        "destCity": "FRI",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 37,
+        "mrp": 52,
+        "availableSeats": 32,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.6,
+        "reviewCount": 156,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_95",
+        "operatorId": "operator_1",
+        "busId": "BUS-208",
+        "sourceStopId": "4",
+        "destStopId": "7",
+        "sourceCity": "Rajpur Road",
+        "destCity": "Prem Nagar",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 44,
+        "mrp": 59,
+        "availableSeats": 33,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.7,
+        "reviewCount": 165,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_96",
+        "operatorId": "operator_2",
+        "busId": "BUS-201",
+        "sourceStopId": "4",
+        "destStopId": "7",
+        "sourceCity": "Rajpur Road",
+        "destCity": "Prem Nagar",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 44,
+        "mrp": 59,
+        "availableSeats": 18,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.8,
+        "reviewCount": 174,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_97",
+        "operatorId": "operator_3",
+        "busId": "BUS-202",
+        "sourceStopId": "4",
+        "destStopId": "8",
+        "sourceCity": "Rajpur Road",
+        "destCity": "Robber's Cave",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 51,
+        "mrp": 66,
+        "availableSeats": 19,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.9,
+        "reviewCount": 183,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_98",
+        "operatorId": "operator_4",
+        "busId": "BUS-203",
+        "sourceStopId": "4",
+        "destStopId": "8",
+        "sourceCity": "Rajpur Road",
+        "destCity": "Robber's Cave",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 51,
+        "mrp": 66,
+        "availableSeats": 20,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.3,
+        "reviewCount": 192,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_99",
+        "operatorId": "operator_5",
+        "busId": "BUS-204",
+        "sourceStopId": "5",
+        "destStopId": "2",
+        "sourceCity": "Sahastradhara",
+        "destCity": "Clement Town",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 44,
+        "mrp": 59,
+        "availableSeats": 21,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.4,
+        "reviewCount": 201,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_100",
+        "operatorId": "operator_1",
+        "busId": "BUS-205",
+        "sourceStopId": "5",
+        "destStopId": "2",
+        "sourceCity": "Sahastradhara",
+        "destCity": "Clement Town",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 44,
+        "mrp": 59,
+        "availableSeats": 22,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.5,
+        "reviewCount": 210,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_101",
+        "operatorId": "operator_2",
+        "busId": "BUS-206",
+        "sourceStopId": "5",
+        "destStopId": "3",
+        "sourceCity": "Sahastradhara",
+        "destCity": "Clock Tower",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 51,
+        "mrp": 66,
+        "availableSeats": 23,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.6,
+        "reviewCount": 219,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_102",
+        "operatorId": "operator_3",
+        "busId": "BUS-207",
+        "sourceStopId": "5",
+        "destStopId": "3",
+        "sourceCity": "Sahastradhara",
+        "destCity": "Clock Tower",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 51,
+        "mrp": 66,
+        "availableSeats": 24,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.7,
+        "reviewCount": 228,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_103",
+        "operatorId": "operator_4",
+        "busId": "BUS-208",
+        "sourceStopId": "5",
+        "destStopId": "6",
+        "sourceCity": "Sahastradhara",
+        "destCity": "FRI",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 42,
+        "mrp": 57,
+        "availableSeats": 25,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.8,
+        "reviewCount": 237,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_104",
+        "operatorId": "operator_5",
+        "busId": "BUS-201",
+        "sourceStopId": "5",
+        "destStopId": "6",
+        "sourceCity": "Sahastradhara",
+        "destCity": "FRI",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 42,
+        "mrp": 57,
+        "availableSeats": 26,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.9,
+        "reviewCount": 246,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_105",
+        "operatorId": "operator_1",
+        "busId": "BUS-202",
+        "sourceStopId": "5",
+        "destStopId": "7",
+        "sourceCity": "Sahastradhara",
+        "destCity": "Prem Nagar",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 49,
+        "mrp": 64,
+        "availableSeats": 27,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.3,
+        "reviewCount": 255,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_106",
+        "operatorId": "operator_2",
+        "busId": "BUS-203",
+        "sourceStopId": "5",
+        "destStopId": "7",
+        "sourceCity": "Sahastradhara",
+        "destCity": "Prem Nagar",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 49,
+        "mrp": 64,
+        "availableSeats": 28,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.4,
+        "reviewCount": 264,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_107",
+        "operatorId": "operator_3",
+        "busId": "BUS-204",
+        "sourceStopId": "5",
+        "destStopId": "8",
+        "sourceCity": "Sahastradhara",
+        "destCity": "Robber's Cave",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 56,
+        "mrp": 71,
+        "availableSeats": 29,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.5,
+        "reviewCount": 273,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_108",
+        "operatorId": "operator_4",
+        "busId": "BUS-205",
+        "sourceStopId": "5",
+        "destStopId": "8",
+        "sourceCity": "Sahastradhara",
+        "destCity": "Robber's Cave",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 56,
+        "mrp": 71,
+        "availableSeats": 30,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.6,
+        "reviewCount": 282,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_109",
+        "operatorId": "operator_5",
+        "busId": "BUS-206",
+        "sourceStopId": "6",
+        "destStopId": "2",
+        "sourceCity": "FRI",
+        "destCity": "Clement Town",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 49,
+        "mrp": 64,
+        "availableSeats": 31,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.7,
+        "reviewCount": 291,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_110",
+        "operatorId": "operator_1",
+        "busId": "BUS-207",
+        "sourceStopId": "6",
+        "destStopId": "2",
+        "sourceCity": "FRI",
+        "destCity": "Clement Town",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 49,
+        "mrp": 64,
+        "availableSeats": 32,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.8,
+        "reviewCount": 300,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_111",
+        "operatorId": "operator_2",
+        "busId": "BUS-208",
+        "sourceStopId": "6",
+        "destStopId": "3",
+        "sourceCity": "FRI",
+        "destCity": "Clock Tower",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 56,
+        "mrp": 71,
+        "availableSeats": 33,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.9,
+        "reviewCount": 309,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_112",
+        "operatorId": "operator_3",
+        "busId": "BUS-201",
+        "sourceStopId": "6",
+        "destStopId": "3",
+        "sourceCity": "FRI",
+        "destCity": "Clock Tower",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 56,
+        "mrp": 71,
+        "availableSeats": 18,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.3,
+        "reviewCount": 68,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_113",
+        "operatorId": "operator_4",
+        "busId": "BUS-202",
+        "sourceStopId": "6",
+        "destStopId": "4",
+        "sourceCity": "FRI",
+        "destCity": "Rajpur Road",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 63,
+        "mrp": 78,
+        "availableSeats": 19,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.4,
+        "reviewCount": 77,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_114",
+        "operatorId": "operator_5",
+        "busId": "BUS-203",
+        "sourceStopId": "6",
+        "destStopId": "4",
+        "sourceCity": "FRI",
+        "destCity": "Rajpur Road",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 63,
+        "mrp": 78,
+        "availableSeats": 20,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.5,
+        "reviewCount": 86,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_115",
+        "operatorId": "operator_1",
+        "busId": "BUS-204",
+        "sourceStopId": "6",
+        "destStopId": "5",
+        "sourceCity": "FRI",
+        "destCity": "Sahastradhara",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 40,
+        "mrp": 55,
+        "availableSeats": 21,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.6,
+        "reviewCount": 95,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_116",
+        "operatorId": "operator_2",
+        "busId": "BUS-205",
+        "sourceStopId": "6",
+        "destStopId": "5",
+        "sourceCity": "FRI",
+        "destCity": "Sahastradhara",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 40,
+        "mrp": 55,
+        "availableSeats": 22,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.7,
+        "reviewCount": 104,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_117",
+        "operatorId": "operator_3",
+        "busId": "BUS-206",
+        "sourceStopId": "6",
+        "destStopId": "7",
+        "sourceCity": "FRI",
+        "destCity": "Prem Nagar",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 54,
+        "mrp": 69,
+        "availableSeats": 23,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.8,
+        "reviewCount": 113,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_118",
+        "operatorId": "operator_4",
+        "busId": "BUS-207",
+        "sourceStopId": "6",
+        "destStopId": "7",
+        "sourceCity": "FRI",
+        "destCity": "Prem Nagar",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 54,
+        "mrp": 69,
+        "availableSeats": 24,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.9,
+        "reviewCount": 122,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_119",
+        "operatorId": "operator_5",
+        "busId": "BUS-208",
+        "sourceStopId": "6",
+        "destStopId": "8",
+        "sourceCity": "FRI",
+        "destCity": "Robber's Cave",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 61,
+        "mrp": 76,
+        "availableSeats": 25,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.3,
+        "reviewCount": 131,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_120",
+        "operatorId": "operator_1",
+        "busId": "BUS-201",
+        "sourceStopId": "6",
+        "destStopId": "8",
+        "sourceCity": "FRI",
+        "destCity": "Robber's Cave",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 61,
+        "mrp": 76,
+        "availableSeats": 26,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.4,
+        "reviewCount": 140,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_121",
+        "operatorId": "operator_2",
+        "busId": "BUS-202",
+        "sourceStopId": "7",
+        "destStopId": "1",
+        "sourceCity": "Prem Nagar",
+        "destCity": "ISBT Dehradun",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 47,
+        "mrp": 62,
+        "availableSeats": 27,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.5,
+        "reviewCount": 149,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_122",
+        "operatorId": "operator_3",
+        "busId": "BUS-203",
+        "sourceStopId": "7",
+        "destStopId": "1",
+        "sourceCity": "Prem Nagar",
+        "destCity": "ISBT Dehradun",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 47,
+        "mrp": 62,
+        "availableSeats": 28,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.6,
+        "reviewCount": 158,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_123",
+        "operatorId": "operator_4",
+        "busId": "BUS-204",
+        "sourceStopId": "7",
+        "destStopId": "3",
+        "sourceCity": "Prem Nagar",
+        "destCity": "Clock Tower",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 61,
+        "mrp": 76,
+        "availableSeats": 29,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.7,
+        "reviewCount": 167,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_124",
+        "operatorId": "operator_5",
+        "busId": "BUS-205",
+        "sourceStopId": "7",
+        "destStopId": "3",
+        "sourceCity": "Prem Nagar",
+        "destCity": "Clock Tower",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 61,
+        "mrp": 76,
+        "availableSeats": 30,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Ghanta Ghar Main Stand",
+                "address": "Paltan Bazaar, City Center",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Gandhi Park Gate",
+                "address": "Rajpur Road Entrance",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.8,
+        "reviewCount": 176,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_125",
+        "operatorId": "operator_1",
+        "busId": "BUS-206",
+        "sourceStopId": "7",
+        "destStopId": "4",
+        "sourceCity": "Prem Nagar",
+        "destCity": "Rajpur Road",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 38,
+        "mrp": 53,
+        "availableSeats": 31,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.9,
+        "reviewCount": 185,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_126",
+        "operatorId": "operator_2",
+        "busId": "BUS-207",
+        "sourceStopId": "7",
+        "destStopId": "4",
+        "sourceCity": "Prem Nagar",
+        "destCity": "Rajpur Road",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 38,
+        "mrp": 53,
+        "availableSeats": 32,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.3,
+        "reviewCount": 194,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_127",
+        "operatorId": "operator_3",
+        "busId": "BUS-208",
+        "sourceStopId": "7",
+        "destStopId": "5",
+        "sourceCity": "Prem Nagar",
+        "destCity": "Sahastradhara",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 45,
+        "mrp": 60,
+        "availableSeats": 33,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.4,
+        "reviewCount": 203,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_128",
+        "operatorId": "operator_4",
+        "busId": "BUS-201",
+        "sourceStopId": "7",
+        "destStopId": "5",
+        "sourceCity": "Prem Nagar",
+        "destCity": "Sahastradhara",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 45,
+        "mrp": 60,
+        "availableSeats": 18,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.5,
+        "reviewCount": 212,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_129",
+        "operatorId": "operator_5",
+        "busId": "BUS-202",
+        "sourceStopId": "7",
+        "destStopId": "6",
+        "sourceCity": "Prem Nagar",
+        "destCity": "FRI",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 52,
+        "mrp": 67,
+        "availableSeats": 19,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.6,
+        "reviewCount": 221,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_130",
+        "operatorId": "operator_1",
+        "busId": "BUS-203",
+        "sourceStopId": "7",
+        "destStopId": "6",
+        "sourceCity": "Prem Nagar",
+        "destCity": "FRI",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 52,
+        "mrp": 67,
+        "availableSeats": 20,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.7,
+        "reviewCount": 230,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_131",
+        "operatorId": "operator_2",
+        "busId": "BUS-204",
+        "sourceStopId": "7",
+        "destStopId": "8",
+        "sourceCity": "Prem Nagar",
+        "destCity": "Robber's Cave",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 36,
+        "mrp": 51,
+        "availableSeats": 21,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.8,
+        "reviewCount": 239,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_132",
+        "operatorId": "operator_3",
+        "busId": "BUS-205",
+        "sourceStopId": "7",
+        "destStopId": "8",
+        "sourceCity": "Prem Nagar",
+        "destCity": "Robber's Cave",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 36,
+        "mrp": 51,
+        "availableSeats": 22,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.9,
+        "reviewCount": 248,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_133",
+        "operatorId": "operator_4",
+        "busId": "BUS-206",
+        "sourceStopId": "8",
+        "destStopId": "2",
+        "sourceCity": "Robber's Cave",
+        "destCity": "Clement Town",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 59,
+        "mrp": 74,
+        "availableSeats": 23,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.3,
+        "reviewCount": 257,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_134",
+        "operatorId": "operator_5",
+        "busId": "BUS-207",
+        "sourceStopId": "8",
+        "destStopId": "2",
+        "sourceCity": "Robber's Cave",
+        "destCity": "Clement Town",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 59,
+        "mrp": 74,
+        "availableSeats": 24,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Graphic Era University (Gate 1)",
+                "address": "Turner Road, Clement Town",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Clement Town Post Office",
+                "address": "Subhash Nagar Road",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.4,
+        "reviewCount": 266,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_135",
+        "operatorId": "operator_1",
+        "busId": "BUS-208",
+        "sourceStopId": "8",
+        "destStopId": "1",
+        "sourceCity": "Robber's Cave",
+        "destCity": "ISBT Dehradun",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 52,
+        "mrp": 67,
+        "availableSeats": 25,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.5,
+        "reviewCount": 275,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_136",
+        "operatorId": "operator_2",
+        "busId": "BUS-201",
+        "sourceStopId": "8",
+        "destStopId": "1",
+        "sourceCity": "Robber's Cave",
+        "destCity": "ISBT Dehradun",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 52,
+        "mrp": 67,
+        "availableSeats": 26,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "ISBT Platform 3 & 4",
+                "address": "Haridwar Bypass Road",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Transport Nagar Chowk",
+                "address": "Near ISBT Flyover",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.6,
+        "reviewCount": 284,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_137",
+        "operatorId": "operator_3",
+        "busId": "BUS-202",
+        "sourceStopId": "8",
+        "destStopId": "4",
+        "sourceCity": "Robber's Cave",
+        "destCity": "Rajpur Road",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 43,
+        "mrp": 58,
+        "availableSeats": 27,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.7,
+        "reviewCount": 293,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_138",
+        "operatorId": "operator_4",
+        "busId": "BUS-203",
+        "sourceStopId": "8",
+        "destStopId": "4",
+        "sourceCity": "Robber's Cave",
+        "destCity": "Rajpur Road",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 43,
+        "mrp": 58,
+        "availableSeats": 28,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Jakhan Chowk",
+                "address": "Rajpur Road, Dehradun",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Pacific Mall Stand",
+                "address": "Main Rajpur Road",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.8,
+        "reviewCount": 302,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_139",
+        "operatorId": "operator_5",
+        "busId": "BUS-204",
+        "sourceStopId": "8",
+        "destStopId": "5",
+        "sourceCity": "Robber's Cave",
+        "destCity": "Sahastradhara",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 50,
+        "mrp": 65,
+        "availableSeats": 29,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.9,
+        "reviewCount": 61,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_140",
+        "operatorId": "operator_1",
+        "busId": "BUS-205",
+        "sourceStopId": "8",
+        "destStopId": "5",
+        "sourceCity": "Robber's Cave",
+        "destCity": "Sahastradhara",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 50,
+        "mrp": 65,
+        "availableSeats": 30,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Sahastradhara Springs Terminus",
+                "address": "Sulphur Springs Road",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Helipad Crossing",
+                "address": "Sahastradhara Road",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "AC Seater Express",
+        "operatorName": "Doon City Express",
+        "rating": 4.3,
+        "reviewCount": 70,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_141",
+        "operatorId": "operator_2",
+        "busId": "BUS-206",
+        "sourceStopId": "8",
+        "destStopId": "6",
+        "sourceCity": "Robber's Cave",
+        "destCity": "FRI",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 57,
+        "mrp": 72,
+        "availableSeats": 31,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "City Link EV Low-Floor",
+        "operatorName": "Graphic Era Shuttle",
+        "rating": 4.4,
+        "reviewCount": 79,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_142",
+        "operatorId": "operator_3",
+        "busId": "BUS-207",
+        "sourceStopId": "8",
+        "destStopId": "6",
+        "sourceCity": "Robber's Cave",
+        "destCity": "FRI",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 57,
+        "mrp": 72,
+        "availableSeats": 32,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "FRI Main Arch Gate",
+                "address": "Chakrata Road, Dehradun",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Officers Colony Stand",
+                "address": "Kaulagarh Road",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Valley Shuttle",
+        "operatorName": "Valley Rapid Link",
+        "rating": 4.5,
+        "reviewCount": 88,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_143",
+        "operatorId": "operator_4",
+        "busId": "BUS-208",
+        "sourceStopId": "8",
+        "destStopId": "7",
+        "sourceCity": "Robber's Cave",
+        "destCity": "Prem Nagar",
+        "departureDate": "2026-10-23",
+        "departureTime": "08:15 AM",
+        "arrivalTime": "08:50 AM",
+        "duration": "35 mins",
+        "price": 64,
+        "mrp": 79,
+        "availableSeats": 33,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "08:15 AM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "08:15 AM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "08:50 AM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "08:50 AM"
+            }
+        ],
+        "busType": "Doon Express Deluxe",
+        "operatorName": "Hill View Transit",
+        "rating": 4.6,
+        "reviewCount": 97,
+        "backendType": "CPP_SYSTEM"
+    },
+    {
+        "id": "trip_144",
+        "operatorId": "operator_5",
+        "busId": "BUS-201",
+        "sourceStopId": "8",
+        "destStopId": "7",
+        "sourceCity": "Robber's Cave",
+        "destCity": "Prem Nagar",
+        "departureDate": "2026-10-23",
+        "departureTime": "04:00 PM",
+        "arrivalTime": "04:40 PM",
+        "duration": "40 mins",
+        "price": 64,
+        "mrp": 79,
+        "availableSeats": 18,
+        "status": "SCHEDULED",
+        "boardingPoints": [
+            {
+                "name": "Guchhupani Main Gate",
+                "address": "Anarwala, Dehradun",
+                "time": "04:00 PM"
+            },
+            {
+                "name": "Johri Road Stand",
+                "address": "Near Robber's Cave Parking",
+                "time": "04:00 PM"
+            }
+        ],
+        "droppingPoints": [
+            {
+                "name": "Prem Nagar Main Chowk",
+                "address": "Chakrata Road, Prem Nagar",
+                "time": "04:40 PM"
+            },
+            {
+                "name": "Nanda Ki Chowki",
+                "address": "UPES Shuttle Point",
+                "time": "04:40 PM"
+            }
+        ],
+        "busType": "Campus Rapid Transit",
+        "operatorName": "Uttarakhand Parivahan Local",
+        "rating": 4.7,
+        "reviewCount": 106,
+        "backendType": "CPP_SYSTEM"
+    }
+];
+
+// --- Standard Seat Layouts ---
 export const seatLayouts = {
     SEATER_2x2: {
-        type: "SEATER_2x2",
-        label: "2+2 Seater",
         rows: 10,
         seatsPerRow: 4,
-        seats: generateSeats({ rows: 10, cols: 4, deck: "lower", startId: 1 }),
+        seats: [
+            { id: "s_1", number: "1A", type: "WINDOW", deck: "lower", row: 1, col: 1, isBooked: false },
+            { id: "s_2", number: "1B", type: "AISLE", deck: "lower", row: 1, col: 2, isBooked: false },
+            { id: "s_3", number: "1C", type: "AISLE", deck: "lower", row: 1, col: 3, isBooked: false },
+            { id: "s_4", number: "1D", type: "WINDOW", deck: "lower", row: 1, col: 4, isBooked: false },
+            { id: "s_5", number: "2A", type: "WINDOW", deck: "lower", row: 2, col: 1, isBooked: false },
+            { id: "s_6", number: "2B", type: "AISLE", deck: "lower", row: 2, col: 2, isBooked: true },
+            { id: "s_7", number: "2C", type: "AISLE", deck: "lower", row: 2, col: 3, isBooked: false },
+            { id: "s_8", number: "2D", type: "WINDOW", deck: "lower", row: 2, col: 4, isBooked: false },
+            { id: "s_9", number: "3A", type: "WINDOW", deck: "lower", row: 3, col: 1, isBooked: false },
+            { id: "s_10", number: "3B", type: "AISLE", deck: "lower", row: 3, col: 2, isBooked: false },
+            { id: "s_11", number: "3C", type: "AISLE", deck: "lower", row: 3, col: 3, isBooked: true },
+            { id: "s_12", number: "3D", type: "WINDOW", deck: "lower", row: 3, col: 4, isBooked: false },
+            { id: "s_13", number: "4A", type: "WINDOW", deck: "lower", row: 4, col: 1, isBooked: false },
+            { id: "s_14", number: "4B", type: "AISLE", deck: "lower", row: 4, col: 2, isBooked: false },
+            { id: "s_15", number: "4C", type: "AISLE", deck: "lower", row: 4, col: 3, isBooked: false },
+            { id: "s_16", number: "4D", type: "WINDOW", deck: "lower", row: 4, col: 4, isBooked: false },
+            { id: "s_17", number: "5A", type: "WINDOW", deck: "lower", row: 5, col: 1, isBooked: true },
+            { id: "s_18", number: "5B", type: "AISLE", deck: "lower", row: 5, col: 2, isBooked: false },
+            { id: "s_19", number: "5C", type: "AISLE", deck: "lower", row: 5, col: 3, isBooked: false },
+            { id: "s_20", number: "5D", type: "WINDOW", deck: "lower", row: 5, col: 4, isBooked: false },
+            { id: "s_21", number: "6A", type: "WINDOW", deck: "lower", row: 6, col: 1, isBooked: false },
+            { id: "s_22", number: "6B", type: "AISLE", deck: "lower", row: 6, col: 2, isBooked: false },
+            { id: "s_23", number: "6C", type: "AISLE", deck: "lower", row: 6, col: 3, isBooked: false },
+            { id: "s_24", number: "6D", type: "WINDOW", deck: "lower", row: 6, col: 4, isBooked: false },
+            { id: "s_25", number: "7A", type: "WINDOW", deck: "lower", row: 7, col: 1, isBooked: false },
+            { id: "s_26", number: "7B", type: "AISLE", deck: "lower", row: 7, col: 2, isBooked: false },
+            { id: "s_27", number: "7C", type: "AISLE", deck: "lower", row: 7, col: 3, isBooked: false },
+            { id: "s_28", number: "7D", type: "WINDOW", deck: "lower", row: 7, col: 4, isBooked: false },
+            { id: "s_29", number: "8A", type: "WINDOW", deck: "lower", row: 8, col: 1, isBooked: false },
+            { id: "s_30", number: "8B", type: "AISLE", deck: "lower", row: 8, col: 2, isBooked: false },
+            { id: "s_31", number: "8C", type: "AISLE", deck: "lower", row: 8, col: 3, isBooked: false },
+            { id: "s_32", number: "8D", type: "WINDOW", deck: "lower", row: 8, col: 4, isBooked: false },
+            { id: "s_33", number: "9A", type: "WINDOW", deck: "lower", row: 9, col: 1, isBooked: false },
+            { id: "s_34", number: "9B", type: "AISLE", deck: "lower", row: 9, col: 2, isBooked: false },
+            { id: "s_35", number: "9C", type: "AISLE", deck: "lower", row: 9, col: 3, isBooked: false },
+            { id: "s_36", number: "9D", type: "WINDOW", deck: "lower", row: 9, col: 4, isBooked: false },
+            { id: "s_37", number: "10A", type: "WINDOW", deck: "lower", row: 10, col: 1, isBooked: false },
+            { id: "s_38", number: "10B", type: "AISLE", deck: "lower", row: 10, col: 2, isBooked: false },
+            { id: "s_39", number: "10C", type: "AISLE", deck: "lower", row: 10, col: 3, isBooked: false },
+            { id: "s_40", number: "10D", type: "WINDOW", deck: "lower", row: 10, col: 4, isBooked: false },
+        ]
     },
     SLEEPER_2x1: {
-        type: "SLEEPER_2x1",
-        label: "2+1 Sleeper",
-        rows: 10,
+        rows: 6,
         seatsPerRow: 3,
-        lowerDeck: generateSeats({ rows: 10, cols: 3, deck: "lower", startId: 1 }),
-        upperDeck: generateSeats({ rows: 10, cols: 3, deck: "upper", startId: 31 }),
-        get seats() {
-            return [...this.lowerDeck, ...this.upperDeck];
-        },
-    },
-    SEMI_SLEEPER: {
-        type: "SEMI_SLEEPER",
-        label: "Semi Sleeper",
-        rows: 12,
-        seatsPerRow: 3,
-        seats: generateSeats({ rows: 12, cols: 3, deck: "lower", startId: 1 }),
-    },
+        seats: [
+            { id: "sl_1", number: "L1", type: "WINDOW", deck: "lower", row: 1, col: 1, isBooked: false },
+            { id: "sl_2", number: "L2", type: "AISLE", deck: "lower", row: 1, col: 2, isBooked: false },
+            { id: "sl_3", number: "L3", type: "WINDOW", deck: "lower", row: 1, col: 3, isBooked: false },
+            { id: "sl_4", number: "L4", type: "WINDOW", deck: "lower", row: 2, col: 1, isBooked: true },
+            { id: "sl_5", number: "L5", type: "AISLE", deck: "lower", row: 2, col: 2, isBooked: false },
+            { id: "sl_6", number: "L6", type: "WINDOW", deck: "lower", row: 2, col: 3, isBooked: false },
+            { id: "sl_7", number: "L7", type: "WINDOW", deck: "lower", row: 3, col: 1, isBooked: false },
+            { id: "sl_8", number: "L8", type: "AISLE", deck: "lower", row: 3, col: 2, isBooked: false },
+            { id: "sl_9", number: "L9", type: "WINDOW", deck: "lower", row: 3, col: 3, isBooked: false },
+            { id: "sl_10", number: "U1", type: "WINDOW", deck: "upper", row: 1, col: 1, isBooked: false },
+            { id: "sl_11", number: "U2", type: "AISLE", deck: "upper", row: 1, col: 2, isBooked: false },
+            { id: "sl_12", number: "U3", type: "WINDOW", deck: "upper", row: 1, col: 3, isBooked: false },
+            { id: "sl_13", number: "U4", type: "WINDOW", deck: "upper", row: 2, col: 1, isBooked: false },
+            { id: "sl_14", number: "U5", type: "AISLE", deck: "upper", row: 2, col: 2, isBooked: false },
+            { id: "sl_15", number: "U6", type: "WINDOW", deck: "upper", row: 2, col: 3, isBooked: false },
+        ]
+    }
 };
 
 // --- Sample Bookings ---
 export const sampleBookings = [
     {
-        id: "booking_1",
-        pnr: "BUSGO12345",
-        userId: "user_1",
-        tripId: "trip_1",
-        totalAmount: 1300,
-        status: "CONFIRMED",
-        paymentMethod: "UPI",
-        isPaid: true,
-        boardingPoint: "Kashmere Gate ISBT (06:00)",
-        droppingPoint: "Sindhi Camp Bus Stand (11:15)",
-        passengers: [
-            { name: "Agrima Mishra", age: 24, gender: "Female", seatNo: "1A" },
-            { name: "Rahul Sharma", age: 28, gender: "Male", seatNo: "1B" },
+        "id": "booking_1",
+        "pnr": "BUSGO12345",
+        "userId": "user_1",
+        "tripId": "trip_1",
+        "totalAmount": 70,
+        "status": "CONFIRMED",
+        "paymentMethod": "UPI",
+        "isPaid": true,
+        "boardingPoint": "Graphic Era University (Gate 1) (07:00 AM)",
+        "droppingPoint": "Ghanta Ghar Main Stand (07:35 AM)",
+        "passengers": [
+            {
+                "name": "Agrima Mishra",
+                "age": 22,
+                "gender": "Female",
+                "seatNo": "1A"
+            },
+            {
+                "name": "Krishna Kant",
+                "age": 22,
+                "gender": "Male",
+                "seatNo": "1B"
+            }
         ],
-        createdAt: "2026-10-20T10:30:00.000Z",
+        "createdAt": "2026-10-21T18:00:00.000Z"
     },
     {
-        id: "booking_2",
-        pnr: "BUSGO12346",
-        userId: "user_1",
-        tripId: "trip_8",
-        totalAmount: 1100,
-        status: "CONFIRMED",
-        paymentMethod: "STRIPE",
-        isPaid: true,
-        boardingPoint: "Majestic Bus Stand (22:00)",
-        droppingPoint: "Koyambedu Bus Stand (03:45)",
-        passengers: [
-            { name: "Agrima Mishra", age: 24, gender: "Female", seatNo: "3A" },
+        "id": "booking_2",
+        "pnr": "BUSGO12346",
+        "userId": "user_1",
+        "tripId": "trip_2",
+        "totalAmount": 50,
+        "status": "CONFIRMED",
+        "paymentMethod": "UPI",
+        "isPaid": true,
+        "boardingPoint": "ISBT Platform 3 & 4 (08:15 AM)",
+        "droppingPoint": "Sahastradhara Springs Terminus (08:50 AM)",
+        "passengers": [
+            {
+                "name": "Aditi Singh",
+                "age": 21,
+                "gender": "Female",
+                "seatNo": "3A"
+            }
         ],
-        createdAt: "2026-10-19T14:00:00.000Z",
+        "createdAt": "2026-10-19T14:00:00.000Z"
     },
     {
-        id: "booking_3",
-        pnr: "BUSGO12347",
-        userId: "user_2",
-        tripId: "trip_14",
-        totalAmount: 4400,
-        status: "CONFIRMED",
-        paymentMethod: "UPI",
-        isPaid: true,
-        boardingPoint: "Dadar TT (18:00)",
-        droppingPoint: "Majestic Bus Stand (10:00)",
-        passengers: [
-            { name: "Vikram Singh", age: 35, gender: "Male", seatNo: "5A" },
-            { name: "Priya Singh", age: 32, gender: "Female", seatNo: "5B" },
+        "id": "booking_3",
+        "pnr": "BUSGO12347",
+        "userId": "user_2",
+        "tripId": "trip_5",
+        "totalAmount": 45,
+        "status": "CONFIRMED",
+        "paymentMethod": "UPI",
+        "isPaid": true,
+        "boardingPoint": "Graphic Era University (Gate 1) (09:30 AM)",
+        "droppingPoint": "Prem Nagar Main Chowk (10:10 AM)",
+        "passengers": [
+            {
+                "name": "Akhil Gahlawat",
+                "age": 22,
+                "gender": "Male",
+                "seatNo": "5A"
+            }
         ],
-        createdAt: "2026-10-18T09:00:00.000Z",
+        "createdAt": "2026-10-18T09:00:00.000Z"
     },
     {
-        id: "booking_4",
-        pnr: "BUSGO12348",
-        userId: "user_1",
-        tripId: "trip_4",
-        totalAmount: 550,
-        status: "CANCELLED",
-        paymentMethod: "COD",
-        isPaid: false,
-        boardingPoint: "Dadar TT (06:00)",
-        droppingPoint: "Swargate Bus Stand (09:30)",
-        passengers: [
-            { name: "Agrima Mishra", age: 24, gender: "Female", seatNo: "2C" },
+        "id": "booking_4",
+        "pnr": "BUSGO12348",
+        "userId": "user_1",
+        "tripId": "trip_7",
+        "totalAmount": 25,
+        "status": "CANCELLED",
+        "paymentMethod": "COD",
+        "isPaid": false,
+        "boardingPoint": "Ghanta Ghar Main Stand (11:00 AM)",
+        "droppingPoint": "Jakhan Chowk (11:35 AM)",
+        "passengers": [
+            {
+                "name": "Agrima Mishra",
+                "age": 22,
+                "gender": "Female",
+                "seatNo": "2C"
+            }
         ],
-        createdAt: "2026-10-17T16:30:00.000Z",
-    },
-    {
-        id: "booking_5",
-        pnr: "BUSGO12349",
-        userId: "user_3",
-        tripId: "trip_18",
-        totalAmount: 2600,
-        status: "CONFIRMED",
-        paymentMethod: "STRIPE",
-        isPaid: true,
-        boardingPoint: "Sindhi Camp Bus Stand (20:00)",
-        droppingPoint: "Geeta Mandir (06:00)",
-        passengers: [
-            { name: "Ankit Patel", age: 29, gender: "Male", seatNo: "4A" },
-            { name: "Sneha Patel", age: 27, gender: "Female", seatNo: "4B" },
-        ],
-        createdAt: "2026-10-21T11:15:00.000Z",
-    },
+        "createdAt": "2026-10-17T16:30:00.000Z"
+    }
 ];
 
 // --- Sample Reviews ---
 export const sampleReviews = [
-    { id: "review_1", rating: 5, review: "Excellent service! The bus was on time, clean, and the staff was very courteous. Will definitely travel with Royal Travels again.", userId: "user_1", tripId: "trip_1", userName: "Agrima Mishra", createdAt: "2026-10-15T08:00:00.000Z" },
-    { id: "review_2", rating: 4, review: "Good journey overall. Seats were comfortable and the AC worked perfectly. Slight delay at departure but made up the time.", userId: "user_2", tripId: "trip_8", userName: "Vikram Singh", createdAt: "2026-10-14T10:30:00.000Z" },
-    { id: "review_3", rating: 3, review: "Average experience. The bus was a bit old and charging points were not working. However, the driver was skilled and we reached safely.", userId: "user_3", tripId: "trip_4", userName: "Ankit Patel", createdAt: "2026-10-13T12:45:00.000Z" },
-    { id: "review_4", rating: 5, review: "Best sleeper bus I've ever taken! The blankets were fresh, the berth was spacious, and the journey was smooth. Highly recommend VRL Travels.", userId: "user_4", tripId: "trip_14", userName: "Priya Sharma", createdAt: "2026-10-12T16:00:00.000Z" },
-    { id: "review_5", rating: 2, review: "Disappointing. The bus departed 45 minutes late and the WiFi didn't work. The water bottle provided was warm. Expected better from a premium operator.", userId: "user_5", tripId: "trip_10", userName: "Ravi Kumar", createdAt: "2026-10-11T07:30:00.000Z" },
-    { id: "review_6", rating: 4, review: "Comfortable semi-sleeper bus. Good legroom and the track-my-bus feature was really helpful. Arrived right on time.", userId: "user_1", tripId: "trip_21", userName: "Agrima Mishra", createdAt: "2026-10-10T09:00:00.000Z" },
-    { id: "review_7", rating: 5, review: "Fantastic overnight journey! Slept like a baby. Clean sheets, great suspension, and polite staff. This is how bus travel should be.", userId: "user_6", tripId: "trip_3", userName: "Meera Nair", createdAt: "2026-10-09T11:20:00.000Z" },
-    { id: "review_8", rating: 4, review: "Value for money. The seater was comfortable for the price. Good pickup and drop points. Would book again for short routes.", userId: "user_7", tripId: "trip_5", userName: "Sanjay Gupta", createdAt: "2026-10-08T14:15:00.000Z" },
-    { id: "review_9", rating: 1, review: "Terrible experience. Bus broke down midway and we had to wait 2 hours for a replacement. No communication from the operator. Avoid this trip.", userId: "user_8", tripId: "trip_20", userName: "Deepak Joshi", createdAt: "2026-10-07T06:00:00.000Z" },
-    { id: "review_10", rating: 4, review: "Smooth ride from Delhi to Lucknow. Driver was experienced and maintained safe speed throughout. AC was consistently cool. Will recommend.", userId: "user_9", tripId: "trip_16", userName: "Neha Verma", createdAt: "2026-10-06T18:30:00.000Z" },
+    { id: "rev_1", rating: 5, review: "Very punctual shuttle from Graphic Era to Clock Tower! Clean bus.", userId: "user_1", userName: "Agrima Mishra", createdAt: "2026-10-21" },
+    { id: "rev_2", rating: 5, review: "Direct connectivity from ISBT to Sahastradhara made travel seamless.", userId: "user_2", userName: "Krishna Kant", createdAt: "2026-10-20" },
+    { id: "rev_3", rating: 4, review: "Great AC bus service to Prem Nagar campus. Highly recommended.", userId: "user_3", userName: "Aditi Singh", createdAt: "2026-10-19" },
+    { id: "rev_4", rating: 5, review: "Comfortable seating, accurate timings, and easy online ticket booking.", userId: "user_4", userName: "Akhil Gahlawat", createdAt: "2026-10-18" },
 ];
 
-// --- Dummy User ---
 export const dummyUserData = {
     id: "user_1",
     name: "Agrima",
-    email: "agrima@example.com",
+    email: "agrima@geu.ac.in",
     phone: "+91 98765 43210",
     image: "/profile_pic1.jpg",
 };
 
-// --- Admin Dashboard Data ---
 export const dummyAdminDashboardData = {
-    totalBookings: 156,
-    totalRevenue: 245800,
+    totalBookings: 184,
+    totalRevenue: 34800,
     activeOperators: 5,
-    totalTripsToday: 12,
+    totalTripsToday: 64,
     bookingsPerDay: [
         { date: "2026-10-15", bookings: 18 },
         { date: "2026-10-16", bookings: 22 },
-        { date: "2026-10-17", bookings: 15 },
+        { date: "2026-10-17", bookings: 25 },
         { date: "2026-10-18", bookings: 28 },
         { date: "2026-10-19", bookings: 32 },
-        { date: "2026-10-20", bookings: 25 },
-        { date: "2026-10-21", bookings: 16 },
+        { date: "2026-10-20", bookings: 35 },
+        { date: "2026-10-21", bookings: 24 },
     ],
 };
 
-// --- Operator Dashboard Data ---
 export const dummyOperatorDashboardData = {
-    todayBookings: 8,
-    totalRevenue: 68500,
-    avgRating: 4.5,
-    totalTrips: 24,
+    todayBookings: 24,
+    totalRevenue: 12500,
+    avgRating: 4.8,
+    totalTrips: 48,
     recentBookings: [
-        { pnr: "BUSGO12345", passenger: "Agrima Mishra", route: "Delhi → Jaipur", amount: 1300, status: "CONFIRMED", date: "2026-10-21" },
-        { pnr: "BUSGO12350", passenger: "Rohit Mehra", route: "Delhi → Chandigarh", amount: 1000, status: "CONFIRMED", date: "2026-10-21" },
-        { pnr: "BUSGO12351", passenger: "Sima Agarwal", route: "Delhi → Dehradun", amount: 800, status: "CONFIRMED", date: "2026-10-20" },
-        { pnr: "BUSGO12352", passenger: "Karan Kapoor", route: "Delhi → Lucknow", amount: 950, status: "CANCELLED", date: "2026-10-20" },
-        { pnr: "BUSGO12353", passenger: "Aditi Rao", route: "Delhi → Jaipur", amount: 1200, status: "CONFIRMED", date: "2026-10-19" },
+        { pnr: "BUSGO12345", passenger: "Agrima Mishra", route: "Clement Town → Clock Tower", amount: 70, status: "CONFIRMED", date: "2026-10-21" },
+        { pnr: "BUSGO12346", passenger: "Aditi Singh", route: "ISBT Dehradun → Sahastradhara", amount: 50, status: "CONFIRMED", date: "2026-10-20" },
+        { pnr: "BUSGO12347", passenger: "Akhil Gahlawat", route: "Clement Town → Prem Nagar", amount: 45, status: "CONFIRMED", date: "2026-10-19" },
+        { pnr: "BUSGO12348", passenger: "Krishna Kant", route: "Clock Tower → Rajpur Road", amount: 25, status: "CONFIRMED", date: "2026-10-19" },
     ],
 };
 
-// --- Coupon Data ---
 export const couponDummyData = [
-    { code: "FIRSTBUS", description: "20% off on first booking", discount: 20, forNewUser: true },
-    { code: "TRAVEL10", description: "10% off on all bookings", discount: 10, forNewUser: false },
-    { code: "HOLIDAY25", description: "25% off for holiday season", discount: 25, forNewUser: false },
+    { code: "CAMPUS20", description: "20% off for Graphic Era students & staff", discount: 20, forNewUser: false },
+    { code: "FIRSTBUS", description: "25% off on your first bus booking", discount: 25, forNewUser: true },
+    { code: "DOON10", description: "10% off on all local city routes", discount: 10, forNewUser: false },
 ];
 
-// --- Popular Routes ---
+export const storesDummyData = busOperators;
+
 export const popularRoutes = [
-    { from: "Delhi", to: "Jaipur", trips: 45, startingPrice: 500, image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?w=600&auto=format&fit=crop&q=80" },
-    { from: "Mumbai", to: "Pune", trips: 62, startingPrice: 400, image: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=600&auto=format&fit=crop&q=80" },
-    { from: "Delhi", to: "Dehradun", trips: 38, startingPrice: 700, image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&auto=format&fit=crop&q=80" },
-    { from: "Bangalore", to: "Chennai", trips: 55, startingPrice: 850, image: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=600&auto=format&fit=crop&q=80" },
-    { from: "Hyderabad", to: "Bangalore", trips: 40, startingPrice: 900, image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=600&auto=format&fit=crop&q=80" },
-    { from: "Delhi", to: "Chandigarh", trips: 50, startingPrice: 550, image: "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=600&auto=format&fit=crop&q=80" },
-    { from: "Mumbai", to: "Bangalore", trips: 30, startingPrice: 2200, image: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=600&auto=format&fit=crop&q=80" },
-    { from: "Delhi", to: "Lucknow", trips: 35, startingPrice: 750, image: "https://images.unsplash.com/photo-1600100397608-f010f443b71a?w=600&auto=format&fit=crop&q=80" },
-    { from: "Jaipur", to: "Ahmedabad", trips: 28, startingPrice: 800, image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?w=600&auto=format&fit=crop&q=80" },
-    { from: "Pune", to: "Hyderabad", trips: 32, startingPrice: 1050, image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=600&auto=format&fit=crop&q=80" },
+    {
+        "from": "Clement Town",
+        "to": "Clock Tower",
+        "trips": 45,
+        "startingPrice": 35,
+        "image": "https://images.unsplash.com/photo-1599661046289-e31897846e41?w=600&auto=format&fit=crop&q=80"
+    },
+    {
+        "from": "ISBT Dehradun",
+        "to": "Sahastradhara",
+        "trips": 38,
+        "startingPrice": 50,
+        "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&auto=format&fit=crop&q=80"
+    },
+    {
+        "from": "Clement Town",
+        "to": "Prem Nagar",
+        "trips": 32,
+        "startingPrice": 45,
+        "image": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=600&auto=format&fit=crop&q=80"
+    },
+    {
+        "from": "Clock Tower",
+        "to": "Rajpur Road",
+        "trips": 55,
+        "startingPrice": 25,
+        "image": "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=600&auto=format&fit=crop&q=80"
+    },
+    {
+        "from": "Clock Tower",
+        "to": "Robber's Cave",
+        "trips": 28,
+        "startingPrice": 40,
+        "image": "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=600&auto=format&fit=crop&q=80"
+    },
+    {
+        "from": "ISBT Dehradun",
+        "to": "FRI",
+        "trips": 30,
+        "startingPrice": 35,
+        "image": "https://images.unsplash.com/photo-1600100397608-f010f443b71a?w=600&auto=format&fit=crop&q=80"
+    },
+    {
+        "from": "Clement Town",
+        "to": "ISBT Dehradun",
+        "trips": 60,
+        "startingPrice": 20,
+        "image": "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=600&auto=format&fit=crop&q=80"
+    },
+    {
+        "from": "Rajpur Road",
+        "to": "Sahastradhara",
+        "trips": 25,
+        "startingPrice": 45,
+        "image": "https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=600&auto=format&fit=crop&q=80"
+    }
 ];
 
-// --- Bus Types for Filtering ---
-export const busTypes = ["All", "AC Seater", "AC Sleeper", "Non-AC Seater", "Non-AC Sleeper", "Semi Sleeper"];
+export const busTypes = ["All", "AC Seater", "City Link", "Valley Shuttle", "Doon Express"];
 
-
-// Backwards compatibility aliases for operator dashboards
 export const dummyStoreData = {
     id: busOperators[0]?.id || "op_1",
     userId: busOperators[0]?.userId || "user_op_1",
-    name: busOperators[0]?.name || "Royal Travels",
-    description: busOperators[0]?.description || "Premium bus service",
-    username: "royaltravels",
-    address: "ISBT Kashmere Gate, New Delhi",
+    name: busOperators[0]?.name || "Doon City Express",
+    username: "doonexpress",
+    description: busOperators[0]?.description || "Premier city transport service.",
+    address: "ISBT Terminal, Haridwar Bypass, Dehradun",
+    contact: busOperators[0]?.contact || "+91 98100 11111",
+    email: busOperators[0]?.email || "info@dooncityexpress.in",
     status: "approved",
     isActive: true,
-    logo: busOperators[0]?.logo || "/operator1.png",
-    email: busOperators[0]?.email || "info@royaltravels.com",
-    contact: busOperators[0]?.contact || "+91 98100 11111",
 };
-
-export const storesDummyData = busOperators.map((op) => ({
-    id: op.id,
-    userId: op.userId,
-    name: op.name,
-    description: op.description,
-    username: op.name.toLowerCase().replace(/\s+/g, ""),
-    address: "Intercity Bus Terminus",
-    status: op.status,
-    isActive: op.isActive,
-    logo: op.logo,
-    email: op.email,
-    contact: op.contact,
-    createdAt: "2026-01-15T00:00:00Z",
-}));

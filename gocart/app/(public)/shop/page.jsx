@@ -1,26 +1,43 @@
 'use client'
-import { Suspense, useState, useMemo } from "react";
+import { Suspense, useState, useMemo, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { busTrips, busOperators, busTypes, cities } from "@/assets/busData";
 import TripCard from "@/components/TripCard";
-import { ArrowLeftRight, Calendar, Filter, MapPin, SlidersHorizontal, Star, X } from "lucide-react";
+import { ArrowLeftRight, Calendar, Filter, MapPin, SlidersHorizontal, Star, X, Route as RouteIcon, Zap } from "lucide-react";
 
 function SearchContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
 
-    const paramFrom = searchParams.get("from") || "Delhi";
-    const paramTo = searchParams.get("to") || "Jaipur";
+    const paramFrom = searchParams.get("from") || "Clement Town";
+    const paramTo = searchParams.get("to") || "Clock Tower";
     const paramDate = searchParams.get("date") || "2026-10-23";
 
     // Filter states
     const [selectedBusType, setSelectedBusType] = useState("All");
     const [selectedOperator, setSelectedOperator] = useState("All");
-    const [maxPrice, setMaxPrice] = useState(3000);
+    const [maxPrice, setMaxPrice] = useState(200);
     const [minRating, setMinRating] = useState(0);
     const [sortBy, setSortBy] = useState("price_asc");
     const [showMobileFilter, setShowMobileFilter] = useState(false);
+    const [dijkstraData, setDijkstraData] = useState(null);
+
+    // Fetch shortest path from C++ engine bridge
+    useEffect(() => {
+        const srcStop = cities.find(c => c.name.toLowerCase() === paramFrom.toLowerCase());
+        const dstStop = cities.find(c => c.name.toLowerCase() === paramTo.toLowerCase());
+        if (srcStop && dstStop) {
+            fetch(`/api/bus/shortest-path?src=${srcStop.id}&dest=${dstStop.id}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        setDijkstraData(data);
+                    }
+                })
+                .catch(() => {});
+        }
+    }, [paramFrom, paramTo]);
 
     // Filter logic
     const filteredTrips = useMemo(() => {
@@ -45,7 +62,7 @@ function SearchContent() {
     const handleClearFilters = () => {
         setSelectedBusType("All");
         setSelectedOperator("All");
-        setMaxPrice(3000);
+        setMaxPrice(200);
         setMinRating(0);
         setSortBy("price_asc");
     };
@@ -153,16 +170,16 @@ function SearchContent() {
                                 </div>
                                 <input
                                     type="range"
-                                    min="400"
-                                    max="3000"
-                                    step="50"
+                                    min="20"
+                                    max="200"
+                                    step="5"
                                     value={maxPrice}
                                     onChange={(e) => setMaxPrice(Number(e.target.value))}
                                     className="w-full accent-blue-600 cursor-pointer"
                                 />
                                 <div className="flex justify-between text-[10px] text-slate-400 mt-1">
-                                    <span>₹400</span>
-                                    <span>₹3000</span>
+                                    <span>₹20</span>
+                                    <span>₹200</span>
                                 </div>
                             </div>
 
@@ -237,6 +254,36 @@ function SearchContent() {
                                 </button>
                             </div>
                         </div>
+
+                        {/* Live Dijkstra Optimal Route Banner from C++ Engine */}
+                        {dijkstraData && dijkstraData.path?.length > 0 && (
+                            <div className="mb-6 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 rounded-3xl p-5 text-white shadow-lg shadow-blue-500/10">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/20">
+                                    <div className="flex items-center gap-2">
+                                        <span className="px-2.5 py-1 bg-white/20 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1">
+                                            <Zap size={11} className="fill-amber-300 text-amber-300" /> C++ Dijkstra Optimizer
+                                        </span>
+                                        <span className="text-xs font-semibold text-blue-100">Shortest Route Computed</span>
+                                    </div>
+                                    <div className="text-xs font-extrabold bg-white text-blue-900 px-3.5 py-1 rounded-full w-fit shadow-xs">
+                                        Distance: {dijkstraData.distance} km
+                                    </div>
+                                </div>
+                                <div className="mt-3 flex flex-wrap items-center gap-2 text-xs font-bold">
+                                    <span className="text-blue-200">Optimal Path:</span>
+                                    {dijkstraData.path.map((p, idx) => (
+                                        <div key={idx} className="flex items-center gap-1.5">
+                                            <span className="bg-white/15 px-3 py-1 rounded-xl border border-white/25">
+                                                {p.stopName}
+                                            </span>
+                                            {idx < dijkstraData.path.length - 1 && (
+                                                <span className="text-white/60">→</span>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
                         {/* Trip Cards */}
                         {filteredTrips.length > 0 ? (

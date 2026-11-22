@@ -2,15 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 import { busTrips } from "@/assets/busData";
 
 const initialState = {
-  from: "Delhi",
-  to: "Jaipur",
+  from: "Clement Town",
+  to: "Clock Tower",
   date: "2026-10-23",
   allTrips: busTrips || [],
-  results: busTrips ? busTrips.filter((t) => t.sourceCity === "Delhi" && t.destCity === "Jaipur") : [],
+  results: busTrips ? busTrips.filter((t) => t.sourceCity === "Clement Town" && t.destCity === "Clock Tower") : [],
   filters: {
     busType: "All",
     departureTime: "All", // "All", "Before 6 AM", "6 AM - 12 PM", "12 PM - 6 PM", "After 6 PM"
-    maxPrice: 3000,
+    maxPrice: 500,
     operator: "All",
     minRating: 0,
   },

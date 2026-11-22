@@ -4,23 +4,23 @@ import { Bus, Mail, Phone, MapPin } from "lucide-react";
 const Footer = () => {
     const linkSections = [
         {
-            title: "POPULAR ROUTES",
+            title: "POPULAR LOCAL ROUTES",
             links: [
-                { text: "Delhi to Jaipur Bus", path: '/shop?from=Delhi&to=Jaipur' },
-                { text: "Delhi to Dehradun Bus", path: '/shop?from=Delhi&to=Dehradun' },
-                { text: "Mumbai to Pune Bus", path: '/shop?from=Mumbai&to=Pune' },
-                { text: "Bangalore to Chennai Bus", path: '/shop?from=Bangalore&to=Chennai' },
-                { text: "Hyderabad to Bangalore Bus", path: '/shop?from=Hyderabad&to=Bangalore' },
+                { text: "Clement Town to Clock Tower", path: '/shop?from=Clement%20Town&to=Clock%20Tower' },
+                { text: "ISBT to Sahastradhara Express", path: '/shop?from=ISBT%20Dehradun&to=Sahastradhara' },
+                { text: "Clement Town to Prem Nagar", path: '/shop?from=Clement%20Town&to=Prem%20Nagar' },
+                { text: "Clock Tower to Rajpur Road", path: '/shop?from=Clock%20Tower&to=Rajpur%20Road' },
+                { text: "Clock Tower to Robber's Cave", path: '/shop?from=Clock%20Tower&to=Robber%27s%20Cave' },
             ]
         },
         {
-            title: "TOP OPERATORS",
+            title: "LOCAL OPERATORS",
             links: [
-                { text: "Royal Travels", path: '/shop' },
-                { text: "Neeta Travels", path: '/shop' },
-                { text: "SRS Travels", path: '/shop' },
-                { text: "VRL Travels", path: '/shop' },
-                { text: "Shrinath Travels", path: '/shop' },
+                { text: "Doon City Express", path: '/shop' },
+                { text: "Graphic Era Shuttle", path: '/shop' },
+                { text: "Valley Rapid Link", path: '/shop' },
+                { text: "Hill View Transit", path: '/shop' },
+                { text: "Uttarakhand Parivahan Local", path: '/shop' },
             ]
         },
         {

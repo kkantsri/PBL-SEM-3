@@ -124,25 +124,25 @@ const SeatMap = ({ trip, onProceed }) => {
             </div>
 
             {/* Live Tally and Proceed Footer */}
-            <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div>
-                    <p className="text-xs font-semibold text-slate-500">Selected Seats</p>
-                    <div className="flex items-center gap-2 mt-0.5">
+            <div className="pt-5 border-t border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+                <div className="flex flex-col">
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Selected Seats</p>
+                    <div className="flex items-center gap-2 mt-1">
                         <span className="text-base font-extrabold text-slate-800">
-                            {selectedSeats.length > 0 ? selectedSeats.join(", ") : "None"}
+                            {selectedSeats.length > 0 ? selectedSeats.join(", ") : "None Selected"}
                         </span>
                         {selectedSeats.length > 0 && (
-                            <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
+                            <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">
                                 {selectedSeats.length} seat{selectedSeats.length > 1 ? 's' : ''}
                             </span>
                         )}
                     </div>
                 </div>
 
-                <div className="flex items-center gap-4 w-full sm:w-auto">
-                    <div className="text-right">
-                        <p className="text-[11px] font-semibold text-slate-400">Total Price</p>
-                        <p className="text-xl font-black text-slate-900">
+                <div className="flex items-center justify-between sm:justify-end gap-5 w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+                    <div className="text-left sm:text-right">
+                        <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Price</p>
+                        <p className="text-2xl font-black text-slate-900 leading-tight">
                             {currency}{(selectedSeats.length * (trip?.price || 0))}
                         </p>
                     </div>
@@ -151,9 +151,9 @@ const SeatMap = ({ trip, onProceed }) => {
                         type="button"
                         disabled={selectedSeats.length === 0}
                         onClick={onProceed}
-                        className={`flex-1 sm:flex-none px-6 py-3 font-bold text-xs uppercase tracking-wider rounded-xl transition ${
+                        className={`px-6 py-3 font-bold text-xs uppercase tracking-wider rounded-xl transition whitespace-nowrap ${
                             selectedSeats.length > 0
-                                ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-200 active:scale-95"
+                                ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20 active:scale-95 cursor-pointer"
                                 : "bg-slate-200 text-slate-400 cursor-not-allowed"
                         }`}
                     >

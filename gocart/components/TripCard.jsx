@@ -78,22 +78,22 @@ const TripCard = ({ trip }) => {
                 </div>
 
                 {/* Right Section: Price & Action */}
-                <div className="flex items-center lg:flex-col justify-between lg:justify-center items-end gap-3 min-w-[160px]">
+                <div className="flex flex-row lg:flex-col items-center lg:items-end justify-between lg:justify-center gap-3 pt-4 lg:pt-0 border-t lg:border-t-0 lg:border-l border-slate-100 lg:pl-6 min-w-[160px] lg:w-44 shrink-0">
                     <div className="text-left lg:text-right">
                         <div className="flex items-baseline gap-1.5 lg:justify-end">
-                            <span className="text-2xl font-black text-slate-900">{currency}{trip.price}</span>
+                            <span className="text-2xl font-black text-slate-900 leading-tight">{currency}{trip.price}</span>
                             {trip.mrp && trip.mrp > trip.price && (
                                 <span className="text-xs text-slate-400 line-through">{currency}{trip.mrp}</span>
                             )}
                         </div>
-                        <p className="text-[11px] font-semibold text-emerald-600">
+                        <p className="text-[11px] font-semibold text-emerald-600 mt-0.5">
                             {trip.availableSeats} seats left
                         </p>
                     </div>
 
                     <Link
                         href={`/product/${trip.id}`}
-                        className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-xs rounded-xl shadow-md shadow-blue-200 transition text-center whitespace-nowrap"
+                        className="w-auto lg:w-full px-5 py-2.5 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-xs rounded-xl shadow-md shadow-blue-500/20 transition text-center whitespace-nowrap flex items-center justify-center"
                     >
                         Select Seats
                     </Link>

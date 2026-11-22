@@ -29,7 +29,7 @@ const Hero = () => {
                         </span> in Seconds.
                     </h1>
                     <p className="mt-4 text-base sm:text-lg text-slate-600 font-normal max-w-2xl mx-auto">
-                        Search 20+ luxury & express operators, choose your favourite window or sleeper seat, and enjoy guaranteed on-time departure.
+                        Smart route optimization across Clement Town, ISBT, Clock Tower, Rajpur Road, and campus corridors powered by C++ Dijkstra routing.
                     </p>
                 </div>
 

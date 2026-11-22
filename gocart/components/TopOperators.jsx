@@ -13,10 +13,10 @@ const TopOperators = () => {
                         Verified Partners
                     </span>
                     <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
-                        India&apos;s Top Bus Operators
+                        Top Local Transit Operators
                     </h2>
                     <p className="text-sm text-slate-500 mt-1">
-                        Book with trusted operators committed to punctuality, clean coaches, and safe travel.
+                        Trusted campus shuttles and city transit fleets committed to punctuality, clean coaches, and safe travel.
                     </p>
                 </div>
 

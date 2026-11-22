@@ -26,10 +26,10 @@ const PopularRoutes = () => {
                             Trending Destinations
                         </span>
                         <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
-                            Popular Bus Routes
+                            Popular Local Routes
                         </h2>
                         <p className="text-sm text-slate-500 mt-1">
-                            Daily buses connecting major cities across India at the best fares.
+                            Frequent shuttles and express buses connecting Clement Town, ISBT, and key city hubs.
                         </p>
                     </div>
                 </div>

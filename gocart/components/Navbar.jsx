@@ -58,7 +58,7 @@ const Navbar = () => {
                             <input
                                 className="w-full bg-transparent outline-none placeholder-slate-400 text-xs text-slate-700"
                                 type="text"
-                                placeholder="Search destination (e.g. Jaipur)"
+                                placeholder="Search stop (e.g. Clement Town)"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
