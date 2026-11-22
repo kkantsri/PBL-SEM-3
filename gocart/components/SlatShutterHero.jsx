@@ -6,13 +6,13 @@ import {
   useScroll,
   useTransform,
   useSpring,
-  useMotionValueEvent,
   useReducedMotion,
   cubicBezier,
-  AnimatePresence,
 } from "motion/react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import SearchWidget from "@/components/SearchWidget";
+import { Sparkles, Tag, ShieldCheck, Clock } from "lucide-react";
 
 function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -21,7 +21,6 @@ function cn(...inputs) {
 const ease = cubicBezier(0.42, 0, 0, 1);
 
 function Slat({ index, count, progress, src }) {
-  // open from the centre outwards
   const mid = (count - 1) / 2;
   const order = Math.abs(index - mid) / Math.max(mid, 1);
   const start = 0.12 + order * 0.16;
@@ -55,75 +54,49 @@ function Slat({ index, count, progress, src }) {
   );
 }
 
-function Headline({ lines, tone }) {
-  return (
-    <motion.h1
-      key={tone}
-      className="text-[clamp(36px,5.2vw,78px)] font-normal leading-[1.03] tracking-[-0.035em] text-white drop-shadow-xl"
-      initial="hidden"
-      animate="show"
-      exit="exit"
-    >
-      {lines.map((line, i) => (
-        <span key={i} className="block overflow-hidden pb-[0.08em] md:whitespace-nowrap">
-          <motion.span
-            className="block"
-            variants={{
-              hidden: { y: "110%" },
-              show: { y: "0%", transition: { duration: 0.9, ease: [0.42, 0, 0, 1], delay: 0.08 * i } },
-              exit: { y: "-110%", transition: { duration: 0.45, ease: [0.42, 0, 1, 1], delay: 0.05 * i } },
-            }}
-          >
-            {line}
-          </motion.span>
-        </span>
-      ))}
-    </motion.h1>
-  );
-}
-
-const MOUNTAIN_BUS = "/mountain-bus.jpg";
-const HALF_DOME = "/half-dome.jpg";
+const OLD_IMAGE = "/seashore-golden-hour.jpg";
+const SECOND_IMAGE = "/half-dome.jpg";
 
 export function SlatShutterHero({
-  coverSrc = MOUNTAIN_BUS,
-  revealSrc = HALF_DOME,
-  coverTitle = ["Safe Journeys Through Every Mile,", "Travel with Complete Trust"],
-  revealTitle = ["Live GPS Tracking & Certified Fleets,", "Arrive Safely, Every Single Time"],
+  coverSrc = OLD_IMAGE,
+  revealSrc = SECOND_IMAGE,
   kicker = "Verified & Safe Mountain Transit",
+  coverTitle = ["Safe Journeys Through Every Mile,", "Travel with Complete Trust"],
   caption = "24/7 passenger emergency support, sanitized coaches, vetted professional drivers, and live GPS route monitoring across all corridors.",
   slats = 8,
-  length = 2.5,
+  length = 2.2,
   className = "",
 }) {
   const ref = React.useRef(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.4 });
-  const [revealed, setRevealed] = React.useState(false);
 
-  useMotionValueEvent(scrollYProgress, "change", (v) => setRevealed(v > 0.42));
-
-  const revealScale = useTransform(progress, [0.1, 0.85], [1.18, 1], { ease });
-  const capOpacity = useTransform(progress, [0.7, 0.85], [0, 1]);
+  const coverOpacity = useTransform(progress, [0, 0.28], [1, 0]);
   const coverBaseOpacity = useTransform(progress, [0.06, 0.22], [1, 0]);
+  const revealScale = useTransform(progress, [0.1, 0.85], [1.12, 1], { ease });
+  const revealContentOpacity = useTransform(progress, [0.3, 0.55], [0, 1]);
+  const revealContentY = useTransform(progress, [0.3, 0.55], ["30px", "0px"]);
 
   if (reduce) {
     return (
-      <section className={cn("relative h-svh w-full overflow-hidden bg-black", className)}>
+      <section className={cn("relative min-h-screen w-full overflow-hidden bg-black", className)}>
         <img
           src={coverSrc}
-          alt=""
+          alt="BusGo Hero"
           className="absolute inset-0 h-full w-full object-cover contrast-[1.06] brightness-[1.04]"
         />
-        <div className="absolute inset-0 bg-black/15" />
-        <div className="absolute inset-x-0 bottom-0 p-6 md:p-12">
-          {kicker && <p className="mb-4 text-[15px] text-white/90 drop-shadow-md">{kicker}</p>}
-          <h1 className="text-[clamp(36px,5.2vw,78px)] font-normal leading-[1.03] tracking-[-0.035em] text-white drop-shadow-xl">
-            {coverTitle[0]}
-            <br />
-            {coverTitle[1]}
-          </h1>
+        <div className="absolute inset-0 bg-black/35" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-24 pb-20 flex flex-col justify-between min-h-screen">
+          <div>
+            {kicker && <p className="mb-4 text-[15px] text-white/90 drop-shadow-md">{kicker}</p>}
+            <h1 className="text-[clamp(36px,5.2vw,78px)] font-normal leading-[1.03] tracking-[-0.035em] text-white drop-shadow-xl mb-12">
+              {coverTitle[0]} <br /> {coverTitle[1]}
+            </h1>
+          </div>
+          <div className="w-full">
+            <SearchWidget />
+          </div>
         </div>
       </section>
     );
@@ -137,7 +110,7 @@ export function SlatShutterHero({
     >
       <div className="sticky top-0 h-svh w-full overflow-hidden">
         
-        {/* Revealed image behind everything - 100% full bleed to top edge at all stages */}
+        {/* 2nd Slide Background Image (Half Dome) */}
         <motion.img
           src={revealSrc}
           alt=""
@@ -149,7 +122,7 @@ export function SlatShutterHero({
           }}
         />
 
-        {/* Seamless cover image layer behind the slats - 100% full bleed to top edge */}
+        {/* 1st Slide: Seamless Cover Image (Seashore Golden Hour) behind the slats */}
         <motion.div
           aria-hidden
           className="absolute inset-0 bg-cover bg-center contrast-[1.06] brightness-[1.04]"
@@ -159,41 +132,109 @@ export function SlatShutterHero({
           }}
         />
 
-        {/* Slats (animated on scroll) */}
+        {/* Animated Slats Shutter */}
         <div className="absolute inset-0 flex overflow-hidden">
           {Array.from({ length: slats }).map((_, i) => (
             <Slat key={i} index={i} count={slats} progress={progress} src={coverSrc} />
           ))}
         </div>
 
-        {/* Transparent bottom area - no heavy black gradient */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-black/25 to-transparent" />
-
-        {/* Copy at bottom */}
-        <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-8 p-6 md:px-12 md:pb-12 z-20">
-          <div className="min-w-0 max-w-2xl w-full">
+        {/* 1st Slide Content (Fades out smoothly as user scrolls) */}
+        <motion.div
+          className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-8 p-6 md:px-12 md:pb-12 z-20"
+          style={{ opacity: coverOpacity }}
+        >
+          <div className="min-w-0 max-w-3xl w-full">
             {kicker && (
               <p className="mb-4 text-[15px] text-white/95 font-medium drop-shadow-md">
                 {kicker}
               </p>
             )}
-            <AnimatePresence mode="wait" initial={false}>
-              {revealed ? (
-                <Headline key="r" lines={revealTitle} tone="reveal" />
-              ) : (
-                <Headline key="c" lines={coverTitle} tone="cover" />
-              )}
-            </AnimatePresence>
+            <h1 className="text-[clamp(36px,5.2vw,78px)] font-normal leading-[1.03] tracking-[-0.035em] text-white drop-shadow-xl">
+              <span className="block overflow-hidden pb-[0.08em] md:whitespace-nowrap">
+                {coverTitle[0]}
+              </span>
+              <span className="block overflow-hidden pb-[0.08em] md:whitespace-nowrap">
+                {coverTitle[1]}
+              </span>
+            </h1>
           </div>
           {caption && (
-            <motion.p
-              className="hidden max-w-[28ch] text-right text-[15px] leading-snug text-white/90 md:block font-normal drop-shadow-md shrink-0"
-              style={{ opacity: capOpacity }}
-            >
+            <p className="hidden max-w-[30ch] text-right text-[15px] leading-snug text-white/90 md:block font-normal drop-shadow-md shrink-0">
               {caption}
-            </motion.p>
+            </p>
           )}
-        </div>
+        </motion.div>
+
+        {/* 2nd Slide Content (Components of 3rd moved to 2nd: SearchWidget, Headings, Promo Badges) */}
+        <motion.div
+          className="absolute inset-0 z-30 flex flex-col justify-center items-center px-4 sm:px-6 pt-14 pb-8 overflow-y-auto"
+          style={{
+            opacity: revealContentOpacity,
+            y: revealContentY,
+          }}
+        >
+          <div className="w-full max-w-5xl mx-auto flex flex-col items-center">
+            
+            {/* Dijkstra Badge */}
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-zinc-200 px-4 py-1.5 rounded-full text-xs font-semibold border border-white/15 shadow-inner mb-4">
+              <Sparkles size={14} className="text-blue-400" />
+              <span>Dijkstra-Powered Campus & City Bus Booking</span>
+            </div>
+
+            {/* Main Heading */}
+            <div className="text-center max-w-3xl mx-auto mb-6">
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.15] drop-shadow-lg">
+                Travel Made Simple. <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-teal-300">
+                  Book Local Buses
+                </span> in Seconds.
+              </h2>
+              <p className="mt-2 text-xs sm:text-sm text-zinc-300 font-normal max-w-xl mx-auto leading-relaxed drop-shadow">
+                Instant seat booking across Clement Town, ISBT Dehradun, Clock Tower, Rajpur Road, and campus corridors.
+              </p>
+            </div>
+
+            {/* Core Search Widget with To/From Options */}
+            <div className="w-full mb-6 pointer-events-auto">
+              <SearchWidget />
+            </div>
+
+            {/* Promo Strip Badges */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full max-w-4xl mx-auto">
+              <div className="flex items-center gap-3 bg-black/40 backdrop-blur-md p-3 rounded-xl border border-white/15 shadow-md">
+                <div className="size-8 rounded-lg bg-black/40 border border-white/10 text-blue-400 flex items-center justify-center shrink-0">
+                  <Tag size={15} />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-white">Code FIRSTBUS</p>
+                  <p className="text-[10px] text-zinc-300">20% instant discount</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 bg-black/40 backdrop-blur-md p-3 rounded-xl border border-white/15 shadow-md">
+                <div className="size-8 rounded-lg bg-black/40 border border-white/10 text-emerald-400 flex items-center justify-center shrink-0">
+                  <ShieldCheck size={15} />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-white">100% Refund</p>
+                  <p className="text-[10px] text-zinc-300">Instant cancellations</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 bg-black/40 backdrop-blur-md p-3 rounded-xl border border-white/15 shadow-md">
+                <div className="size-8 rounded-lg bg-black/40 border border-white/10 text-amber-400 flex items-center justify-center shrink-0">
+                  <Clock size={15} />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-white">Live Tracking</p>
+                  <p className="text-[10px] text-zinc-300">GPS location on all buses</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </motion.div>
 
       </div>
     </section>
