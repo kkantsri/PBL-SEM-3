@@ -13,7 +13,6 @@ import {
 } from "motion/react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import SearchWidget from "@/components/SearchWidget";
 
 function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -60,13 +59,13 @@ function Headline({ lines, tone }) {
   return (
     <motion.h1
       key={tone}
-      className="text-[clamp(28px,4.4vw,62px)] font-bold leading-[1.08] tracking-[-0.035em] text-white drop-shadow-lg"
+      className="text-[clamp(40px,5.6vw,84px)] font-normal leading-[1.02] tracking-[-0.035em] text-white drop-shadow-md"
       initial="hidden"
       animate="show"
       exit="exit"
     >
       {lines.map((line, i) => (
-        <span key={i} className="block overflow-hidden pb-[0.06em] md:whitespace-nowrap">
+        <span key={i} className="block overflow-hidden pb-[0.08em] md:whitespace-nowrap">
           <motion.span
             className="block"
             variants={{
@@ -108,28 +107,27 @@ export function SlatShutterHero({
   const revealScale = useTransform(progress, [0.1, 0.85], [1.18, 1], { ease });
   const shade = useTransform(progress, [0, 0.5], [0.12, 0.0]);
   const capOpacity = useTransform(progress, [0.7, 0.85], [0, 1]);
-  const coverBaseOpacity = useTransform(progress, [0.06, 0.22], [1, 0]);
 
-  // Subtle fade on deep scroll so the search bar doesn't obscure the second revealed image
-  const searchBarOpacity = useTransform(progress, [0.15, 0.55], [1, 0.2]);
+  // Seamless cover base behind the slats:
+  // Before scrolling, it fills 100% of the canvas seamlessly, ensuring no black background or seam lines can ever show through!
+  const coverBaseOpacity = useTransform(progress, [0.06, 0.22], [1, 0]);
 
   if (reduce) {
     return (
-      <section className={cn("relative min-h-svh w-full overflow-hidden bg-black pt-24 pb-12 flex flex-col justify-end px-4 sm:px-8", className)}>
+      <section className={cn("relative h-svh w-full overflow-hidden bg-black", className)}>
         <img
-          src={coverSrc}
+          src={revealSrc}
           alt=""
           className="absolute inset-0 h-full w-full object-cover contrast-[1.06] brightness-[1.04]"
         />
-        <div className="absolute inset-0 bg-black/35" />
-        <div className="relative z-20 max-w-7xl mx-auto w-full">
-          {kicker && <p className="mb-2 text-xs sm:text-sm font-semibold tracking-wider uppercase text-blue-400 drop-shadow-sm">{kicker}</p>}
-          <h1 className="text-[clamp(28px,4.4vw,62px)] font-bold leading-[1.08] tracking-[-0.035em] text-white drop-shadow-md mb-8">
-            {coverTitle[0]}
+        <div className="absolute inset-0 bg-black/15" />
+        <div className="absolute inset-x-0 bottom-0 p-6 md:p-12">
+          {kicker && <p className="mb-4 text-[15px] text-white/90 drop-shadow-sm">{kicker}</p>}
+          <h1 className="text-[clamp(40px,5.6vw,84px)] font-normal leading-[1.02] tracking-[-0.035em] text-white drop-shadow-md">
+            {revealTitle[0]}
             <br />
-            {coverTitle[1]}
+            {revealTitle[1]}
           </h1>
-          <SearchWidget transparent />
         </div>
       </section>
     );
@@ -141,8 +139,7 @@ export function SlatShutterHero({
       className={cn("relative w-full bg-black", className)}
       style={{ height: `${length * 100}svh` }}
     >
-      <div className="sticky top-0 h-svh w-full overflow-hidden flex flex-col justify-end pb-8 sm:pb-12 pt-20 px-4 sm:px-8">
-        
+      <div className="sticky top-0 h-svh w-full overflow-hidden">
         {/* Revealed image behind everything */}
         <motion.img
           src={revealSrc}
@@ -155,7 +152,9 @@ export function SlatShutterHero({
           }}
         />
 
-        {/* Seamless cover image layer behind the slats */}
+        {/* Seamless cover image layer behind the slats:
+            This guarantees that any subpixel gap between slats is filled with the exact image pixels, 
+            completely preventing any black lines from showing! */}
         <motion.div
           aria-hidden
           className="absolute inset-0 bg-cover bg-center contrast-[1.06] brightness-[1.04]"
@@ -175,49 +174,30 @@ export function SlatShutterHero({
         {/* Subtle shade for crystal clarity */}
         <motion.div className="pointer-events-none absolute inset-0 bg-black" style={{ opacity: shade }} />
         
-        {/* Soft vignette at bottom just for headline & search widget legibility */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black/85 via-black/35 to-transparent" />
+        {/* Soft vignette at bottom just for headline legibility */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
 
-        {/* Foreground Content: Headline + Transparent Search Bus Bar */}
-        <div className="relative z-20 max-w-7xl mx-auto w-full flex flex-col justify-end">
-          
-          {/* Top text row: Headline + Caption */}
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
-            <div className="min-w-0 max-w-3xl">
-              {kicker && (
-                <p className="mb-2.5 text-xs sm:text-sm font-semibold tracking-wider uppercase text-blue-400 drop-shadow-sm">
-                  {kicker}
-                </p>
+        {/* copy */}
+        <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-8 p-6 md:px-12 md:pb-12 z-20">
+          <div className="min-w-0">
+            {kicker && <p className="mb-4 text-[15px] text-white/90 font-medium drop-shadow-sm">{kicker}</p>}
+            <AnimatePresence mode="wait" initial={false}>
+              {revealed ? (
+                <Headline key="r" lines={revealTitle} tone="reveal" />
+              ) : (
+                <Headline key="c" lines={coverTitle} tone="cover" />
               )}
-              <AnimatePresence mode="wait" initial={false}>
-                {revealed ? (
-                  <Headline key="r" lines={revealTitle} tone="reveal" />
-                ) : (
-                  <Headline key="c" lines={coverTitle} tone="cover" />
-                )}
-              </AnimatePresence>
-            </div>
-
-            {caption && (
-              <motion.p
-                className="hidden max-w-[28ch] text-right text-xs sm:text-sm leading-relaxed text-zinc-300 lg:block font-normal drop-shadow-sm pb-1"
-                style={{ opacity: capOpacity }}
-              >
-                {caption}
-              </motion.p>
-            )}
+            </AnimatePresence>
           </div>
-
-          {/* Transparent Search Bus Bar floating directly over the front page hero image */}
-          <motion.div
-            className="w-full will-change-transform"
-            style={{ opacity: searchBarOpacity }}
-          >
-            <SearchWidget transparent />
-          </motion.div>
-
+          {caption && (
+            <motion.p
+              className="hidden max-w-[28ch] text-right text-[15px] leading-snug text-white/90 md:block font-normal drop-shadow-sm"
+              style={{ opacity: capOpacity }}
+            >
+              {caption}
+            </motion.p>
+          )}
         </div>
-
       </div>
     </section>
   );

@@ -6,7 +6,7 @@ import { ArrowLeftRight, Calendar, MapPin, Search } from "lucide-react";
 import { cities } from "@/assets/busData";
 import { setSearchParams, swapCities } from "@/lib/features/search/searchSlice";
 
-const SearchWidget = ({ transparent = false }) => {
+const SearchWidget = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const searchState = useSelector((state) => state.search);
@@ -29,30 +29,18 @@ const SearchWidget = ({ transparent = false }) => {
     };
 
     return (
-        <div
-            className={`w-full max-w-5xl mx-auto transition-all ${
-                transparent
-                    ? "bg-black/45 backdrop-blur-xl rounded-3xl shadow-2xl shadow-black/90 p-3 sm:p-5 border border-white/20"
-                    : "bg-zinc-900/90 backdrop-blur-xl rounded-3xl shadow-2xl shadow-black/80 p-4 sm:p-6 border border-zinc-800"
-            }`}
-        >
-            <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-12 gap-2.5 sm:gap-3.5 items-center">
+        <div className="w-full max-w-5xl mx-auto bg-zinc-900/90 backdrop-blur-xl rounded-3xl shadow-2xl shadow-black/80 p-4 sm:p-6 border border-zinc-800">
+            <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4 items-center">
                 
                 {/* Source Stop */}
-                <div
-                    className={`md:col-span-4 relative flex items-center rounded-2xl px-4 py-3 transition ${
-                        transparent
-                            ? "bg-black/35 border border-white/15 hover:border-white/35 focus-within:border-blue-400 focus-within:bg-black/55 backdrop-blur-md"
-                            : "bg-zinc-950/80 border border-zinc-800 hover:border-zinc-700 focus-within:border-blue-400 focus-within:bg-zinc-950"
-                    }`}
-                >
-                    <MapPin className="text-blue-400 mr-3 shrink-0" size={20} />
+                <div className="md:col-span-4 relative flex items-center bg-zinc-950/80 border border-zinc-800 rounded-2xl px-4 py-3 hover:border-zinc-700 focus-within:border-blue-400 focus-within:bg-zinc-950 transition">
+                    <MapPin className="text-blue-400 mr-3 shrink-0" size={22} />
                     <div className="w-full">
-                        <label className="block text-[10px] font-bold text-zinc-300 uppercase tracking-wider">From Stop</label>
+                        <label className="block text-[10px] font-bold text-zinc-400 uppercase tracking-wider">From Stop</label>
                         <select
                             value={from}
                             onChange={(e) => setFrom(e.target.value)}
-                            className="w-full bg-transparent text-white font-semibold text-sm sm:text-base outline-none cursor-pointer [&>option]:bg-zinc-900 [&>option]:text-white"
+                            className="w-full bg-transparent text-white font-semibold text-base outline-none cursor-pointer [&>option]:bg-zinc-900 [&>option]:text-white"
                         >
                             {cities.map((city) => (
                                 <option key={`from_${city.id}`} value={city.name} disabled={city.name === to}>
@@ -64,36 +52,26 @@ const SearchWidget = ({ transparent = false }) => {
                 </div>
 
                 {/* Swap Button */}
-                <div className="md:col-span-1 flex justify-center -my-1 md:my-0">
+                <div className="md:col-span-1 flex justify-center -my-2 md:my-0">
                     <button
                         type="button"
                         onClick={handleSwap}
-                        className={`size-10 rounded-full flex items-center justify-center transition shadow-sm active:scale-95 ${
-                            transparent
-                                ? "bg-white/15 border border-white/25 text-white hover:bg-white/25 hover:border-white/40 backdrop-blur-md"
-                                : "bg-zinc-800 border border-zinc-700 text-zinc-300 hover:text-white hover:bg-zinc-700 hover:border-zinc-500"
-                        }`}
+                        className="size-10 bg-zinc-800 border border-zinc-700 rounded-full flex items-center justify-center text-zinc-300 hover:text-white hover:bg-zinc-700 hover:border-zinc-500 transition shadow-sm active:scale-95"
                         title="Swap stops"
                     >
-                        <ArrowLeftRight size={17} />
+                        <ArrowLeftRight size={18} />
                     </button>
                 </div>
 
                 {/* Destination Stop */}
-                <div
-                    className={`md:col-span-4 relative flex items-center rounded-2xl px-4 py-3 transition ${
-                        transparent
-                            ? "bg-black/35 border border-white/15 hover:border-white/35 focus-within:border-emerald-400 focus-within:bg-black/55 backdrop-blur-md"
-                            : "bg-zinc-950/80 border border-zinc-800 hover:border-zinc-700 focus-within:border-blue-400 focus-within:bg-zinc-950"
-                    }`}
-                >
-                    <MapPin className="text-emerald-400 mr-3 shrink-0" size={20} />
+                <div className="md:col-span-4 relative flex items-center bg-zinc-950/80 border border-zinc-800 rounded-2xl px-4 py-3 hover:border-zinc-700 focus-within:border-blue-400 focus-within:bg-zinc-950 transition">
+                    <MapPin className="text-emerald-400 mr-3 shrink-0" size={22} />
                     <div className="w-full">
-                        <label className="block text-[10px] font-bold text-zinc-300 uppercase tracking-wider">To Stop</label>
+                        <label className="block text-[10px] font-bold text-zinc-400 uppercase tracking-wider">To Stop</label>
                         <select
                             value={to}
                             onChange={(e) => setTo(e.target.value)}
-                            className="w-full bg-transparent text-white font-semibold text-sm sm:text-base outline-none cursor-pointer [&>option]:bg-zinc-900 [&>option]:text-white"
+                            className="w-full bg-transparent text-white font-semibold text-base outline-none cursor-pointer [&>option]:bg-zinc-900 [&>option]:text-white"
                         >
                             {cities.map((city) => (
                                 <option key={`to_${city.id}`} value={city.name} disabled={city.name === from}>
@@ -105,22 +83,16 @@ const SearchWidget = ({ transparent = false }) => {
                 </div>
 
                 {/* Date Picker */}
-                <div
-                    className={`md:col-span-3 relative flex items-center rounded-2xl px-4 py-3 transition ${
-                        transparent
-                            ? "bg-black/35 border border-white/15 hover:border-white/35 focus-within:border-indigo-400 focus-within:bg-black/55 backdrop-blur-md"
-                            : "bg-zinc-950/80 border border-zinc-800 hover:border-zinc-700 focus-within:border-blue-400 focus-within:bg-zinc-950"
-                    }`}
-                >
-                    <Calendar className="text-indigo-400 mr-3 shrink-0" size={20} />
+                <div className="md:col-span-3 relative flex items-center bg-zinc-950/80 border border-zinc-800 rounded-2xl px-4 py-3 hover:border-zinc-700 focus-within:border-blue-400 focus-within:bg-zinc-950 transition">
+                    <Calendar className="text-indigo-400 mr-3 shrink-0" size={22} />
                     <div className="w-full">
-                        <label className="block text-[10px] font-bold text-zinc-300 uppercase tracking-wider">Date of Journey</label>
+                        <label className="block text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Date of Journey</label>
                         <input
                             type="date"
                             value={date}
                             min="2026-10-23"
                             onChange={(e) => setDate(e.target.value)}
-                            className="w-full bg-transparent text-white font-semibold text-xs sm:text-sm outline-none cursor-pointer [color-scheme:dark]"
+                            className="w-full bg-transparent text-white font-semibold text-sm outline-none cursor-pointer [color-scheme:dark]"
                         />
                     </div>
                 </div>
@@ -129,10 +101,10 @@ const SearchWidget = ({ transparent = false }) => {
                 <div className="md:col-span-12 mt-1">
                     <button
                         type="submit"
-                        className="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-3.5 sm:py-4 rounded-2xl transition duration-200 flex items-center justify-center gap-2 shadow-xl shadow-blue-600/40 active:scale-[0.99] cursor-pointer"
+                        className="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-4 rounded-2xl transition duration-200 flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 active:scale-[0.99] cursor-pointer"
                     >
-                        <Search size={19} />
-                        <span className="text-sm sm:text-base tracking-wide font-extrabold">Find Available Buses & Shortest Routes</span>
+                        <Search size={20} />
+                        <span className="text-base tracking-wide">Find Available Buses & Shortest Routes</span>
                     </button>
                 </div>
 
