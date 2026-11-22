@@ -10,10 +10,10 @@ import StickerSlapFooter from "@/components/StickerSlapFooter";
 export default function Home() {
     return (
         <main className="min-h-screen bg-[#09090b] text-zinc-100 selection:bg-zinc-800 selection:text-white">
-            {/* 1st Slide: Old Image Only (Seashore Golden Hour)
+            {/* 1st Slide: Mountain Bus Image Only
                 2nd Slide: Slat shutter reveals 2nd Image (Half Dome) + All Search/Booking Components directly on the 2nd slide */}
             <SlatShutterHero
-                coverSrc="/seashore-golden-hour.jpg"
+                coverSrc="/mountain-bus.jpg"
                 revealSrc="/half-dome.jpg"
                 kicker="Verified & Safe Mountain Transit"
                 coverTitle={["Safe Journeys Through Every Mile,", "Travel with Complete Trust"]}

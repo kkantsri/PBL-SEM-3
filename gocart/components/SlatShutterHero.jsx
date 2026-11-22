@@ -54,11 +54,11 @@ function Slat({ index, count, progress, src }) {
   );
 }
 
-const OLD_IMAGE = "/seashore-golden-hour.jpg";
+const BUS_IMAGE = "/mountain-bus.jpg";
 const SECOND_IMAGE = "/half-dome.jpg";
 
 export function SlatShutterHero({
-  coverSrc = OLD_IMAGE,
+  coverSrc = BUS_IMAGE,
   revealSrc = SECOND_IMAGE,
   kicker = "Verified & Safe Mountain Transit",
   coverTitle = ["Safe Journeys Through Every Mile,", "Travel with Complete Trust"],
