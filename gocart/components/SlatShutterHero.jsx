@@ -39,7 +39,7 @@ function Slat({ index, count, progress, src }) {
       <div
         className="absolute inset-y-0 bg-cover bg-center contrast-[1.06] brightness-[1.04]"
         style={{
-          backgroundImage: `url(${src})`,
+          backgroundImage: `url("${src}")`,
           width: `${count * 100}%`,
           left: `${-index * 100}%`,
           imageRendering: "auto",
@@ -78,12 +78,12 @@ function Headline({ lines, tone }) {
   );
 }
 
-const IMG = "https://cdn.jsdelivr.net/gh/rm-sjent/21st-assets@v1/img/";
 const GOLDEN_HOUR_SEASHORE = "/seashore-golden-hour.jpg";
+const CLEAR_WATER_REVEAL = "https://cdn.jsdelivr.net/gh/rm-sjent/21st-assets@v1/img/hero-bright.jpg";
 
 export function SlatShutterHero({
-  coverSrc = `${IMG}hero-dark.jpg`,
-  revealSrc = GOLDEN_HOUR_SEASHORE,
+  coverSrc = GOLDEN_HOUR_SEASHORE,
+  revealSrc = CLEAR_WATER_REVEAL,
   coverTitle = ["Leave the black sand", "before the light goes"],
   revealTitle = ["Then follow the sun", "south to clear water"],
   kicker = "Field notes, issue 14",
