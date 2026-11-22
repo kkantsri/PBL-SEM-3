@@ -12,6 +12,10 @@ export default function Home() {
             <SlatShutterHero
                 coverSrc="/mountain-bus.jpg"
                 revealSrc="https://cdn.jsdelivr.net/gh/rm-sjent/21st-assets@v1/img/hero-bright.jpg"
+                kicker="Verified & Safe Mountain Transit"
+                coverTitle={["Safe Journeys Through Every Mile,", "Travel with Complete Trust"]}
+                revealTitle={["Live GPS Tracking & Certified Fleets,", "Arrive Safely, Every Single Time"]}
+                caption="24/7 passenger emergency support, sanitized coaches, vetted professional drivers, and live GPS route monitoring across all corridors."
             />
             <Hero />
             <PopularRoutes />
