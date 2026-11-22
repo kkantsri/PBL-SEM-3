@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setSearchParams } from "@/lib/features/search/searchSlice";
 import { FocusCards } from "@/components/ui/focus-cards";
-import { Compass, Sparkles, MapPin, Trees } from "lucide-react";
+import { Sparkles, MapPin, Trees } from "lucide-react";
 
 export function FocusCardsDemo() {
   const router = useRouter();
