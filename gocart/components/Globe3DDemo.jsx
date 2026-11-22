@@ -85,26 +85,24 @@ export const sampleMarkers = [
 
 export function Globe3DDemo({ className = "" }) {
   return (
-    <div className={`w-full h-full flex items-center justify-center ${className}`}>
-      <Globe3D
-        markers={sampleMarkers}
-        config={{
-          atmosphereColor: "#4da6ff",
-          atmosphereIntensity: 20,
-          bumpScale: 5,
-          autoRotateSpeed: 0.3,
-          radiusScale: 1,
-        }}
-        onMarkerClick={(marker) => {
-          console.log("Clicked marker:", marker.label);
-        }}
-        onMarkerHover={(marker) => {
-          if (marker) {
-            console.log("Hovering:", marker.label);
-          }
-        }}
-      />
-    </div>
+    <Globe3D
+      className={className}
+      markers={sampleMarkers}
+      config={{
+        atmosphereColor: "#4da6ff",
+        atmosphereIntensity: 20,
+        bumpScale: 5,
+        autoRotateSpeed: 0.3,
+      }}
+      onMarkerClick={(marker) => {
+        console.log("Clicked marker:", marker.label);
+      }}
+      onMarkerHover={(marker) => {
+        if (marker) {
+          console.log("Hovering:", marker.label);
+        }
+      }}
+    />
   );
 }
 

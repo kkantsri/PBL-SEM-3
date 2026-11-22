@@ -1,394 +1,459 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useRef, useMemo, useState, useEffect, useCallback, Suspense } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { OrbitControls, Html, useTexture } from "@react-three/drei";
+import * as THREE from "three";
+import { cn } from "@/lib/utils";
+
+// ============================================================================
+// Constants - Earth Texture URLs (NASA Blue Marble)
+// ============================================================================
+
+const DEFAULT_EARTH_TEXTURE =
+  "https://unpkg.com/three-globe@2.31.0/example/img/earth-blue-marble.jpg";
+const DEFAULT_BUMP_TEXTURE =
+  "https://unpkg.com/three-globe@2.31.0/example/img/earth-topology.png";
+
+// ============================================================================
+// Utility Functions
+// ============================================================================
+
+/**
+ * Convert latitude/longitude to 3D cartesian coordinates
+ */
+function latLngToVector3(lat, lng, radius) {
+  const phi = (90 - lat) * (Math.PI / 180);
+  const theta = (lng + 180) * (Math.PI / 180);
+
+  const x = -(radius * Math.sin(phi) * Math.cos(theta));
+  const z = radius * Math.sin(phi) * Math.sin(theta);
+  const y = radius * Math.cos(phi);
+
+  return new THREE.Vector3(x, y, z);
+}
+
+// ============================================================================
+// Marker Component (static - rotation handled by parent group)
+// ============================================================================
+
+function Marker({
+  marker,
+  radius,
+  defaultSize,
+  onClick,
+  onHover,
+}) {
+  const [hovered, setHovered] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const groupRef = useRef(null);
+  const imageGroupRef = useRef(null);
+  const { camera } = useThree();
+
+  // Surface position (where the line starts)
+  const surfacePosition = useMemo(() => {
+    return latLngToVector3(marker.lat, marker.lng, radius * 1.001);
+  }, [marker.lat, marker.lng, radius]);
+
+  // Top of the line (where the image is) - positioned further out to prevent going inside globe
+  const topPosition = useMemo(() => {
+    return latLngToVector3(marker.lat, marker.lng, radius * 1.18);
+  }, [marker.lat, marker.lng, radius]);
+
+  const lineHeight = topPosition.distanceTo(surfacePosition);
+
+  // Check if marker is facing the camera
+  useFrame(() => {
+    if (!imageGroupRef.current) return;
+
+    // Get the world position of the image (the positioned element)
+    const worldPos = new THREE.Vector3();
+    imageGroupRef.current.getWorldPosition(worldPos);
+
+    // Direction from globe center (0,0,0) to marker
+    const markerDirection = worldPos.clone().normalize();
+
+    // Direction from globe center to camera
+    const cameraDirection = camera.position.clone().normalize();
+
+    // Dot product: positive means facing camera, negative means behind
+    const dot = markerDirection.dot(cameraDirection);
+
+    // Show marker only if it's facing the camera (stricter threshold)
+    setIsVisible(dot > 0.1);
+  });
+
+  const handlePointerEnter = useCallback(() => {
+    setHovered(true);
+    onHover?.(marker);
+  }, [marker, onHover]);
+
+  const handlePointerLeave = useCallback(() => {
+    setHovered(false);
+    onHover?.(null);
+  }, [onHover]);
+
+  const handleClick = useCallback(() => {
+    onClick?.(marker);
+  }, [marker, onClick]);
+
+  // Calculate line center and orientation
+  const { lineCenter, lineQuaternion } = useMemo(() => {
+    const center = surfacePosition.clone().lerp(topPosition, 0.5);
+
+    // Calculate rotation to align cylinder with the direction from surface to top
+    const direction = topPosition.clone().sub(surfacePosition).normalize();
+    const quaternion = new THREE.Quaternion();
+    quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction);
+
+    return { lineCenter: center, lineQuaternion: quaternion };
+  }, [surfacePosition, topPosition]);
+
+  return (
+    <group ref={groupRef} visible={isVisible}>
+      {/* Pin line from surface to image - properly oriented */}
+      <mesh position={lineCenter} quaternion={lineQuaternion}>
+        <cylinderGeometry args={[0.003, 0.003, lineHeight, 8]} />
+        <meshBasicMaterial
+          color={hovered ? "#ffffff" : "#94a3b8"}
+          transparent
+          opacity={hovered ? 0.9 : 0.6}
+        />
+      </mesh>
+
+      {/* Pin point at the surface */}
+      <mesh position={surfacePosition} quaternion={lineQuaternion}>
+        <coneGeometry args={[0.015, 0.04, 8]} />
+        <meshBasicMaterial color={hovered ? "#f97316" : "#ef4444"} />
+      </mesh>
+
+      {/* Circular image at the top */}
+      <group ref={imageGroupRef} position={topPosition}>
+        <Html
+          transform
+          center
+          sprite
+          distanceFactor={10}
+          style={{
+            pointerEvents: isVisible ? "auto" : "none",
+            opacity: isVisible ? 1 : 0,
+            transition: "opacity 0.15s ease-out",
+          }}
+        >
+          <div
+            className={cn(
+              "cursor-pointer overflow-hidden rounded-full bg-neutral-900 shadow-lg transition-transform duration-200",
+              hovered && "scale-125 shadow-xl ring-1 ring-white/50",
+            )}
+            style={{
+              width: "8px",
+              height: "8px",
+            }}
+            onMouseEnter={handlePointerEnter}
+            onMouseLeave={handlePointerLeave}
+            onClick={handleClick}
+          >
+            <img
+              src={marker.src}
+              alt={marker.label || "Marker"}
+              className="h-full w-full object-cover"
+              draggable={false}
+            />
+          </div>
+        </Html>
+      </group>
+    </group>
+  );
+}
+
+// ============================================================================
+// Rotating Globe with Markers (all rotate together)
+// ============================================================================
+
+function RotatingGlobe({
+  config,
+  markers,
+  onMarkerClick,
+  onMarkerHover,
+}) {
+  const groupRef = useRef(null);
+
+  // Load Earth textures
+  const [earthTexture, bumpTexture] = useTexture([
+    config.textureUrl,
+    config.bumpMapUrl,
+  ]);
+
+  // Configure textures
+  useMemo(() => {
+    if (earthTexture) {
+      earthTexture.colorSpace = THREE.SRGBColorSpace;
+      earthTexture.anisotropy = 16;
+    }
+    if (bumpTexture) {
+      bumpTexture.anisotropy = 8;
+    }
+  }, [earthTexture, bumpTexture]);
+
+  // Create geometries
+  const geometry = useMemo(() => {
+    return new THREE.SphereGeometry(config.radius, 64, 64);
+  }, [config.radius]);
+
+  const wireframeGeometry = useMemo(() => {
+    return new THREE.SphereGeometry(config.radius * 1.002, 32, 16);
+  }, [config.radius]);
+
+  return (
+    <group ref={groupRef}>
+      {/* Main globe mesh with Earth texture */}
+      <mesh geometry={geometry}>
+        <meshStandardMaterial
+          map={earthTexture}
+          bumpMap={bumpTexture}
+          bumpScale={config.bumpScale * 0.05}
+          roughness={0.7}
+          metalness={0.0}
+        />
+      </mesh>
+
+      {/* Wireframe overlay */}
+      {config.showWireframe && (
+        <mesh geometry={wireframeGeometry}>
+          <meshBasicMaterial
+            color={config.wireframeColor}
+            wireframe
+            transparent
+            opacity={0.08}
+          />
+        </mesh>
+      )}
+
+      {/* Markers - now inside the rotating group */}
+      {markers.map((marker, index) => (
+        <Marker
+          key={`marker-${index}-${marker.lat}-${marker.lng}`}
+          marker={marker}
+          radius={config.radius}
+          defaultSize={config.markerSize}
+          onClick={onMarkerClick}
+          onHover={onMarkerHover}
+        />
+      ))}
+    </group>
+  );
+}
+
+// ============================================================================
+// Atmosphere Component (stays static - doesn't rotate)
+// ============================================================================
+
+function Atmosphere({ radius, color, intensity, blur }) {
+  // blur controls the fresnel exponent: lower = more diffuse, higher = sharper edge
+  // We invert it so higher blur value = more diffuse (lower exponent)
+  const fresnelPower = Math.max(0.5, 5 - blur);
+
+  const atmosphereMaterial = useMemo(() => {
+    return new THREE.ShaderMaterial({
+      uniforms: {
+        atmosphereColor: { value: new THREE.Color(color) },
+        intensity: { value: intensity },
+        fresnelPower: { value: fresnelPower },
+      },
+      vertexShader: `
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+        void main() {
+          vNormal = normalize(normalMatrix * normal);
+          vPosition = (modelViewMatrix * vec4(position, 1.0)).xyz;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 atmosphereColor;
+        uniform float intensity;
+        uniform float fresnelPower;
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+        void main() {
+          float fresnel = pow(1.0 - abs(dot(vNormal, normalize(-vPosition))), fresnelPower);
+          gl_FragColor = vec4(atmosphereColor, fresnel * intensity);
+        }
+      `,
+      side: THREE.BackSide,
+      transparent: true,
+      depthWrite: false,
+    });
+  }, [color, intensity, fresnelPower]);
+
+  return (
+    <mesh scale={[1.12, 1.12, 1.12]}>
+      <sphereGeometry args={[radius, 64, 32]} />
+      <primitive object={atmosphereMaterial} attach="material" />
+    </mesh>
+  );
+}
+
+// ============================================================================
+// Scene Component
+// ============================================================================
+
+function Scene({ markers, config, onMarkerClick, onMarkerHover }) {
+  const { camera } = useThree();
+
+  // Set initial camera position (pulled back to accommodate markers)
+  React.useEffect(() => {
+    camera.position.set(0, 0, config.radius * 3.5);
+    camera.lookAt(0, 0, 0);
+  }, [camera, config.radius]);
+
+  return (
+    <>
+      {/* Lighting */}
+      <ambientLight intensity={config.ambientIntensity} />
+      <directionalLight
+        position={[config.radius * 5, config.radius * 2, config.radius * 5]}
+        intensity={config.pointLightIntensity}
+        color="#ffffff"
+      />
+      <directionalLight
+        position={[-config.radius * 3, config.radius, -config.radius * 2]}
+        intensity={config.pointLightIntensity * 0.3}
+        color="#88ccff"
+      />
+
+      {/* Rotating Globe with Markers */}
+      <RotatingGlobe
+        config={config}
+        markers={markers}
+        onMarkerClick={onMarkerClick}
+        onMarkerHover={onMarkerHover}
+      />
+
+      {/* Atmosphere (static) */}
+      {config.showAtmosphere && (
+        <Atmosphere
+          radius={config.radius}
+          color={config.atmosphereColor}
+          intensity={config.atmosphereIntensity}
+          blur={config.atmosphereBlur}
+        />
+      )}
+
+      {/* Controls */}
+      <OrbitControls
+        makeDefault
+        enablePan={config.enablePan}
+        enableZoom={config.enableZoom}
+        minDistance={config.minDistance}
+        maxDistance={config.maxDistance}
+        rotateSpeed={0.4}
+        autoRotate={config.autoRotateSpeed > 0}
+        autoRotateSpeed={config.autoRotateSpeed}
+        enableDamping
+        dampingFactor={0.1}
+      />
+    </>
+  );
+}
+
+// ============================================================================
+// Loading Fallback
+// ============================================================================
+
+function LoadingFallback() {
+  return (
+    <Html center>
+      <div className="flex shrink-0 flex-col items-center gap-3">
+        <span className="inline-block shrink-0 text-sm text-neutral-400">
+          Loading globe...
+        </span>
+      </div>
+    </Html>
+  );
+}
+
+// ============================================================================
+// Main Globe3D Component
+// ============================================================================
+
+const defaultConfig = {
+  radius: 2,
+  globeColor: "#1a1a2e",
+  textureUrl: DEFAULT_EARTH_TEXTURE,
+  bumpMapUrl: DEFAULT_BUMP_TEXTURE,
+  showAtmosphere: true,
+  atmosphereColor: "#4da6ff",
+  atmosphereIntensity: 0.8,
+  atmosphereBlur: 2,
+  bumpScale: 1,
+  autoRotateSpeed: 0.3,
+  enableZoom: false,
+  enablePan: false,
+  minDistance: 5,
+  maxDistance: 15,
+  initialRotation: { x: 0, y: 0 },
+  markerSize: 0.06,
+  showWireframe: false,
+  wireframeColor: "#4a9eff",
+  ambientIntensity: 0.6,
+  pointLightIntensity: 1.5,
+  backgroundColor: null,
+};
 
 export function Globe3D({
   markers = [],
   config = {},
+  className,
   onMarkerClick,
   onMarkerHover,
-  className = "",
 }) {
-  const {
-    atmosphereColor = "#4da6ff",
-    atmosphereIntensity = 20,
-    bumpScale = 5,
-    autoRotateSpeed = 0.3,
-    radiusScale = 1,
-  } = config;
-
-  const canvasRef = useRef(null);
-  const containerRef = useRef(null);
-  const rotationRef = useRef({ x: 0.22, y: 0 });
-  const isDraggingRef = useRef(false);
-  const lastMouseRef = useRef({ x: 0, y: 0 });
-  const hoveredMarkerRef = useRef(null);
-  const loadedImagesRef = useRef({});
-
-  // Preload marker avatar images
+  const [mounted, setMounted] = useState(false);
   useEffect(() => {
-    markers.forEach((m) => {
-      if (m.src && !loadedImagesRef.current[m.src]) {
-        const img = new Image();
-        img.crossOrigin = "anonymous";
-        img.src = m.src;
-        img.onload = () => {
-          loadedImagesRef.current[m.src] = img;
-        };
-      }
-    });
-  }, [markers]);
+    setMounted(true);
+  }, []);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+  const mergedConfig = useMemo(
+    () => ({ ...defaultConfig, ...config }),
+    [config],
+  );
 
-    let animId;
-    let width = 800;
-    let height = 800;
-
-    const resize = () => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      width = Math.round(rect.width || window.innerWidth || 800);
-      height = Math.round(rect.height || window.innerHeight || 800);
-
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.scale(dpr, dpr);
-    };
-
-    resize();
-    window.addEventListener("resize", resize);
-
-    // Pre-generate background starfield covering the full viewport
-    const STAR_COUNT = 140;
-    const stars = [];
-    for (let i = 0; i < STAR_COUNT; i++) {
-      stars.push({
-        x: Math.random(),
-        y: Math.random(),
-        size: Math.random() * 1.6 + 0.4,
-        baseAlpha: Math.random() * 0.6 + 0.15,
-        twinkleSpeed: Math.random() * 1.5 + 0.5,
-        twinkleOffset: Math.random() * Math.PI * 2,
-      });
-    }
-
-    // Pre-generate Fibonacci dots on sphere (dense for whole-page coverage)
-    const DOT_COUNT = 1500;
-    const dots = [];
-    const goldenRatio = (1 + Math.sqrt(5)) / 2;
-    for (let i = 0; i < DOT_COUNT; i++) {
-      const theta = (2 * Math.PI * i) / goldenRatio;
-      const phi = Math.acos(1 - (2 * (i + 0.5)) / DOT_COUNT);
-      dots.push({
-        x: Math.cos(theta) * Math.sin(phi),
-        y: Math.cos(phi),
-        z: Math.sin(theta) * Math.sin(phi),
-      });
-    }
-
-    let lastTime = performance.now();
-
-    const render = (now) => {
-      const dt = Math.min((now - lastTime) / 1000, 0.1);
-      lastTime = now;
-
-      // Auto rotation
-      if (!isDraggingRef.current) {
-        rotationRef.current.y += autoRotateSpeed * dt;
-      }
-
-      ctx.clearRect(0, 0, width, height);
-
-      // 0. Render subtle cosmic starfield across the full canvas
-      ctx.save();
-      for (let i = 0; i < STAR_COUNT; i++) {
-        const star = stars[i];
-        const tw = 0.5 + 0.5 * Math.sin(now * 0.002 * star.twinkleSpeed + star.twinkleOffset);
-        ctx.fillStyle = `rgba(255, 255, 255, ${star.baseAlpha * tw * 0.7})`;
-        ctx.beginPath();
-        ctx.arc(star.x * width, star.y * height, star.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.restore();
-
-      const cx = width / 2;
-      const cy = height / 2;
-
-      // Sphere radius configured to cover the whole page dynamically
-      const minDim = Math.min(width, height);
-      const maxDim = Math.max(width, height);
-      const baseRadius = Math.max(minDim * 0.56, maxDim * 0.40);
-      const radius = baseRadius * radiusScale;
-
-      const rotY = rotationRef.current.y;
-      const rotX = rotationRef.current.x;
-
-      const cosY = Math.cos(rotY);
-      const sinY = Math.sin(rotY);
-      const cosX = Math.cos(rotX);
-      const sinX = Math.sin(rotX);
-
-      // 1. Atmosphere outer glow (spanning outwards to fill page edges)
-      const glowGrad = ctx.createRadialGradient(cx, cy, radius * 0.85, cx, cy, radius * 1.36);
-      glowGrad.addColorStop(0, `${atmosphereColor}35`);
-      glowGrad.addColorStop(0.4, `${atmosphereColor}18`);
-      glowGrad.addColorStop(0.8, `${atmosphereColor}08`);
-      glowGrad.addColorStop(1, "transparent");
-
-      ctx.save();
-      ctx.fillStyle = glowGrad;
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius * 1.36, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-
-      // 2. Globe dark sphere body
-      const sphereGrad = ctx.createRadialGradient(
-        cx - radius * 0.35,
-        cy - radius * 0.35,
-        radius * 0.1,
-        cx,
-        cy,
-        radius
-      );
-      sphereGrad.addColorStop(0, "#101628");
-      sphereGrad.addColorStop(0.6, "#080c16");
-      sphereGrad.addColorStop(1, "#020306");
-
-      ctx.save();
-      ctx.fillStyle = sphereGrad;
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Thin crisp globe rim outline
-      ctx.strokeStyle = `${atmosphereColor}60`;
-      ctx.lineWidth = 1.4;
-      ctx.stroke();
-      ctx.restore();
-
-      // 3. Render Fibonacci Sphere Dots
-      ctx.save();
-      for (let i = 0; i < DOT_COUNT; i++) {
-        const dot = dots[i];
-        // Rotate Y
-        const x1 = dot.x * cosY - dot.z * sinY;
-        const z1 = dot.x * sinY + dot.z * cosY;
-        // Rotate X
-        const y2 = dot.y * cosX - z1 * sinX;
-        const z2 = dot.y * sinX + z1 * cosX;
-
-        if (z2 > -0.12) {
-          const px = cx + x1 * radius;
-          const py = cy + y2 * radius;
-          const alpha = Math.max(0.12, (z2 + 0.12) * 0.88);
-          const size = Math.max(1, (z2 + 1) * 1.45);
-
-          ctx.fillStyle = `${atmosphereColor}${Math.floor(alpha * 255)
-            .toString(16)
-            .padStart(2, "0")}`;
-          ctx.beginPath();
-          ctx.arc(px, py, size, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-      ctx.restore();
-
-      // 4. Render City Markers
-      const renderedMarkers = [];
-      markers.forEach((m) => {
-        const latRad = (m.lat * Math.PI) / 180;
-        const lngRad = (m.lng * Math.PI) / 180;
-
-        // Base 3D coordinates
-        const mx = Math.cos(latRad) * Math.sin(lngRad);
-        const my = -Math.sin(latRad);
-        const mz = Math.cos(latRad) * Math.cos(lngRad);
-
-        // Rotate Y
-        const mx1 = mx * cosY - mz * sinY;
-        const mz1 = mx * sinY + mz * cosY;
-        // Rotate X
-        const my2 = my * cosX - mz1 * sinX;
-        const mz2 = my * sinX + mz1 * cosX;
-
-        if (mz2 > 0.04) {
-          const px = cx + mx1 * radius;
-          const py = cy + my2 * radius;
-          renderedMarkers.push({ ...m, px, py, mz: mz2 });
-        }
-      });
-
-      // Sort by depth (back to front)
-      renderedMarkers.sort((a, b) => a.mz - b.mz);
-
-      renderedMarkers.forEach((m) => {
-        const isHovered = hoveredMarkerRef.current?.label === m.label;
-        const scale = (m.mz + 0.3) * 1.1;
-        const markerSize = isHovered ? 30 : Math.max(22, 26 * scale);
-
-        // Pulsing radar ring
-        const pulse = (Math.sin(now * 0.004 + m.lat) + 1) / 2;
-        ctx.save();
-        ctx.strokeStyle = `${atmosphereColor}${Math.floor((1 - pulse * 0.6) * 200)
-          .toString(16)
-          .padStart(2, "0")}`;
-        ctx.lineWidth = 1.6;
-        ctx.beginPath();
-        ctx.arc(m.px, m.py, markerSize * 0.5 + pulse * 7, 0, Math.PI * 2);
-        ctx.stroke();
-
-        // Marker Avatar Image or glowing dot
-        const img = m.src ? loadedImagesRef.current[m.src] : null;
-        if (img && img.complete && img.naturalWidth > 0) {
-          ctx.save();
-          ctx.beginPath();
-          ctx.arc(m.px, m.py, markerSize / 2, 0, Math.PI * 2);
-          ctx.clip();
-          ctx.drawImage(img, m.px - markerSize / 2, m.py - markerSize / 2, markerSize, markerSize);
-          ctx.restore();
-
-          // Border ring around avatar
-          ctx.strokeStyle = isHovered ? "#ffffff" : atmosphereColor;
-          ctx.lineWidth = isHovered ? 2.5 : 1.8;
-          ctx.beginPath();
-          ctx.arc(m.px, m.py, markerSize / 2, 0, Math.PI * 2);
-          ctx.stroke();
-        } else {
-          ctx.fillStyle = isHovered ? "#ffffff" : atmosphereColor;
-          ctx.beginPath();
-          ctx.arc(m.px, m.py, isHovered ? 7 : 5, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        // Marker Label Pill (hovered or near front)
-        if (isHovered || m.mz > 0.55) {
-          const labelText = m.label;
-          ctx.font = "bold 11px system-ui, -apple-system, sans-serif";
-          const textWidth = ctx.measureText(labelText).width;
-          const pillW = textWidth + 16;
-          const pillH = 22;
-          const pillX = m.px - pillW / 2;
-          const pillY = m.py - markerSize / 2 - 26;
-
-          ctx.fillStyle = "rgba(4, 6, 14, 0.82)";
-          ctx.strokeStyle = isHovered ? atmosphereColor : "rgba(255, 255, 255, 0.25)";
-          ctx.lineWidth = 1;
-
-          ctx.beginPath();
-          ctx.roundRect(pillX, pillY, pillW, pillH, 999);
-          ctx.fill();
-          ctx.stroke();
-
-          ctx.fillStyle = isHovered ? "#ffffff" : "rgba(255, 255, 255, 0.95)";
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          ctx.fillText(labelText, m.px, pillY + pillH / 2);
-        }
-
-        ctx.restore();
-      });
-
-      canvas._renderedMarkers = renderedMarkers;
-      animId = requestAnimationFrame(render);
-    };
-
-    animId = requestAnimationFrame(render);
-
-    return () => {
-      cancelAnimationFrame(animId);
-      window.removeEventListener("resize", resize);
-    };
-  }, [markers, atmosphereColor, atmosphereIntensity, bumpScale, autoRotateSpeed, radiusScale]);
-
-  // Pointer interactions for dragging and marker clicking
-  const handlePointerDown = (e) => {
-    isDraggingRef.current = true;
-    lastMouseRef.current = { x: e.clientX, y: e.clientY };
-  };
-
-  const handlePointerMove = (e) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    if (isDraggingRef.current) {
-      const dx = e.clientX - lastMouseRef.current.x;
-      const dy = e.clientY - lastMouseRef.current.y;
-      rotationRef.current.y += dx * 0.005;
-      rotationRef.current.x = Math.max(-1.25, Math.min(1.25, rotationRef.current.x + dy * 0.005));
-      lastMouseRef.current = { x: e.clientX, y: e.clientY };
-    }
-
-    // Check hover over markers
-    const rect = canvas.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
-    const rendered = canvas._renderedMarkers || [];
-    let found = null;
-    for (let i = rendered.length - 1; i >= 0; i--) {
-      const m = rendered[i];
-      const dist = Math.hypot(m.px - mouseX, m.py - mouseY);
-      if (dist < 26) {
-        found = m;
-        break;
-      }
-    }
-
-    if (found?.label !== hoveredMarkerRef.current?.label) {
-      hoveredMarkerRef.current = found;
-      if (onMarkerHover) {
-        onMarkerHover(found);
-      }
-    }
-  };
-
-  const handlePointerUp = () => {
-    isDraggingRef.current = false;
-  };
-
-  const handleClick = (e) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const rect = canvas.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
-    const rendered = canvas._renderedMarkers || [];
-    for (let i = rendered.length - 1; i >= 0; i--) {
-      const m = rendered[i];
-      const dist = Math.hypot(m.px - mouseX, m.py - mouseY);
-      if (dist < 26) {
-        if (onMarkerClick) onMarkerClick(m);
-        break;
-      }
-    }
-  };
+  if (!mounted) {
+    return (
+      <div className={cn("relative h-[500px] w-full flex items-center justify-center", className)}>
+        <span className="text-sm text-neutral-400">Loading globe...</span>
+      </div>
+    );
+  }
 
   return (
-    <div
-      ref={containerRef}
-      className={`relative flex items-center justify-center select-none w-full h-full ${className}`}
-      style={{ touchAction: "none" }}
-    >
-      <canvas
-        ref={canvasRef}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerLeave={handlePointerUp}
-        onClick={handleClick}
-        className="cursor-grab active:cursor-grabbing w-full h-full block"
-      />
+    <div className={cn("relative h-[500px] w-full", className)}>
+      <Canvas
+        gl={{
+          antialias: true,
+          alpha: true,
+          powerPreference: "high-performance",
+        }}
+        dpr={[1, 2]}
+        camera={{
+          fov: 45,
+          near: 0.1,
+          far: 1000,
+          position: [0, 0, mergedConfig.radius * 3.5],
+        }}
+        style={{
+          background: mergedConfig.backgroundColor || "transparent",
+        }}
+      >
+        <Suspense fallback={<LoadingFallback />}>
+          <Scene
+            markers={markers}
+            config={mergedConfig}
+            onMarkerClick={onMarkerClick}
+            onMarkerHover={onMarkerHover}
+          />
+        </Suspense>
+      </Canvas>
     </div>
   );
 }
