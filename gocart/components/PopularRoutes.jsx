@@ -16,62 +16,72 @@ const PopularRoutes = () => {
     };
 
     return (
-        <section className="py-12">
+        <section className="py-16 bg-[#09090b] text-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
                 
                 {/* Section Header */}
-                <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
                     <div>
-                        <span className="text-xs font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
-                            Trending Destinations
+                        <span className="text-xs font-bold text-blue-400 uppercase tracking-widest bg-blue-500/10 px-3 py-1 rounded-full border border-blue-500/20">
+                            Trending Local Corridors
                         </span>
-                        <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
+                        <h2 className="text-2xl sm:text-4xl font-extrabold text-white mt-3 tracking-tight">
                             Popular Local Routes
                         </h2>
-                        <p className="text-sm text-slate-500 mt-1">
-                            Frequent shuttles and express buses connecting Clement Town, ISBT, and key city hubs.
+                        <p className="text-sm text-zinc-400 mt-1">
+                            Frequent shuttles and express buses connecting Clement Town, ISBT, Clock Tower, and campus corridors.
                         </p>
                     </div>
                 </div>
 
                 {/* Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {popularRoutes.slice(0, 8).map((route, idx) => (
                         <div
                             key={`route_${idx}`}
                             onClick={() => handleSelectRoute(route.from, route.to)}
-                            className="group bg-white rounded-2xl border border-slate-200/90 hover:border-blue-500 hover:shadow-xl hover:shadow-blue-500/10 transition-all cursor-pointer overflow-hidden flex flex-col justify-between"
+                            className="group bg-zinc-900/90 rounded-2xl border border-zinc-800 hover:border-zinc-600 hover:shadow-2xl hover:shadow-black/60 transition-all cursor-pointer overflow-hidden flex flex-col justify-between"
                         >
                             {/* Card Image */}
-                            <div className="h-36 w-full overflow-hidden relative bg-gradient-to-tr from-blue-700 via-indigo-700 to-slate-900">
+                            <div className="h-36 w-full overflow-hidden relative bg-zinc-950">
                                 <img
                                     src={route.image || "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&auto=format&fit=crop&q=80"}
                                     alt={`${route.from} to ${route.to}`}
-                                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-90"
-                                    loading="lazy"
+                                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-80 group-hover:opacity-100"
                                     onError={(e) => {
-                                        e.currentTarget.style.display = 'none';
+                                        e.target.onerror = null;
+                                        e.target.src = "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=600&auto=format&fit=crop&q=80";
                                     }}
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/30 to-transparent" />
-                                <div className="absolute bottom-3 left-3 flex items-center gap-1.5 text-white font-bold text-sm">
-                                    <Bus size={16} className="text-blue-400" />
-                                    <span>{route.trips} Buses Daily</span>
+                                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent" />
+                                <div className="absolute top-3 left-3 bg-zinc-900/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-semibold text-white border border-white/10 flex items-center gap-1.5 shadow-sm">
+                                    <Bus size={12} className="text-blue-400" />
+                                    <span>Daily Local Bus</span>
                                 </div>
                             </div>
 
-                            {/* Details */}
-                            <div className="p-4">
-                                <div className="flex items-center justify-between text-base font-bold text-slate-800 group-hover:text-blue-600 transition mb-2">
-                                    <span>{route.from}</span>
-                                    <ArrowRight size={16} className="text-slate-400 group-hover:translate-x-1 group-hover:text-blue-600 transition" />
-                                    <span>{route.to}</span>
+                            {/* Card Content */}
+                            <div className="p-4 flex-1 flex flex-col justify-between">
+                                <div>
+                                    <h3 className="font-bold text-white text-base group-hover:text-blue-400 transition flex items-center gap-1.5 flex-wrap">
+                                        <span>{route.from}</span>
+                                        <ArrowRight size={14} className="text-zinc-500" />
+                                        <span>{route.to}</span>
+                                    </h3>
+                                    <p className="text-xs text-zinc-400 mt-1">
+                                        {route.busesCount || 18} buses daily • Avg {route.duration || "25m"}
+                                    </p>
                                 </div>
 
-                                <div className="flex items-center justify-between pt-3 border-t border-slate-100">
-                                    <span className="text-xs text-slate-400 font-medium">Starts from</span>
-                                    <span className="text-base font-extrabold text-slate-900">
-                                        {currency}{route.startingPrice}
+                                <div className="mt-4 pt-3 border-t border-zinc-800 flex items-center justify-between">
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-zinc-500">Starts from</p>
+                                        <p className="text-base font-extrabold text-white">
+                                            {currency}{route.startingFare || 30}
+                                        </p>
+                                    </div>
+                                    <span className="text-xs font-semibold text-blue-400 group-hover:translate-x-1 transition flex items-center gap-1">
+                                        Book <ArrowRight size={13} />
                                     </span>
                                 </div>
                             </div>

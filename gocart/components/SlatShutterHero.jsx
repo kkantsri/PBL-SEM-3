@@ -37,11 +37,14 @@ function Slat({ index, count, progress, src }) {
       style={{ y, scaleX, width: `${100 / count}%` }}
     >
       <div
-        className="absolute inset-y-0 bg-cover bg-center"
+        className="absolute inset-y-0 bg-cover bg-center contrast-[1.06] brightness-[1.04]"
         style={{
           backgroundImage: `url(${src})`,
           width: `${count * 100}%`,
           left: `${-index * 100}%`,
+          imageRendering: "auto",
+          WebkitBackfaceVisibility: "hidden",
+          backfaceVisibility: "hidden",
         }}
       />
     </motion.div>
@@ -52,7 +55,7 @@ function Headline({ lines, tone }) {
   return (
     <motion.h1
       key={tone}
-      className="text-[clamp(40px,5.6vw,84px)] font-normal leading-[1.02] tracking-[-0.035em] text-white"
+      className="text-[clamp(40px,5.6vw,84px)] font-normal leading-[1.02] tracking-[-0.035em] text-white drop-shadow-md"
       initial="hidden"
       animate="show"
       exit="exit"
@@ -97,17 +100,22 @@ export function SlatShutterHero({
   useMotionValueEvent(scrollYProgress, "change", (v) => setRevealed(v > 0.42));
 
   const revealScale = useTransform(progress, [0.1, 0.85], [1.18, 1], { ease });
-  const shade = useTransform(progress, [0, 0.5], [0.45, 0.2]);
+  // Reduced shade from [0.45, 0.2] down to [0.12, 0.0] so the background image details remain crystal-clear
+  const shade = useTransform(progress, [0, 0.5], [0.12, 0.0]);
   const capOpacity = useTransform(progress, [0.7, 0.85], [0, 1]);
 
   if (reduce) {
     return (
       <section className={cn("relative h-svh w-full overflow-hidden bg-black", className)}>
-        <img src={revealSrc} alt="" className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-black/25" />
+        <img
+          src={revealSrc}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover contrast-[1.06] brightness-[1.04]"
+        />
+        <div className="absolute inset-0 bg-black/15" />
         <div className="absolute inset-x-0 bottom-0 p-6 md:p-12">
-          {kicker && <p className="mb-4 text-[15px] text-white/80">{kicker}</p>}
-          <h1 className="text-[clamp(40px,5.6vw,84px)] font-normal leading-[1.02] tracking-[-0.035em] text-white">
+          {kicker && <p className="mb-4 text-[15px] text-white/90 drop-shadow-sm">{kicker}</p>}
+          <h1 className="text-[clamp(40px,5.6vw,84px)] font-normal leading-[1.02] tracking-[-0.035em] text-white drop-shadow-md">
             {revealTitle[0]}
             <br />
             {revealTitle[1]}
@@ -124,12 +132,16 @@ export function SlatShutterHero({
       style={{ height: `${length * 100}svh` }}
     >
       <div className="sticky top-0 h-svh w-full overflow-hidden">
-        {/* revealed image */}
+        {/* revealed image - crystal clear with enhanced clarity */}
         <motion.img
           src={revealSrc}
           alt=""
-          className="absolute inset-0 h-full w-full object-cover"
-          style={{ scale: revealScale }}
+          className="absolute inset-0 h-full w-full object-cover contrast-[1.06] brightness-[1.04]"
+          style={{
+            scale: revealScale,
+            WebkitBackfaceVisibility: "hidden",
+            backfaceVisibility: "hidden",
+          }}
         />
 
         {/* slats */}
@@ -139,13 +151,15 @@ export function SlatShutterHero({
           ))}
         </div>
 
+        {/* Subtle shade (not muddy dark) for crystal clarity */}
         <motion.div className="pointer-events-none absolute inset-0 bg-black" style={{ opacity: shade }} />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/65 via-black/25 to-transparent" />
+        {/* Soft vignette at bottom just for headline legibility */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
 
         {/* copy */}
         <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-8 p-6 md:px-12 md:pb-12 z-20">
           <div className="min-w-0">
-            {kicker && <p className="mb-4 text-[15px] text-white/80 font-medium">{kicker}</p>}
+            {kicker && <p className="mb-4 text-[15px] text-white/90 font-medium drop-shadow-sm">{kicker}</p>}
             <AnimatePresence mode="wait" initial={false}>
               {revealed ? (
                 <Headline key="r" lines={revealTitle} tone="reveal" />
@@ -156,7 +170,7 @@ export function SlatShutterHero({
           </div>
           {caption && (
             <motion.p
-              className="hidden max-w-[28ch] text-right text-[15px] leading-snug text-white/85 md:block font-normal"
+              className="hidden max-w-[28ch] text-right text-[15px] leading-snug text-white/90 md:block font-normal drop-shadow-sm"
               style={{ opacity: capOpacity }}
             >
               {caption}

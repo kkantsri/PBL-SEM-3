@@ -4,18 +4,18 @@ import { Star, ShieldCheck, Bus, MapPin } from "lucide-react";
 
 const TopOperators = () => {
     return (
-        <section className="py-12 bg-slate-50 border-y border-slate-200">
+        <section className="py-16 bg-zinc-950 border-y border-zinc-800 text-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
                 
                 {/* Header */}
-                <div className="text-center max-w-2xl mx-auto mb-10">
-                    <span className="text-xs font-bold text-emerald-600 uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                <div className="text-center max-w-2xl mx-auto mb-12">
+                    <span className="text-xs font-bold text-emerald-400 uppercase tracking-widest bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
                         Verified Partners
                     </span>
-                    <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
+                    <h2 className="text-2xl sm:text-4xl font-extrabold text-white mt-3 tracking-tight">
                         Top Local Transit Operators
                     </h2>
-                    <p className="text-sm text-slate-500 mt-1">
+                    <p className="text-sm text-zinc-400 mt-1">
                         Trusted campus shuttles and city transit fleets committed to punctuality, clean coaches, and safe travel.
                     </p>
                 </div>
@@ -25,31 +25,31 @@ const TopOperators = () => {
                     {busOperators.map((operator) => (
                         <div
                             key={operator.id}
-                            className="bg-white rounded-2xl border border-slate-200 p-5 flex flex-col items-center text-center hover:border-blue-400 hover:shadow-md transition group"
+                            className="bg-zinc-900/90 rounded-2xl border border-zinc-800 p-5 flex flex-col items-center text-center hover:border-zinc-600 hover:shadow-xl hover:shadow-black/60 transition group"
                         >
                             {/* Operator Logo Badge */}
-                            <div className="size-16 rounded-2xl overflow-hidden border border-slate-100 mb-3 group-hover:scale-105 transition flex items-center justify-center bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-black text-xl shadow-md shadow-blue-500/10">
+                            <div className="size-16 rounded-2xl overflow-hidden border border-white/10 mb-3 group-hover:scale-105 transition flex items-center justify-center bg-gradient-to-tr from-zinc-800 to-zinc-950 text-white font-black text-xl shadow-md border-zinc-700">
                                 <span>{operator.name.split(' ').map(n => n[0]).join('').slice(0, 2)}</span>
                             </div>
 
                             {/* Name */}
-                            <h3 className="text-base font-bold text-slate-800 group-hover:text-blue-600 transition">
+                            <h3 className="text-base font-bold text-white group-hover:text-blue-400 transition">
                                 {operator.name}
                             </h3>
 
                             {/* Rating */}
-                            <div className="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 my-2">
-                                <Star size={12} className="fill-emerald-600 text-emerald-600" />
+                            <div className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 my-2">
+                                <Star size={12} className="fill-emerald-400 text-emerald-400" />
                                 {operator.rating} / 5
                             </div>
 
                             {/* Fleet Stats */}
-                            <div className="w-full pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-semibold text-slate-500 mt-2">
+                            <div className="w-full pt-3 border-t border-zinc-800 flex items-center justify-between text-[11px] font-semibold text-zinc-400 mt-2">
                                 <span className="flex items-center gap-1">
-                                    <Bus size={12} className="text-blue-500" /> {operator.totalBuses} Buses
+                                    <Bus size={12} className="text-blue-400" /> {operator.totalBuses} Buses
                                 </span>
                                 <span className="flex items-center gap-1">
-                                    <MapPin size={12} className="text-emerald-500" /> {operator.routesCount} Routes
+                                    <ShieldCheck size={12} className="text-emerald-400" /> Verified
                                 </span>
                             </div>
                         </div>
