@@ -83,11 +83,11 @@ function Headline({ lines, tone }) {
 }
 
 const MOUNTAIN_BUS = "/mountain-bus.jpg";
-const CLEAR_WATER_REVEAL = "https://cdn.jsdelivr.net/gh/rm-sjent/21st-assets@v1/img/hero-bright.jpg";
+const HALF_DOME = "/half-dome.jpg";
 
 export function SlatShutterHero({
   coverSrc = MOUNTAIN_BUS,
-  revealSrc = CLEAR_WATER_REVEAL,
+  revealSrc = HALF_DOME,
   coverTitle = ["Safe Journeys Through Every Mile,", "Travel with Complete Trust"],
   revealTitle = ["Live GPS Tracking & Certified Fleets,", "Arrive Safely, Every Single Time"],
   kicker = "Verified & Safe Mountain Transit",

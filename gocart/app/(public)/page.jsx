@@ -11,7 +11,7 @@ export default function Home() {
         <main className="min-h-screen bg-[#09090b] text-zinc-100 selection:bg-zinc-800 selection:text-white">
             <SlatShutterHero
                 coverSrc="/mountain-bus.jpg"
-                revealSrc="https://cdn.jsdelivr.net/gh/rm-sjent/21st-assets@v1/img/hero-bright.jpg"
+                revealSrc="/half-dome.jpg"
                 kicker="Verified & Safe Mountain Transit"
                 coverTitle={["Safe Journeys Through Every Mile,", "Travel with Complete Trust"]}
                 revealTitle={["Live GPS Tracking & Certified Fleets,", "Arrive Safely, Every Single Time"]}
