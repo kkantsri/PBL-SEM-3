@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { BorderBeam } from "@/components/ui/border-beam-search";
 
 const Navbar = () => {
     const router = useRouter();
@@ -13,9 +14,12 @@ const Navbar = () => {
 
     useEffect(() => {
         const handleScroll = () => {
-            setScrolled(window.scrollY > 40);
+            // Keep header fully transparent across all hero scroll sections (first 2.2 viewport heights)
+            const heroThreshold = typeof window !== "undefined" ? window.innerHeight * 2.0 : 800;
+            setScrolled(window.scrollY > heroThreshold);
         };
-        window.addEventListener("scroll", handleScroll);
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        handleScroll();
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
@@ -28,10 +32,10 @@ const Navbar = () => {
 
     return (
         <nav
-            className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+            className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
                 scrolled
-                    ? "bg-black/90 backdrop-blur-md border-b border-white/10 shadow-2xl shadow-black/60 py-2.5"
-                    : "bg-gradient-to-b from-black/60 via-black/15 to-transparent border-none py-4"
+                    ? "bg-black/80 backdrop-blur-md border-b border-white/10 shadow-2xl py-3"
+                    : "bg-gradient-to-b from-black/45 via-black/10 to-transparent border-none py-4"
             } text-white`}
         >
             <div className="mx-4 sm:mx-8">
@@ -42,7 +46,7 @@ const Navbar = () => {
                         <div className="size-10 bg-black/40 backdrop-blur-md border border-white/20 rounded-xl flex items-center justify-center text-blue-400 shadow-md group-hover:border-blue-400 transition">
                             <Bus size={22} />
                         </div>
-                        <div className="relative text-2xl sm:text-3xl font-extrabold tracking-tight text-white drop-shadow-sm">
+                        <div className="relative text-2xl sm:text-3xl font-extrabold tracking-tight text-white drop-shadow-md">
                             Bus<span className="text-blue-400">Go</span>
                             <span className="text-blue-400">.</span>
                             <span className="absolute -top-1.5 -right-11 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full text-zinc-200 bg-white/15 backdrop-blur-md border border-white/20">
@@ -53,31 +57,35 @@ const Navbar = () => {
 
                     {/* Desktop Menu */}
                     <div className="hidden md:flex items-center gap-6 lg:gap-8 font-medium text-zinc-200 text-sm">
-                        <Link href="/" className="hover:text-white transition flex items-center gap-1.5 drop-shadow-sm">
+                        <Link href="/" className="hover:text-white transition flex items-center gap-1.5 drop-shadow-md">
                             Home
                         </Link>
-                        <Link href="/shop" className="hover:text-white transition flex items-center gap-1.5 drop-shadow-sm">
+                        <Link href="/shop" className="hover:text-white transition flex items-center gap-1.5 drop-shadow-md">
                             Search Buses
                         </Link>
-                        <Link href="/orders" className="hover:text-white transition flex items-center gap-1.5 drop-shadow-sm">
+                        <Link href="/orders" className="hover:text-white transition flex items-center gap-1.5 drop-shadow-md">
                             <Ticket size={16} />
                             My Bookings
                         </Link>
-                        <Link href="/store" className="hover:text-white transition text-xs font-semibold text-zinc-300 bg-black/30 hover:bg-black/50 backdrop-blur-md border border-white/15 px-3 py-1.5 rounded-full">
+                        <Link href="/store" className="hover:text-white transition text-xs font-semibold text-zinc-300 bg-black/30 hover:bg-black/50 backdrop-blur-md border border-white/15 px-3 py-1.5 rounded-full shadow-sm">
                             Operator Portal
                         </Link>
 
-                        {/* Search Bar */}
-                        <form onSubmit={handleSearch} className="hidden xl:flex items-center w-64 text-sm gap-2 bg-black/40 backdrop-blur-md px-3.5 py-2 rounded-full border border-white/15 focus-within:border-blue-400 focus-within:bg-black/60 transition">
-                            <MapPin size={16} className="text-zinc-400" />
-                            <input
-                                className="w-full bg-transparent outline-none placeholder-zinc-400 text-xs text-white"
-                                type="text"
-                                placeholder="Search stop (e.g. Clement Town)"
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                            />
-                        </form>
+                        {/* Search Bar with Glowing BorderBeam */}
+                        <div className="hidden xl:block">
+                            <BorderBeam size="line" colorVariant="colorful" duration={3.1} borderRadius={64} borderWidth={1.2}>
+                                <form onSubmit={handleSearch} className="flex items-center w-64 text-sm gap-2 bg-[#1d1d1d]/90 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-[inset_0_0_0_1px_rgba(44,47,54,0.52)] focus-within:bg-[#1d1d1d] transition">
+                                    <MapPin size={15} className="text-zinc-400 shrink-0" />
+                                    <input
+                                        className="w-full bg-transparent outline-none placeholder-[#71717a] text-xs text-white"
+                                        type="text"
+                                        placeholder="Search stop (e.g. Clement Town)"
+                                        value={search}
+                                        onChange={(e) => setSearch(e.target.value)}
+                                    />
+                                </form>
+                            </BorderBeam>
+                        </div>
 
                         {/* Booking Draft Badge */}
                         {selectedSeats.length > 0 && (
@@ -95,10 +103,10 @@ const Navbar = () => {
 
                     {/* Mobile Menu */}
                     <div className="flex md:hidden items-center gap-3">
-                        <Link href="/shop" className="p-2 text-zinc-200 hover:text-white drop-shadow-sm">
+                        <Link href="/shop" className="p-2 text-zinc-200 hover:text-white drop-shadow-md">
                             <Bus size={20} />
                         </Link>
-                        <Link href="/orders" className="p-2 text-zinc-200 hover:text-white relative drop-shadow-sm">
+                        <Link href="/orders" className="p-2 text-zinc-200 hover:text-white relative drop-shadow-md">
                             <Ticket size={20} />
                             {selectedSeats.length > 0 && (
                                 <span className="absolute top-1 right-1 size-2 bg-blue-400 rounded-full" />

@@ -4,6 +4,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { busTrips, busOperators, busTypes, cities } from "@/assets/busData";
 import TripCard from "@/components/TripCard";
+import BorderBeamRouteSearch from "@/components/BorderBeamRouteSearch";
 import { ArrowLeftRight, Calendar, Filter, MapPin, SlidersHorizontal, Star, X, Route as RouteIcon, Zap } from "lucide-react";
 
 function SearchContent() {
@@ -71,33 +72,30 @@ function SearchContent() {
         <div className="min-h-screen bg-slate-50 py-8">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
-                {/* Search Bar / Header Strip */}
-                <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div className="flex items-center gap-3">
-                        <div className="size-11 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
-                            <MapPin size={22} />
-                        </div>
-                        <div>
-                            <div className="flex items-center gap-2 text-lg sm:text-xl font-extrabold text-slate-800">
-                                <span>{paramFrom}</span>
-                                <ArrowLeftRight size={18} className="text-slate-400" />
-                                <span>{paramTo}</span>
-                            </div>
-                            <p className="text-xs font-semibold text-slate-400 flex items-center gap-1.5 mt-0.5">
-                                <Calendar size={13} />
-                                <span>Date: {paramDate}</span>
-                                <span>•</span>
-                                <span className="text-blue-600 font-bold">{filteredTrips.length} Buses Available</span>
-                            </p>
-                        </div>
+                {/* Search Bar / Header Strip with Glowing Border Beam */}
+                <div className="bg-[#121217] rounded-3xl p-5 border border-zinc-800 shadow-2xl mb-8 flex flex-col md:flex-row items-center justify-between gap-5">
+                    <div className="flex-1 w-full max-w-2xl">
+                        <BorderBeamRouteSearch
+                            defaultFrom={paramFrom}
+                            defaultTo={paramTo}
+                            onSearch={({ from, to }) => {
+                                router.push(`/shop?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${paramDate}`);
+                            }}
+                        />
                     </div>
 
-                    <button
-                        onClick={() => router.push("/")}
-                        className="text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-xl transition"
-                    >
-                        Change Route
-                    </button>
+                    <div className="flex items-center gap-3 shrink-0">
+                        <div className="text-right hidden sm:block">
+                            <p className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Available Fleet</p>
+                            <p className="text-sm font-extrabold text-blue-400">{filteredTrips.length} Buses Ready</p>
+                        </div>
+                        <button
+                            onClick={() => router.push("/")}
+                            className="text-xs font-bold text-zinc-300 bg-zinc-800/80 hover:bg-zinc-700 hover:text-white px-4 py-2.5 rounded-xl border border-white/10 transition shadow-sm"
+                        >
+                            Reset Route
+                        </button>
+                    </div>
                 </div>
 
                 {/* Main Content: Sidebar + Trip Results */}
