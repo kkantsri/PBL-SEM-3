@@ -24,7 +24,7 @@ export function FocusCardsDemo() {
       subtitle: "45 daily shuttles • Avg 25m",
       fare: "₹35",
       badge: "Local Transit",
-      src: "https://images.unsplash.com/photo-1599661046289-e31897846e41?w=600&auto=format&fit=crop&q=80",
+      src: "/clocktower.jpg",
       onClick: () => handleSelectRoute("Clement Town", "Clock Tower"),
     },
     {
