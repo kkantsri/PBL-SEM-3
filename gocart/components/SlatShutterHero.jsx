@@ -144,7 +144,7 @@ export function SlatShutterHero({
           style={{ opacity: coverOpacity }}
         >
           <h1 className="text-6xl sm:text-8xl md:text-9xl lg:text-[130px] xl:text-[150px] font-black tracking-tight text-white drop-shadow-[0_12px_45px_rgba(0,0,0,0.85)] select-none">
-            BusGo
+            BusGo.
           </h1>
         </motion.div>
 
