@@ -138,6 +138,16 @@ export function SlatShutterHero({
           ))}
         </div>
 
+        {/* 1st Slide: Centered BusGo in Pure White */}
+        <motion.div
+          className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center text-center px-4"
+          style={{ opacity: coverOpacity }}
+        >
+          <h1 className="text-6xl sm:text-8xl md:text-9xl lg:text-[130px] xl:text-[150px] font-black tracking-tight text-white drop-shadow-[0_12px_45px_rgba(0,0,0,0.85)] select-none">
+            BusGo
+          </h1>
+        </motion.div>
+
         {/* 1st Slide Content (Fades out smoothly as user scrolls) */}
         <motion.div
           className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col md:flex-row items-start md:items-end justify-between gap-6 p-6 sm:p-8 md:px-12 md:pb-12 z-20"
