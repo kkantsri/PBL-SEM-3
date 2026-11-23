@@ -29,18 +29,18 @@ const SearchWidget = () => {
     };
 
     return (
-        <div className="w-full max-w-5xl mx-auto bg-black/40 backdrop-blur-md rounded-3xl shadow-2xl p-4 sm:p-6 border border-white/20">
+        <div className="w-full max-w-5xl mx-auto bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-4 sm:p-6 border border-white/80 text-zinc-900">
             <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4 items-center">
                 
                 {/* Source Stop */}
-                <div className="md:col-span-4 relative flex items-center bg-black/35 border border-white/15 rounded-2xl px-4 py-3 hover:border-white/30 focus-within:border-blue-400 focus-within:bg-black/55 transition">
-                    <MapPin className="text-blue-400 mr-3 shrink-0" size={22} />
+                <div className="md:col-span-4 relative flex items-center bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 hover:border-slate-300 focus-within:border-blue-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-500/10 transition shadow-xs">
+                    <MapPin className="text-blue-600 mr-3 shrink-0" size={22} />
                     <div className="w-full">
-                        <label className="block text-[10px] font-bold text-zinc-300 uppercase tracking-wider">From Stop</label>
+                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">From Stop</label>
                         <select
                             value={from}
                             onChange={(e) => setFrom(e.target.value)}
-                            className="w-full bg-transparent text-white font-semibold text-base outline-none cursor-pointer [&>option]:bg-zinc-900 [&>option]:text-white"
+                            className="w-full bg-transparent text-slate-900 font-bold text-base outline-none cursor-pointer [&>option]:bg-white [&>option]:text-slate-900"
                         >
                             {cities.map((city) => (
                                 <option key={`from_${city.id}`} value={city.name} disabled={city.name === to}>
@@ -56,7 +56,7 @@ const SearchWidget = () => {
                     <button
                         type="button"
                         onClick={handleSwap}
-                        className="size-10 bg-black/50 border border-white/20 rounded-full flex items-center justify-center text-zinc-300 hover:text-white hover:bg-black/70 hover:border-white/40 transition shadow-sm active:scale-95"
+                        className="size-10 bg-slate-100 border border-slate-200 rounded-full flex items-center justify-center text-slate-600 hover:text-blue-600 hover:bg-slate-200 hover:border-slate-300 transition shadow-xs active:scale-95 cursor-pointer"
                         title="Swap stops"
                     >
                         <ArrowLeftRight size={18} />
@@ -64,14 +64,14 @@ const SearchWidget = () => {
                 </div>
 
                 {/* Destination Stop */}
-                <div className="md:col-span-4 relative flex items-center bg-black/35 border border-white/15 rounded-2xl px-4 py-3 hover:border-white/30 focus-within:border-blue-400 focus-within:bg-black/55 transition">
-                    <MapPin className="text-emerald-400 mr-3 shrink-0" size={22} />
+                <div className="md:col-span-4 relative flex items-center bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 hover:border-slate-300 focus-within:border-blue-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-500/10 transition shadow-xs">
+                    <MapPin className="text-emerald-600 mr-3 shrink-0" size={22} />
                     <div className="w-full">
-                        <label className="block text-[10px] font-bold text-zinc-300 uppercase tracking-wider">To Stop</label>
+                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">To Stop</label>
                         <select
                             value={to}
                             onChange={(e) => setTo(e.target.value)}
-                            className="w-full bg-transparent text-white font-semibold text-base outline-none cursor-pointer [&>option]:bg-zinc-900 [&>option]:text-white"
+                            className="w-full bg-transparent text-slate-900 font-bold text-base outline-none cursor-pointer [&>option]:bg-white [&>option]:text-slate-900"
                         >
                             {cities.map((city) => (
                                 <option key={`to_${city.id}`} value={city.name} disabled={city.name === from}>
@@ -83,16 +83,16 @@ const SearchWidget = () => {
                 </div>
 
                 {/* Date Picker */}
-                <div className="md:col-span-3 relative flex items-center bg-black/35 border border-white/15 rounded-2xl px-4 py-3 hover:border-white/30 focus-within:border-blue-400 focus-within:bg-black/55 transition">
-                    <Calendar className="text-indigo-400 mr-3 shrink-0" size={22} />
+                <div className="md:col-span-3 relative flex items-center bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 hover:border-slate-300 focus-within:border-blue-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-500/10 transition shadow-xs">
+                    <Calendar className="text-indigo-600 mr-3 shrink-0" size={22} />
                     <div className="w-full">
-                        <label className="block text-[10px] font-bold text-zinc-300 uppercase tracking-wider">Date of Journey</label>
+                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">Date of Journey</label>
                         <input
                             type="date"
                             value={date}
                             min="2026-10-23"
                             onChange={(e) => setDate(e.target.value)}
-                            className="w-full bg-transparent text-white font-semibold text-sm outline-none cursor-pointer [color-scheme:dark]"
+                            className="w-full bg-transparent text-slate-900 font-bold text-sm outline-none cursor-pointer [color-scheme:light]"
                         />
                     </div>
                 </div>
@@ -101,7 +101,7 @@ const SearchWidget = () => {
                 <div className="md:col-span-12 mt-1">
                     <button
                         type="submit"
-                        className="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-4 rounded-2xl transition duration-200 flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 active:scale-[0.99] cursor-pointer"
+                        className="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 rounded-2xl transition duration-200 flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 active:scale-[0.99] cursor-pointer"
                     >
                         <Search size={20} />
                         <span className="text-base tracking-wide">Find Available Buses & Shortest Routes</span>

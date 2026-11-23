@@ -71,30 +71,30 @@ function SearchContent() {
         <div className="min-h-screen bg-slate-50 py-8">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
-                {/* Route Header Strip (No Search Bars) */}
-                <div className="bg-[#121217] rounded-3xl p-5 sm:p-6 border border-zinc-800 shadow-2xl mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                {/* Route Header Strip */}
+                <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
-                        <div className="size-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
+                        <div className="size-12 rounded-2xl bg-blue-50 border border-blue-200 text-blue-600 flex items-center justify-center shrink-0">
                             <MapPin size={22} />
                         </div>
                         <div>
-                            <div className="flex items-center gap-2.5 text-lg sm:text-2xl font-extrabold text-white">
+                            <div className="flex items-center gap-2.5 text-lg sm:text-2xl font-extrabold text-slate-900">
                                 <span>{paramFrom}</span>
-                                <ArrowLeftRight size={18} className="text-zinc-500" />
+                                <ArrowLeftRight size={18} className="text-slate-400" />
                                 <span>{paramTo}</span>
                             </div>
-                            <p className="text-xs font-semibold text-zinc-400 flex items-center gap-2 mt-1">
-                                <Calendar size={13} className="text-blue-400" />
+                            <p className="text-xs font-semibold text-slate-500 flex items-center gap-2 mt-1">
+                                <Calendar size={13} className="text-blue-600" />
                                 <span>Journey Date: {paramDate}</span>
-                                <span className="text-zinc-600">•</span>
-                                <span className="text-emerald-400 font-bold">{filteredTrips.length} Buses Available</span>
+                                <span className="text-slate-300">•</span>
+                                <span className="text-emerald-600 font-bold">{filteredTrips.length} Buses Available</span>
                             </p>
                         </div>
                     </div>
 
                     <button
                         onClick={() => router.push("/")}
-                        className="text-xs font-bold text-zinc-200 bg-zinc-800 hover:bg-zinc-700 hover:text-white px-5 py-2.5 rounded-xl border border-white/10 transition shadow-sm"
+                        className="text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 hover:text-slate-900 px-5 py-2.5 rounded-xl border border-slate-200 transition shadow-xs cursor-pointer"
                     >
                         Change Route
                     </button>
