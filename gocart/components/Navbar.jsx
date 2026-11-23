@@ -74,10 +74,10 @@ const Navbar = () => {
 
                         {/* Search Bar (Hidden on Search Buses page) */}
                         {!isShopPage && (
-                            <form onSubmit={handleSearch} className="hidden xl:flex items-center w-64 text-sm gap-2 bg-white text-zinc-900 px-3.5 py-2 rounded-full border border-slate-200/80 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-400/20 transition shadow-md">
-                                <MapPin size={16} className="text-blue-600 shrink-0" />
+                            <form onSubmit={handleSearch} className="hidden xl:flex items-center w-64 text-sm gap-2 bg-black/40 backdrop-blur-md px-3.5 py-2 rounded-full border border-white/15 focus-within:border-blue-400 focus-within:bg-black/60 transition shadow-sm">
+                                <MapPin size={16} className="text-zinc-400" />
                                 <input
-                                    className="w-full bg-transparent outline-none placeholder-zinc-500 text-xs text-zinc-900 font-medium"
+                                    className="w-full bg-transparent outline-none placeholder-zinc-400 text-xs text-white"
                                     type="text"
                                     placeholder="Search stop (e.g. Clement Town)"
                                     value={search}
