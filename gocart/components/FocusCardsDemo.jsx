@@ -40,7 +40,7 @@ export function FocusCardsDemo() {
       subtitle: "55 daily shuttles • Avg 15m",
       fare: "₹25",
       badge: "City Corridor",
-      src: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=600&auto=format&fit=crop&q=80",
+      src: "/rajpur-road.jpg",
       onClick: () => handleSelectRoute("Clock Tower", "Rajpur Road"),
     },
     {
