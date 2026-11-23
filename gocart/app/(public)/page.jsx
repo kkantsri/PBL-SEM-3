@@ -14,7 +14,7 @@ export default function Home() {
             <SlatShutterHero
                 coverSrc="/mountain-bus.jpg"
                 kicker="Verified & Safe Mountain Transit"
-                coverTitle={["Safe Journeys Through Every Mile,", "Travel with Complete Trust"]}
+                coverTitle={["Safe Journeys Through Every Mile,", "Travel with Complete Trust."]}
                 caption="24/7 passenger emergency support, sanitized coaches, vetted professional drivers, and live GPS route monitoring across all corridors."
             />
 

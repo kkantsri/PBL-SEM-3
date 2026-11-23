@@ -139,26 +139,26 @@ export function SlatShutterHero({
 
         {/* 1st Slide Content (Fades out smoothly as user scrolls) */}
         <motion.div
-          className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-8 p-6 md:px-12 md:pb-12 z-20"
+          className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col md:flex-row items-start md:items-end justify-between gap-6 p-6 sm:p-8 md:px-12 md:pb-12 z-20"
           style={{ opacity: coverOpacity }}
         >
-          <div className="min-w-0 max-w-3xl w-full">
+          <div className="min-w-0 max-w-4xl w-full">
             {kicker && (
-              <p className="mb-4 text-[15px] text-white/95 font-medium drop-shadow-md">
+              <p className="mb-3 text-sm sm:text-base text-blue-300 font-semibold tracking-wide drop-shadow-md">
                 {kicker}
               </p>
             )}
-            <h1 className="text-[clamp(36px,5.2vw,78px)] font-normal leading-[1.03] tracking-[-0.035em] text-white drop-shadow-xl">
-              <span className="block overflow-hidden pb-[0.08em] md:whitespace-nowrap">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-[70px] font-medium leading-[1.08] tracking-tight text-white drop-shadow-2xl">
+              <span className="block">
                 {coverTitle[0]}
               </span>
-              <span className="block overflow-hidden pb-[0.08em] md:whitespace-nowrap">
+              <span className="block text-zinc-100">
                 {coverTitle[1]}
               </span>
             </h1>
           </div>
           {caption && (
-            <p className="hidden max-w-[30ch] text-right text-[15px] leading-snug text-white/90 md:block font-normal drop-shadow-md shrink-0">
+            <p className="max-w-xs md:max-w-sm text-left md:text-right text-xs sm:text-sm leading-relaxed text-white/90 font-normal drop-shadow-md shrink-0">
               {caption}
             </p>
           )}
