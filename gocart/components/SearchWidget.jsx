@@ -104,7 +104,7 @@ const SearchWidget = () => {
                         className="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-4 rounded-2xl transition duration-200 flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 active:scale-[0.99] cursor-pointer"
                     >
                         <Search size={20} />
-                        <span className="text-base tracking-wide">Find Available Buses & Shortest Routes</span>
+                        <span className="text-base tracking-wide">Search Buses</span>
                     </button>
                 </div>
 

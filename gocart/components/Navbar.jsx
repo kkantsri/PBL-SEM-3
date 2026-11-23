@@ -94,6 +94,16 @@ const Navbar = () => {
                             Search Buses
                         </Link>
                         <Link
+                            href="/pricing"
+                            className={`transition flex items-center gap-1.5 ${
+                                isHomePage
+                                    ? "text-zinc-200 hover:text-white drop-shadow-md font-medium"
+                                    : "text-slate-900 hover:text-blue-600 font-semibold"
+                            }`}
+                        >
+                            Pricing
+                        </Link>
+                        <Link
                             href="/orders"
                             className={`transition flex items-center gap-1.5 ${
                                 isHomePage

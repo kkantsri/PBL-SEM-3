@@ -38,29 +38,41 @@ export const Card = React.memo(
       {/* Overlay & Text Details */}
       <div
         className={cn(
-          "absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300",
-          hovered === index ? "opacity-100" : "opacity-0 md:opacity-40"
+          "absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent flex flex-col justify-end p-5 sm:p-6 transition-all duration-300",
+          hovered === index ? "opacity-100" : "opacity-90 md:opacity-75"
         )}
       >
         <div className="text-xl md:text-2xl font-bold text-white drop-shadow-lg">
           {card.title}
         </div>
         {card.subtitle && (
-          <div className="text-xs sm:text-sm text-zinc-300 mt-1 font-medium flex items-center justify-between">
-            <span>{card.subtitle}</span>
-            {card.fare && (
-              <span className="text-emerald-400 font-bold text-base">
+          <p className="text-xs sm:text-sm text-zinc-300 mt-1 font-medium">
+            {card.subtitle}
+          </p>
+        )}
+
+        {/* Fixed position of Pricing and Search Buses CTA */}
+        <div className="mt-4 pt-3 border-t border-white/15 flex items-center justify-between gap-2">
+          {card.fare ? (
+            <div>
+              <span className="text-[10px] uppercase font-bold text-zinc-400 block tracking-wider">
+                Starting Fare
+              </span>
+              <span className="text-emerald-400 font-extrabold text-lg sm:text-xl drop-shadow">
                 {card.fare}
               </span>
-            )}
-          </div>
-        )}
-        {card.onClick && (
-          <div className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-blue-400 group-hover:text-blue-300 transition">
-            <span>Book Seat</span>
-            <ArrowRight size={13} />
-          </div>
-        )}
+            </div>
+          ) : (
+            <span className="text-xs text-zinc-400 font-medium">Scenic Transit</span>
+          )}
+
+          {card.onClick && (
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-md shadow-blue-600/30 transition group-hover:scale-105 shrink-0">
+              <span>Search Buses</span>
+              <ArrowRight size={13} />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
