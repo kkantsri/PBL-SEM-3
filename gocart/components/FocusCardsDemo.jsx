@@ -64,7 +64,7 @@ export function FocusCardsDemo() {
       subtitle: "50 daily shuttles • Avg 20m",
       fare: "₹30",
       badge: "Metro Shuttle",
-      src: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&auto=format&fit=crop&q=80",
+      src: "/isbt.jpg",
       onClick: () => handleSelectRoute("ISBT Dehradun", "Clock Tower"),
     },
   ];
