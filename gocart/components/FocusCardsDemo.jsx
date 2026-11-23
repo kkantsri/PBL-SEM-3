@@ -44,12 +44,12 @@ export function FocusCardsDemo() {
       onClick: () => handleSelectRoute("Clock Tower", "Rajpur Road"),
     },
     {
-      title: "Clement Town ➔ Prem Nagar",
-      subtitle: "32 daily shuttles • Avg 40m",
-      fare: "₹45",
-      badge: "Campus Line",
-      src: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=600&auto=format&fit=crop&q=80",
-      onClick: () => handleSelectRoute("Clement Town", "Prem Nagar"),
+      title: "Clement Town ➔ FRI",
+      subtitle: "30 daily shuttles • Avg 35m",
+      fare: "₹40",
+      badge: "Heritage Corridor",
+      src: "/fri.jpg",
+      onClick: () => handleSelectRoute("Clement Town", "FRI"),
     },
     {
       title: "Clock Tower ➔ Robber's Cave",
