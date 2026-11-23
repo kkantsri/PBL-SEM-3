@@ -89,8 +89,9 @@ export function SlatShutterHero({
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-24 pb-20 flex flex-col justify-between min-h-screen">
           <div>
             {kicker && <p className="mb-4 text-[15px] text-white/90 drop-shadow-md">{kicker}</p>}
-            <h1 className="text-[clamp(36px,5.2vw,78px)] font-normal leading-[1.03] tracking-[-0.035em] text-white drop-shadow-xl mb-12">
-              {coverTitle[0]} <br /> {coverTitle[1]}
+            <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-[46px] xl:text-[50px] font-medium leading-[1.18] tracking-tight text-white drop-shadow-xl mb-12">
+              <span className="block whitespace-nowrap">{coverTitle[0]}</span>
+              <span className="block whitespace-nowrap text-zinc-100">{coverTitle[1]}</span>
             </h1>
           </div>
           <div className="w-full">
@@ -148,11 +149,11 @@ export function SlatShutterHero({
                 {kicker}
               </p>
             )}
-            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-[70px] font-medium leading-[1.08] tracking-tight text-white drop-shadow-2xl">
-              <span className="block">
+            <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-[46px] xl:text-[50px] font-medium leading-[1.18] tracking-tight text-white drop-shadow-2xl">
+              <span className="block whitespace-nowrap">
                 {coverTitle[0]}
               </span>
-              <span className="block text-zinc-100">
+              <span className="block whitespace-nowrap text-zinc-100">
                 {coverTitle[1]}
               </span>
             </h1>
