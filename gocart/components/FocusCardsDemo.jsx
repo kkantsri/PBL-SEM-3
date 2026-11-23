@@ -56,7 +56,7 @@ export function FocusCardsDemo() {
       subtitle: "28 daily shuttles • Avg 30m",
       fare: "₹40",
       badge: "Scenic Local",
-      src: "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=600&auto=format&fit=crop&q=80",
+      src: "/clocktower.jpg",
       onClick: () => handleSelectRoute("Clock Tower", "Robber's Cave"),
     },
     {
