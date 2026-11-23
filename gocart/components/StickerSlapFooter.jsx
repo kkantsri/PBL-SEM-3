@@ -278,9 +278,9 @@ const CSS =
   ".ssf-pill:hover{transform:rotate(-5deg) scale(1.06);background:var(--ssf-cream);color:var(--ssf-paper)}" +
   ".ssf-pop{position:absolute;right:0;bottom:calc(100% + 10px);width:max-content;max-width:min(300px,80cqw);padding:14px 16px;border-radius:16px;background:var(--ssf-pop-bg,#18181b);color:var(--ssf-pop-color,#f4f4f5);border:1px solid var(--ssf-border,rgba(255,255,255,0.15));box-shadow:0 0 0 1px rgba(0,0,0,0.1),0 18px 40px rgba(0,0,0,.15);transform-origin:90% 100%;animation:ssf-popin .45s cubic-bezier(.2,1.5,.3,1)}" +
   ".ssf-pop li{display:flex;flex-direction:column;padding:6px 0;font-size:13px;line-height:1.3}" +
-  ".ssf-pop li+li{border-top:1.5px dashed rgba(255,255,255,0.15)}" +
-  ".ssf-pop b{font-size:11px;font-weight:600;opacity:.6;text-transform:lowercase;color:#a1a1aa}" +
-  ".ssf-pop strong{font-weight:800;letter-spacing:-.01em;color:#ffffff}" +
+  ".ssf-pop li+li{border-top:1.5px dashed var(--ssf-border,rgba(255,255,255,0.15))}" +
+  ".ssf-pop b{font-size:11px;font-weight:600;opacity:.7;text-transform:lowercase;color:var(--ssf-note-color,#a1a1aa)}" +
+  ".ssf-pop strong{font-weight:800;letter-spacing:-.01em;color:var(--ssf-pop-color,#ffffff)}" +
   "@container (max-width: 760px){.ssf-cols{grid-template-columns:minmax(0,1fr)}.ssf-top{padding-bottom:24px}.ssf-stage{width:min(165%,calc(var(--ssf-wmh) * var(--ssf-ar)));max-width:none;margin-left:-6%}}" +
   "@keyframes ssf-rewrite{0%{stroke-dashoffset:var(--l,120px)}100%{stroke-dashoffset:0}}" +
   "@keyframes ssf-popin{from{opacity:0;transform:translateY(10px) scale(.7) rotate(4deg)}}" +
